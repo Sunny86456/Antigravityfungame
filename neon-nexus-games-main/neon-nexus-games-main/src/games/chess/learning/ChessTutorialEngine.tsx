@@ -103,15 +103,33 @@ export default function ChessTutorialEngine() {
     setIllegalMoveMessage(null);
     setLessonError(null);
 
-    // SANITY CHECK
+    // SANITY CHECK & AUDIT SYSTEM
     if (lesson) {
-      const errors = ChessValidator.sanityCheckLesson(lesson);
-      if (errors.length > 0) {
-        console.error('Lesson Sanity Check Failed:', errors);
-        setLessonError(`Critical Lesson Error: ${errors[0]}`);
+      const audits = ChessValidator.sanityCheckLesson(lesson);
+      if (audits.length > 0) {
+        console.error('Lesson Security Audit Failed:', audits);
+
+        const isDev = import.meta.env.MODE === 'development';
+
+        if (isDev) {
+          // DEVELOPER MODE: Fatal Error to force fix
+          setLessonError(`Security Audit Failed (DEV ONLY): ${audits[0].reason}`);
+        } else {
+          // PLAYER MODE: Auto-skip broken lesson
+          console.warn(`Lesson ${lesson.id} is broken. Skipping for player safety.`);
+          // Find next valid lesson
+          const currentIndex = LESSONS.findIndex(l => l.id === lesson.id);
+          const nextSafe = LESSONS.slice(currentIndex + 1).find(l => ChessValidator.sanityCheckLesson(l).length === 0);
+
+          if (nextSafe) {
+            navigate(`/games/chess/learn/${nextSafe.id}`, { replace: true });
+          } else {
+            navigate('/games/chess/learn', { replace: true });
+          }
+        }
       }
     }
-  }, [lessonId, lesson]);
+  }, [lessonId, lesson, navigate]);
 
   // Load progress from Supabase
   useEffect(() => {

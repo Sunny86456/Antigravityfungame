@@ -13,6 +13,7 @@ import { Layout } from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { LESSONS, LESSON_CATEGORIES, LessonCategory } from './lessonData';
+import { ChessValidator } from './ChessValidator';
 import { PUZZLES, FREE_PUZZLE_COUNT, PUZZLE_UNLOCK_COST } from './puzzles';
 import {
   ChevronLeft,
@@ -34,14 +35,14 @@ type TabType = 'learn' | 'puzzles' | 'practice';
 export default function ChessLearningHub() {
   const navigate = useNavigate();
   const { user, profile, loading: authLoading } = useAuth();
-  
+
   const [activeTab, setActiveTab] = useState<TabType>('learn');
   const [completedTutorials, setCompletedTutorials] = useState<number[]>([]);
   const [unlockedPuzzles, setUnlockedPuzzles] = useState<number[]>([]);
   const [completedPuzzles, setCompletedPuzzles] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [expandedCategory, setExpandedCategory] = useState<LessonCategory | null>('pawn');
-  
+
   useEffect(() => {
     if (user) {
       loadProgress();
@@ -49,61 +50,74 @@ export default function ChessLearningHub() {
       setIsLoading(false);
     }
   }, [user]);
-  
+
   const loadProgress = async () => {
     if (!user) return;
-    
+
     // Load tutorial progress
     const { data: tutorialData } = await supabase
       .from('chess_tutorial_progress')
       .select('lesson_id')
       .eq('user_id', user.id)
       .eq('completed', true);
-    
+
     if (tutorialData) {
       setCompletedTutorials(tutorialData.map(t => t.lesson_id));
     }
-    
+
     // Load puzzle unlocks
     const { data: unlockData } = await supabase
       .from('chess_puzzle_unlocks')
       .select('puzzle_id')
       .eq('user_id', user.id);
-    
+
     if (unlockData) {
       setUnlockedPuzzles(unlockData.map(u => u.puzzle_id));
     }
-    
+
     // Load puzzle completions
     const { data: completionData } = await supabase
       .from('chess_puzzle_completions')
       .select('puzzle_id')
       .eq('user_id', user.id);
-    
+
     if (completionData) {
       setCompletedPuzzles(completionData.map(c => c.puzzle_id));
     }
-    
+
     setIsLoading(false);
   };
-  
+
   const tutorialProgress = (completedTutorials.length / LESSONS.length) * 100;
   const puzzleProgress = (completedPuzzles.length / PUZZLES.length) * 100;
+
+  // Filter lessons based on Audit in Production
+  const visibleLessons = useMemo(() => {
+    // In strict Dev mode, show all so we can debug them.
+    // In Player mode, filter out broken ones.
+    const isDev = import.meta.env.MODE === 'development';
+    if (isDev) return LESSONS;
+
+    return LESSONS.filter(l => {
+      const audit = ChessValidator.sanityCheckLesson(l);
+      return audit.length === 0;
+    });
+  }, []);
 
   // Group lessons by category
   const lessonsByCategory = useMemo(() => {
     return LESSON_CATEGORIES.map(cat => ({
       ...cat,
-      lessons: LESSONS.filter(l => l.category === cat.id)
+      lessons: visibleLessons.filter(l => l.category === cat.id)
     }));
-  }, []);
+  }, [visibleLessons]);
 
   // Check if a lesson is unlocked (previous lesson completed or first lesson)
   const isLessonUnlocked = (lessonId: number): boolean => {
     if (lessonId === 1) return true;
     return completedTutorials.includes(lessonId - 1);
   };
-  
+
   if (authLoading || isLoading) {
     return (
       <Layout>
@@ -113,7 +127,7 @@ export default function ChessLearningHub() {
       </Layout>
     );
   }
-  
+
   if (!user) {
     return (
       <Layout>
@@ -131,7 +145,7 @@ export default function ChessLearningHub() {
       </Layout>
     );
   }
-  
+
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
@@ -155,7 +169,7 @@ export default function ChessLearningHub() {
             </button>
           </div>
         </div>
-        
+
         {/* Tabs */}
         <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
           {[
@@ -178,7 +192,7 @@ export default function ChessLearningHub() {
             </button>
           ))}
         </div>
-        
+
         {/* Learn Tab */}
         {activeTab === 'learn' && (
           <div className="space-y-6">
@@ -206,8 +220,8 @@ export default function ChessLearningHub() {
                   <div>
                     <h3 className="font-bold text-foreground mb-1">Continue Learning</h3>
                     <p className="text-sm text-muted-foreground">
-                      {completedTutorials.length === 0 
-                        ? 'Start with the basics - learn about pawns!' 
+                      {completedTutorials.length === 0
+                        ? 'Start with the basics - learn about pawns!'
                         : `Next up: Lesson ${completedTutorials.length + 1}`
                       }
                     </p>
@@ -222,7 +236,7 @@ export default function ChessLearningHub() {
                 </div>
               </div>
             )}
-            
+
             {/* Lessons by Category */}
             <div className="space-y-4">
               {lessonsByCategory.map(category => {
@@ -321,7 +335,7 @@ export default function ChessLearningHub() {
             </div>
           </div>
         )}
-        
+
         {/* Puzzles Tab */}
         {activeTab === 'puzzles' && (
           <div className="space-y-6">
@@ -340,7 +354,7 @@ export default function ChessLearningHub() {
               </div>
               <Progress value={puzzleProgress} className="h-3" />
             </div>
-            
+
             {/* Puzzle Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {PUZZLES.map((puzzle, index) => {
@@ -348,7 +362,7 @@ export default function ChessLearningHub() {
                 const isFree = index < FREE_PUZZLE_COUNT;
                 const isUnlocked = isFree || unlockedPuzzles.includes(puzzle.id);
                 const canAfford = (profile?.coins ?? 0) >= PUZZLE_UNLOCK_COST;
-                
+
                 return (
                   <div
                     key={puzzle.id}
@@ -371,19 +385,19 @@ export default function ChessLearningHub() {
                       )}>
                         {puzzle.difficulty}
                       </span>
-                      
+
                       {isCompleted ? (
                         <CheckCircle className="w-5 h-5 text-success" />
                       ) : !isUnlocked ? (
                         <Lock className="w-5 h-5 text-muted-foreground" />
                       ) : null}
                     </div>
-                    
+
                     <h3 className="font-bold text-foreground mb-1">{puzzle.title}</h3>
                     <p className="text-xs text-muted-foreground capitalize mb-3">
                       {puzzle.category.replace('-', ' ')}
                     </p>
-                    
+
                     {isUnlocked ? (
                       <div className="flex items-center gap-1 text-sm">
                         <Coins className="w-4 h-4 text-coin" />
@@ -412,7 +426,7 @@ export default function ChessLearningHub() {
             </div>
           </div>
         )}
-        
+
         {/* Practice Tab */}
         {activeTab === 'practice' && (
           <div className="max-w-2xl mx-auto">
@@ -420,10 +434,10 @@ export default function ChessLearningHub() {
               <Gamepad2 className="w-16 h-16 mx-auto mb-4 text-primary" />
               <h2 className="text-2xl font-bold text-foreground mb-2">Practice Mode</h2>
               <p className="text-muted-foreground mb-6">
-                Play against AI without affecting your stats. Perfect for experimenting 
+                Play against AI without affecting your stats. Perfect for experimenting
                 with new strategies and learning from mistakes!
               </p>
-              
+
               <div className="p-4 rounded-xl bg-muted/50 mb-6">
                 <h3 className="font-medium text-foreground mb-2">🛡️ Safe Environment</h3>
                 <ul className="text-sm text-muted-foreground space-y-1">
@@ -433,7 +447,7 @@ export default function ChessLearningHub() {
                   <li>✓ Perfect for learning!</li>
                 </ul>
               </div>
-              
+
               <button
                 onClick={() => navigate('/games/chess/practice')}
                 className="px-8 py-4 rounded-xl gradient-primary text-primary-foreground font-bold text-lg hover:opacity-90 transition-all glow-primary flex items-center justify-center gap-2 mx-auto"

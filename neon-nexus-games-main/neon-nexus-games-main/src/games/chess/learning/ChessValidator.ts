@@ -154,17 +154,25 @@ export const ChessValidator = {
     },
 
     // 5. Sanity Check Generator (Run at startup)
-    sanityCheckLesson: (lesson: Lesson): string[] => {
-        const errors: string[] = [];
+    sanityCheckLesson: (lesson: Lesson): AuditResult[] => {
+        const errors: AuditResult[] = [];
         const board = lesson.board; // initial state
 
-        // Check if accepted moves are actually legal
+        // A. Basic Lesson Structure Check
+        // (Currently handled by TypeScript types mostly, but could check for missing titles etc)
+
+        // B. Check if accepted moves are actually legal
         if (lesson.mode === 'specific' && lesson.objective.acceptedMoves) {
             lesson.objective.acceptedMoves.forEach((accMove, idx) => {
                 const piece = board[accMove.from.row][accMove.from.col];
 
                 if (!piece) {
-                    errors.push(`Lesson ${lesson.id}: Accepted move #${idx} starts from empty square.`);
+                    errors.push({
+                        lessonId: lesson.id,
+                        status: 'INVALID',
+                        reason: `Accepted move #${idx} starts from empty square.`,
+                        failedMoveIndex: idx
+                    });
                     return;
                 }
 
@@ -173,23 +181,53 @@ export const ChessValidator = {
                 // Core rules
                 const coreResult = ChessValidator.validateCoreRules(board, moveObj, lesson.playerColor);
                 if (!coreResult.valid) {
-                    errors.push(`Lesson ${lesson.id}: Accepted move #${idx} is ILLEGAL: ${coreResult.message}`);
+                    errors.push({
+                        lessonId: lesson.id,
+                        status: 'INVALID',
+                        reason: `Accepted move #${idx} is ILLEGAL: ${coreResult.message}`,
+                        failedMoveIndex: idx
+                    });
                 }
 
                 // Check if capture is intended but not present
                 if (lesson.objective.type === 'capture') {
                     const target = board[accMove.to.row][accMove.to.col];
                     if (!target) {
-                        errors.push(`Lesson ${lesson.id}: Objective is capture but target square is empty.`);
+                        errors.push({
+                            lessonId: lesson.id,
+                            status: 'INVALID',
+                            reason: `Objective is capture but target square is empty.`,
+                            failedMoveIndex: idx
+                        });
                     }
                 }
             });
         }
 
-        // Check if king is in check for non-check lessons?
-        // Optional...
+        // C. Check Move Sequence Consistency (if exists)
+        if (lesson.moveSequence) {
+            lesson.moveSequence.forEach((accMove, idx) => {
+                // Simple existence check
+                if (!board[accMove.from.row][accMove.from.col]) {
+                    errors.push({
+                        lessonId: lesson.id,
+                        status: 'INVALID',
+                        reason: `Sequence move #${idx} starts from empty square.`,
+                        failedMoveIndex: idx
+                    });
+                }
+                // Deeper simulation requires playing through the sequence, which we don't do here yet
+                // But we could add that for V2
+            });
+        }
 
         return errors;
     }
-
 };
+
+export interface AuditResult {
+    lessonId: number;
+    status: 'VALID' | 'INVALID';
+    reason: string;
+    failedMoveIndex?: number;
+}
