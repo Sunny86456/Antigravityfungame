@@ -49,17 +49,27 @@ export const ChessValidator = {
         if (!piece) return { valid: false, message: 'No piece at source square.' };
         if (piece.color !== playerColor) return { valid: false, message: 'Not your piece.' };
 
-        // A. Geometry Check (Can the piece physically move there?)
-        // currently reusing getPieceMoves for basic geometry + some blocking
-        const potentialMoves = getPieceMoves(board, move.from);
-        if (!potentialMoves.some(p => posEquals(p, move.to))) {
+        // A. Geometry & Rule Check using getLegalMoves (Handles castling, en passant, etc.)
+        const legalMoves = getLegalMoves(board, playerColor);
+        const matchedMove = legalMoves.find(m =>
+            posEquals(m.from, move.from) &&
+            posEquals(m.to, move.to)
+        );
+
+        if (!matchedMove) {
             // It might be invalid geometry OR blocked
-            // We can try to be more specific
+            // We can try to be more specific for feedback
             if (ChessValidator.isPathBlocked(board, move.from, move.to, piece.type)) {
                 return { valid: false, message: 'Path is blocked.', failedCondition: 'path' };
             }
             return { valid: false, message: 'Invalid move for this piece.', failedCondition: 'geometry' };
         }
+
+        // B. Self-Check is implicitly handled by getLegalMoves, but we can keep explicit check if we want specific messaging
+        // However, getLegalMoves filters out self-check moves.
+        // So validation is done.
+
+        return { valid: true };
 
         // B. Self-Check Check
         const newBoard = makeMove(board, move);

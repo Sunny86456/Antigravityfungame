@@ -429,8 +429,18 @@ export default function ChessTutorialEngine() {
 
   const currentIndex = LESSONS.findIndex(l => l.id === lesson.id);
   const progress = ((currentIndex + (isCompleted ? 1 : 0)) / LESSONS.length) * 100;
-  const nextLesson = LESSONS[currentIndex + 1] ?? null;
-  const prevLesson = LESSONS[currentIndex - 1] ?? null;
+
+  // Find next SAFE lesson
+  const nextLesson = LESSONS.slice(currentIndex + 1).find(l => {
+    if (import.meta.env.MODE === 'development') return true;
+    return ChessValidator.sanityCheckLesson(l).length === 0;
+  }) ?? null;
+
+  // Find previous SAFE lesson
+  const prevLesson = [...LESSONS].slice(0, currentIndex).reverse().find(l => {
+    if (import.meta.env.MODE === 'development') return true;
+    return ChessValidator.sanityCheckLesson(l).length === 0;
+  }) ?? null;
 
   return (
     <Layout>

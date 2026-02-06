@@ -88,21 +88,41 @@ export default function ChessLearningHub() {
     setIsLoading(false);
   };
 
-  const tutorialProgress = (completedTutorials.length / LESSONS.length) * 100;
-  const puzzleProgress = (completedPuzzles.length / PUZZLES.length) * 100;
 
   // Filter lessons based on Audit in Production
   const visibleLessons = useMemo(() => {
     // In strict Dev mode, show all so we can debug them.
     // In Player mode, filter out broken ones.
     const isDev = import.meta.env.MODE === 'development';
-    if (isDev) return LESSONS;
 
-    return LESSONS.filter(l => {
+    // We sort by ID to ensure linear progression logic works
+    const all = [...LESSONS].sort((a, b) => a.id - b.id);
+
+    if (isDev) return all;
+
+    return all.filter(l => {
       const audit = ChessValidator.sanityCheckLesson(l);
       return audit.length === 0;
     });
   }, []);
+
+  // Correctly calculate progress based on VISIBLE lessons (for player perception)
+  const tutorialProgress = (completedTutorials.length / visibleLessons.length) * 100;
+  const puzzleProgress = (completedPuzzles.length / PUZZLES.length) * 100;
+
+  // Helper to check if a lesson is unlocked based on visible chain
+  const isLessonUnlocked = (lessonId: number): boolean => {
+    const lessonIndex = visibleLessons.findIndex(l => l.id === lessonId);
+    if (lessonIndex === -1) {
+      // If hidden/invalid, we generally say false, unless in dev mode where it might be visible
+      // But since visibleLessons handles dev mode logic, if it's not in visibleLessons, it's locked/unavailable
+      return false;
+    }
+    if (lessonIndex === 0) return true; // First visible lesson always unlocked
+
+    const prevLesson = visibleLessons[lessonIndex - 1];
+    return completedTutorials.includes(prevLesson.id);
+  };
 
   // Group lessons by category
   const lessonsByCategory = useMemo(() => {
@@ -111,12 +131,6 @@ export default function ChessLearningHub() {
       lessons: visibleLessons.filter(l => l.category === cat.id)
     }));
   }, [visibleLessons]);
-
-  // Check if a lesson is unlocked (previous lesson completed or first lesson)
-  const isLessonUnlocked = (lessonId: number): boolean => {
-    if (lessonId === 1) return true;
-    return completedTutorials.includes(lessonId - 1);
-  };
 
   if (authLoading || isLoading) {
     return (
@@ -214,24 +228,30 @@ export default function ChessLearningHub() {
             </div>
 
             {/* Quick Start */}
-            {completedTutorials.length < LESSONS.length && (
+            {completedTutorials.length < visibleLessons.length && (
               <div className="p-6 rounded-2xl bg-primary/10 border border-primary/30">
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="font-bold text-foreground mb-1">Continue Learning</h3>
                     <p className="text-sm text-muted-foreground">
-                      {completedTutorials.length === 0
-                        ? 'Start with the basics - learn about pawns!'
-                        : `Next up: Lesson ${completedTutorials.length + 1}`
-                      }
+                      {/* Calculate next lesson dynamically */}
+                      {(() => {
+                        // Find first uncompleted visible lesson
+                        const nextToPlay = visibleLessons.find(l => !completedTutorials.includes(l.id));
+                        if (!nextToPlay) return "All lessons completed!";
+                        return `Next up: ${nextToPlay.title}`;
+                      })()}
                     </p>
                   </div>
                   <button
-                    onClick={() => navigate(`/games/chess/learn/${completedTutorials.length + 1}`)}
+                    onClick={() => {
+                      const nextToPlay = visibleLessons.find(l => !completedTutorials.includes(l.id));
+                      if (nextToPlay) navigate(`/games/chess/learn/${nextToPlay.id}`);
+                    }}
                     className="px-6 py-3 rounded-xl gradient-primary text-primary-foreground font-bold hover:opacity-90 transition-all flex items-center gap-2"
                   >
                     <Play className="w-5 h-5" />
-                    {completedTutorials.length === 0 ? 'Start' : 'Continue'}
+                    Continue
                   </button>
                 </div>
               </div>

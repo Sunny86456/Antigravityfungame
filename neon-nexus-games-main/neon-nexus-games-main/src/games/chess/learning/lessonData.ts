@@ -215,7 +215,7 @@ const bishopBlockingBoard = (): Board => {
   let b = emptyBoard();
   b = placePiece(b, 6, 1, 'bishop', 'white');
   b = placePiece(b, 4, 3, 'pawn', 'white'); // Blocks one diagonal
-  b = placePiece(b, 3, 4, 'pawn', 'black'); // Capturable
+  b = placePiece(b, 5, 0, 'pawn', 'black'); // Capturable
   b = placePiece(b, 7, 4, 'king', 'white');
   b = placePiece(b, 0, 4, 'king', 'black');
   return b;
@@ -368,7 +368,7 @@ const escapingCheckBoard = (): Board => {
 const blockingCheckBoard = (): Board => {
   let b = emptyBoard();
   b = placePiece(b, 7, 4, 'king', 'white');
-  b = placePiece(b, 7, 3, 'rook', 'white'); // Can block
+  b = placePiece(b, 1, 0, 'rook', 'white'); // Can block
   b = placePiece(b, 0, 4, 'queen', 'black'); // Giving check on file
   b = placePiece(b, 0, 0, 'king', 'black');
   return b;
@@ -400,7 +400,7 @@ const pinsBoard = (): Board => {
 // Lesson 29: Forks
 const forksBoard = (): Board => {
   let b = emptyBoard();
-  b = placePiece(b, 5, 4, 'knight', 'white');
+  b = placePiece(b, 6, 3, 'knight', 'white');
   b = placePiece(b, 2, 3, 'king', 'black');
   b = placePiece(b, 2, 5, 'queen', 'black');
   b = placePiece(b, 7, 4, 'king', 'white');
@@ -742,7 +742,7 @@ export const LESSONS: Lesson[] = [
     objective: {
       type: 'capture',
       description: 'One diagonal is blocked. Capture the black pawn on the open diagonal!',
-      acceptedMoves: [{ from: { row: 6, col: 1 }, to: { row: 3, col: 4 } }]
+      acceptedMoves: [{ from: { row: 6, col: 1 }, to: { row: 5, col: 0 } }]
     },
     concept: 'Like rooks, bishops cannot jump over pieces. They must stop before friendly pieces or capture enemy pieces in their path.',
     hint: 'The pawn blocks one diagonal. Use the other diagonal to capture!',
@@ -1037,7 +1037,7 @@ export const LESSONS: Lesson[] = [
     objective: {
       type: 'make-move',
       description: 'Your king is in check! Block with the rook.',
-      acceptedMoves: [{ from: { row: 7, col: 3 }, to: { row: 1, col: 4 } }]
+      acceptedMoves: [{ from: { row: 1, col: 0 }, to: { row: 1, col: 4 } }]
     },
     concept: 'Instead of moving the king, you can sometimes block a check by placing another piece between the attacker and your king.',
     hint: 'Move the rook to block the queen\'s attack!',
@@ -1101,12 +1101,12 @@ export const LESSONS: Lesson[] = [
     objective: {
       type: 'make-move',
       description: 'Move the knight to attack both the king and queen at once!',
-      acceptedMoves: [{ from: { row: 5, col: 4 }, to: { row: 3, col: 4 } }]
+      acceptedMoves: [{ from: { row: 6, col: 3 }, to: { row: 4, col: 4 } }]
     },
     concept: 'A fork attacks two or more pieces simultaneously. Since only one can move, you will capture the other! Knights are especially good at forking.',
     hint: 'Find the square where the knight attacks both the king and queen!',
     successMessage: 'Fork! The knight attacks both pieces - one must be captured!',
-    showArrow: { from: { row: 5, col: 4 }, to: { row: 3, col: 4 } }
+    showArrow: { from: { row: 6, col: 3 }, to: { row: 4, col: 4 } }
   },
   {
     id: 33,
