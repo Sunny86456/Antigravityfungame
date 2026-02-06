@@ -16,16 +16,17 @@ import { useGameSounds } from '@/hooks/useGameSounds';
 import { supabase } from '@/integrations/supabase/client';
 import { ChessBoard } from '../components/ChessBoard';
 import { Lesson, LESSONS, getLessonById } from './lessonData';
-import { 
-  Board, 
-  Move, 
-  Position, 
+import {
+  Board,
+  Move,
+  Position,
   PieceType,
-  getLegalMoves, 
-  makeMove, 
+  getLegalMoves,
+  makeMove,
   isInCheck,
   getGameState,
-  cloneBoard
+  cloneBoard,
+  getMoveNotation
 } from '../chessLogic';
 import { cn } from '@/lib/utils';
 import { Progress } from '@/components/ui/progress';
@@ -38,8 +39,10 @@ import {
   XCircle,
   Loader2,
   Info,
-  AlertTriangle
+  AlertTriangle,
+  ShieldAlert
 } from 'lucide-react';
+import { ChessValidator } from './ChessValidator';
 
 type Feedback = { type: 'success' | 'error' | 'info'; message: string } | null;
 
@@ -77,7 +80,9 @@ export default function ChessTutorialEngine() {
   const [alreadyCompleted, setAlreadyCompleted] = useState(false);
   const [lastMove, setLastMove] = useState<{ from: Position; to: Position } | null>(null);
   const [moveCount, setMoveCount] = useState(0);
+  const [showIntro, setShowIntro] = useState(true);
   const [illegalMoveMessage, setIllegalMoveMessage] = useState<string | null>(null);
+  const [lessonError, setLessonError] = useState<string | null>(null);
 
   // Reset when lesson changes
   useEffect(() => {
@@ -92,8 +97,20 @@ export default function ChessTutorialEngine() {
     setShowHint(false);
     setIsCompleted(false);
     setLastMove(null);
+    setLastMove(null);
     setMoveCount(0);
+    setShowIntro(true);
     setIllegalMoveMessage(null);
+    setLessonError(null);
+
+    // SANITY CHECK
+    if (lesson) {
+      const errors = ChessValidator.sanityCheckLesson(lesson);
+      if (errors.length > 0) {
+        console.error('Lesson Sanity Check Failed:', errors);
+        setLessonError(`Critical Lesson Error: ${errors[0]}`);
+      }
+    }
   }, [lessonId, lesson]);
 
   // Load progress from Supabase
@@ -130,6 +147,7 @@ export default function ChessTutorialEngine() {
     setIsCompleted(false);
     setLastMove(null);
     setMoveCount(0);
+    setShowIntro(true);
     setIllegalMoveMessage(null);
   }, [lesson]);
 
@@ -150,21 +168,79 @@ export default function ChessTutorialEngine() {
       });
   }, [user, lesson, playSound]);
 
+
   const handleMoveResult = useCallback((move: Move, isAccepted: boolean) => {
-    if (!lesson) return;
+    if (!lesson || lessonError) return;
 
-    if (isAccepted) {
-      // Valid move - apply it
-      const newBoard = makeMove(board, move);
-      setBoard(newBoard);
-      setLastMove({ from: move.from, to: move.to });
-      setMoveCount(prev => prev + 1);
-      playSound('move');
+    // 1. Core Rule & Geometry Validation (The Single Source of Truth)
+    const ruleValidation = ChessValidator.validateCoreRules(board, move, lesson.playerColor);
+    if (!ruleValidation.valid) {
+      playSound('failure');
+      setFeedback({ type: 'error', message: 'Illegal Move' });
+      setIllegalMoveMessage(ruleValidation.message ?? 'That move violates the laws of chess.');
+      setTimeout(() => {
+        // Only reset if it was disjoint from current state, but typically we let them retry
+        // If we reset, they lose context. Better to just clear selection.
+        setIllegalMoveMessage(null);
+        setFeedback(null);
+        setBoard(cloneBoard(board)); // Revert any ghost state if needed
+      }, 2000);
+      return;
+    }
 
-      // Check if lesson objective is met
-      const objective = lesson.objective;
-      let objectiveMet = false;
+    // 2. Lesson Constraints
+    const constraintValidation = ChessValidator.validateLessonConstraints(lesson, move);
+    if (!constraintValidation.valid) {
+      playSound('failure');
+      setFeedback({ type: 'error', message: 'Lesson failed' });
+      setIllegalMoveMessage(constraintValidation.message ?? 'This move is not allowed in this lesson.');
+      setTimeout(() => setIllegalMoveMessage(null), 2000);
+      return;
+    }
 
+    // 3. Check Sequence (if defined)
+    let validSequence = true;
+    if (lesson.moveSequence && lesson.moveSequence.length > 0) {
+      const expectedMove = lesson.moveSequence[moveCount];
+      // Check if current move matches expectation
+      if (!expectedMove || !moveMatchesAccepted(move, expectedMove)) {
+        validSequence = false;
+      }
+    } else {
+      // If no sequence, we rely on constraints/objective logic below
+      // But if 'isAccepted' was passed as false (from specific mode check), we fail here
+      // UNLESS it's Explore mode
+      if (lesson.mode === 'specific' && !isAccepted) {
+        validSequence = false;
+      }
+    }
+
+    if (!validSequence) {
+      playSound('failure');
+      const customFail = lesson.failureMessages?.[getMoveNotation(move)];
+      setFeedback({ type: 'error', message: lesson.hint });
+      setIllegalMoveMessage(customFail ?? lesson.illegalMoveExplanation ?? 'That is not the correct move for this lesson.');
+      setTimeout(() => resetLesson(), 1500);
+      return;
+    }
+
+    // 4. Executes Valid Move
+    const newBoard = makeMove(board, move);
+    setBoard(newBoard);
+    setLastMove({ from: move.from, to: move.to });
+    const newMoveCount = moveCount + 1;
+    setMoveCount(newMoveCount);
+    playSound('move');
+
+    // 5. Check Objective Completion
+    const objective = lesson.objective;
+    let objectiveMet = false;
+
+    if (lesson.moveSequence && lesson.moveSequence.length > 0) {
+      if (newMoveCount >= lesson.moveSequence.length) {
+        objectiveMet = true;
+      }
+    } else {
       switch (objective.type) {
         case 'make-move':
           objectiveMet = true;
@@ -188,30 +264,21 @@ export default function ChessTutorialEngine() {
         default:
           objectiveMet = true;
       }
+    }
 
-      if (objectiveMet) {
-        setFeedback({ type: 'success', message: lesson.successMessage });
-        setTimeout(() => {
-          void completeLesson();
-        }, 500);
-      } else {
-        setFeedback({ type: 'info', message: 'Good move! Keep going to complete the objective.' });
-      }
-    } else {
-      // Invalid move in specific mode
-      playSound('failure');
-      setFeedback({ type: 'error', message: lesson.hint });
-      setIllegalMoveMessage(lesson.illegalMoveExplanation || 'That move does not complete the objective.');
-      
-      // Reset after showing feedback
+    if (objectiveMet) {
+      setFeedback({ type: 'success', message: lesson.successMessage });
       setTimeout(() => {
-        resetLesson();
-      }, 1500);
+        void completeLesson();
+      }, 500);
+    } else {
+      setFeedback({ type: 'info', message: 'Good move! Continue...' });
     }
 
     setSelectedSquare(null);
     setLegalMoves([]);
-  }, [board, lesson, playSound, completeLesson, resetLesson]);
+
+  }, [board, lesson, playSound, completeLesson, resetLesson, moveCount, lessonError]);
 
   const handleSquareClick = useCallback((row: number, col: number) => {
     if (!lesson || isCompleted) return;
@@ -234,11 +301,12 @@ export default function ChessTutorialEngine() {
     // If we already have a selection, try to make a move
     if (selectedSquare) {
       const move = legalMoves.find(m => m.to.row === row && m.to.col === col);
-      
+
       if (move) {
         // Check if this is a valid move for the lesson
         if (lesson.mode === 'specific' && lesson.objective.acceptedMoves) {
-          const isAccepted = lesson.objective.acceptedMoves.some(accepted => 
+          // If moveSequence exists, handleMoveResult will ignore isAccepted flag passed here and checks sequence
+          const isAccepted = lesson.objective.acceptedMoves.some(accepted =>
             moveMatchesAccepted(move, accepted)
           );
           handleMoveResult(move, isAccepted);
@@ -372,7 +440,46 @@ export default function ChessTutorialEngine() {
           <div className="w-[72px]" />
         </div>
 
+
         <Progress value={progress} className="h-2 mb-6" />
+
+        {/* Intro Overlay */}
+        {showIntro && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4 animate-in fade-in">
+            <div className="max-w-md w-full bg-card border border-border rounded-2xl shadow-2xl p-6 relative">
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center text-4xl mx-auto mb-4">
+                  {lesson.icon}
+                </div>
+                <h2 className="text-2xl font-bold text-foreground mb-2">{lesson.title}</h2>
+                <p className="text-lg text-primary font-medium mb-4">{lesson.subtitle}</p>
+                <div className="p-4 rounded-xl bg-muted/50 text-left">
+                  <p className="text-muted-foreground leading-relaxed">{lesson.concept}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowIntro(false)}
+                className="w-full py-3 rounded-xl gradient-primary text-primary-foreground font-bold hover:opacity-90 transition-all flex items-center justify-center gap-2"
+              >
+                <CheckCircle className="w-5 h-5" />
+                Start Lesson
+              </button>
+            </div>
+          </div>
+        )}
+
+
+
+        {/* Error State for Invalid Lessons */}
+        {lessonError && (
+          <div className="mb-6 p-4 rounded-xl bg-destructive/20 border border-destructive text-destructive flex items-center gap-3">
+            <ShieldAlert className="w-6 h-6 flex-shrink-0" />
+            <div>
+              <h3 className="font-bold">Lesson Security Audit Failed</h3>
+              <p className="text-sm">{lessonError}</p>
+            </div>
+          </div>
+        )}
 
         <div className="flex flex-col lg:flex-row gap-6 items-start justify-center">
           {/* Board */}
@@ -500,7 +607,7 @@ export default function ChessTutorialEngine() {
             {/* Mode indicator */}
             <div className="p-3 rounded-xl bg-muted/50 text-xs text-muted-foreground">
               <span className="font-medium">Mode: </span>
-              {lesson.mode === 'explore' 
+              {lesson.mode === 'explore'
                 ? 'Explore freely - any legal move will complete the lesson'
                 : 'Specific - find the correct move to continue'
               }

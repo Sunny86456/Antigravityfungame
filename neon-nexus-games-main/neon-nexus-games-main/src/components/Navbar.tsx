@@ -3,6 +3,7 @@ import { ThemeSwitcher } from './ThemeSwitcher';
 import { useAuth } from '@/contexts/AuthContext';
 import { Gamepad2, Home, LayoutGrid, Trophy, User, Settings, Coins, LogIn } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useState, useEffect } from 'react';
 
 const navLinks = [
   { to: '/', icon: Home, label: 'Home' },
@@ -15,10 +16,42 @@ const navLinks = [
 export function Navbar() {
   const location = useLocation();
   const { user, profile } = useAuth();
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const controlNavbar = () => {
+      if (typeof window !== 'undefined') {
+        const currentScrollY = window.scrollY;
+        
+        // Hide if scrolling down and not at top
+        if (currentScrollY > lastScrollY && currentScrollY > 50) {
+          setIsVisible(false);
+        } else {
+          // Show if scrolling up or at top
+          setIsVisible(true);
+        }
+        
+        setLastScrollY(currentScrollY);
+      }
+    };
+
+    window.addEventListener('scroll', controlNavbar);
+    return () => window.removeEventListener('scroll', controlNavbar);
+  }, [lastScrollY]);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-border">
-      <div className="container mx-auto px-4">
+    <nav 
+      className={cn(
+        "fixed z-50 transition-all duration-500 ease-in-out",
+        "left-1/2 -translate-x-1/2", // Center horizontally
+        "bg-background/60 backdrop-blur-xl border border-white/10 shadow-lg shadow-black/5", // Glassmorphism & Shadow
+        "rounded-[2rem]", // Capsule shape (high radius)
+        isVisible ? "top-4 opacity-100 translate-y-0" : "-top-32 opacity-0 -translate-y-full", // Hide/Show animation
+        "w-[95%] max-w-4xl" // Compact width
+      )}
+    >
+      <div className="px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
@@ -35,10 +68,10 @@ export function Navbar() {
                 key={to}
                 to={to}
                 className={cn(
-                  "flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300",
+                  "flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300",
                   location.pathname === to
-                    ? "bg-primary text-primary-foreground glow-primary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    ? "bg-primary/20 text-primary border border-primary/20 hover:bg-primary/30"
+                    : "text-muted-foreground hover:text-foreground hover:bg-white/5"
                 )}
               >
                 <Icon className="w-4 h-4" />
@@ -48,11 +81,11 @@ export function Navbar() {
           </div>
 
           {/* Right Section */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             {/* Coins Display */}
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/50 border border-border">
-              <Coins className="w-5 h-5 text-coin coin-shimmer" />
-              <span className="font-bold text-foreground">
+            <div className="hidden xs:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
+              <Coins className="w-4 h-4 text-coin coin-shimmer" />
+              <span className="font-bold text-sm text-foreground">
                 {profile?.coins?.toLocaleString() ?? '0'}
               </span>
             </div>
@@ -63,7 +96,7 @@ export function Navbar() {
             {user ? (
               <Link 
                 to="/profile"
-                className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center cursor-pointer hover:scale-105 transition-transform glow-primary"
+                className="w-9 h-9 rounded-full gradient-primary flex items-center justify-center cursor-pointer hover:scale-105 transition-transform ring-2 ring-white/10"
               >
                 {profile?.avatar_url ? (
                   <img 
@@ -78,7 +111,7 @@ export function Navbar() {
             ) : (
               <Link 
                 to="/auth"
-                className="flex items-center gap-2 px-4 py-2 rounded-xl gradient-primary text-primary-foreground font-medium hover:opacity-90 transition-all glow-primary"
+                className="flex items-center gap-2 px-4 py-2 rounded-full gradient-primary text-primary-foreground font-medium hover:opacity-90 transition-all shadow-lg shadow-primary/20"
               >
                 <LogIn className="w-4 h-4" />
                 <span className="hidden sm:inline">Sign In</span>
@@ -88,20 +121,20 @@ export function Navbar() {
         </div>
 
         {/* Mobile Navigation */}
-        <div className="flex md:hidden items-center justify-around py-2 border-t border-border">
+        <div className="flex md:hidden items-center justify-between py-3 border-t border-white/10">
           {navLinks.map(({ to, icon: Icon, label }) => (
             <Link
               key={to}
               to={to}
               className={cn(
-                "flex flex-col items-center gap-1 p-2 rounded-lg transition-all",
+                "flex flex-col items-center gap-1 p-2 rounded-xl transition-all",
                 location.pathname === to
-                  ? "text-primary"
-                  : "text-muted-foreground"
+                  ? "text-primary bg-primary/10"
+                  : "text-muted-foreground hover:text-foreground hover:bg-white/5"
               )}
             >
               <Icon className="w-5 h-5" />
-              <span className="text-xs">{label}</span>
+              <span className="text-[10px] font-medium">{label}</span>
             </Link>
           ))}
         </div>

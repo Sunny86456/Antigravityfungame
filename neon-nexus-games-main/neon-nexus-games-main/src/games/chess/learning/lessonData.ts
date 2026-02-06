@@ -9,7 +9,8 @@ import { Board, PieceType, PieceColor, Position } from '../chessLogic';
 
 // ============= Types =============
 
-export type LessonCategory = 
+export type LessonCategory =
+  | 'intro'
   | 'pawn'
   | 'rook'
   | 'bishop'
@@ -20,7 +21,7 @@ export type LessonCategory =
   | 'check'
   | 'advanced';
 
-export type LessonMode = 
+export type LessonMode =
   | 'explore'      // Player can make any legal move with allowed pieces
   | 'specific'     // Player must make a specific move to continue
   | 'demonstrate'; // Show a concept, player clicks to acknowledge
@@ -41,40 +42,43 @@ export interface Lesson {
   subtitle: string;
   description: string;
   icon: string;
-  
+
   /** The board position for this lesson */
   board: Board;
-  
+
   /** Which color the player controls */
   playerColor: PieceColor;
-  
+
   /** Which piece types the player can interact with (empty = all) */
   allowedPieces: PieceType[];
-  
+
   /** The mode of this lesson */
   mode: LessonMode;
-  
+
   /** The objective to complete this lesson */
   objective: LessonObjective;
-  
+
+  /** Optional: Strict sequence of moves required to pass */
+  moveSequence?: { from: Position; to: Position; promotion?: PieceType }[];
+
+  /** Optional: Custom failure messages for specific illegal moves */
+  failureMessages?: Record<string, string>;
+
   /** Concept explanation shown to the player */
   concept: string;
-  
+
   /** Hint shown when player struggles */
   hint: string;
-  
+
   /** Success message */
   successMessage: string;
-  
+
   /** Optional explanation for illegal moves */
   illegalMoveExplanation?: string;
-  
+
   /** Visual helpers */
   highlightSquares?: Position[];
   showArrow?: { from: Position; to: Position };
-  
-  /** For multi-step lessons, the sequence of moves */
-  moveSequence?: { from: Position; to: Position; promotion?: PieceType }[];
 }
 
 // ============= Board Builders =============
@@ -417,9 +421,76 @@ const discoveredAttackBoard = (): Board => {
 // ============= LESSON DEFINITIONS =============
 
 export const LESSONS: Lesson[] = [
-  // PAWN LESSONS (1-5)
+
+  // INTRO LESSONS (1-3)
   {
     id: 1,
+    category: 'intro',
+    title: 'The Chess Board',
+    subtitle: '64 Squares',
+    description: 'Welcome to Chess! The board has 64 squares arranged in an 8x8 grid.',
+    icon: '▦',
+    board: emptyBoard(),
+    playerColor: 'white',
+    allowedPieces: [],
+    mode: 'demonstrate',
+    objective: {
+      type: 'click',
+      description: 'Click the center square e4 (highlighted) to start.',
+      targetSquare: { row: 4, col: 4 }
+    },
+    concept: 'A chessboard consists of 64 alternating light and dark squares. The board is always set up with a light square in the bottom-right corner.',
+    hint: 'Click the highlighted square in the center.',
+    successMessage: 'Welcome to the game of kings!',
+    highlightSquares: [{ row: 4, col: 4 }]
+  },
+  {
+    id: 2,
+    category: 'intro',
+    title: 'Ranks and Files',
+    subtitle: 'Grid Coordinates',
+    description: 'Rows are called Ranks. Columns are called Files.',
+    icon: '▦',
+    board: emptyBoard(),
+    playerColor: 'white',
+    allowedPieces: [],
+    mode: 'demonstrate',
+    objective: {
+      type: 'click',
+      description: 'Click any square on the 4th Rank (row 4).',
+      targetSquare: { row: 4, col: 0 }
+    },
+    concept: 'We describe squares using coordinates. Files are letters (a-h) and Ranks are numbers (1-8).',
+    hint: 'Click the specific highlighted square (a5).',
+    successMessage: 'Correct! You are learning the coordinates.',
+    highlightSquares: [{ row: 4, col: 0 }, { row: 4, col: 1 }, { row: 4, col: 2 }, { row: 4, col: 3 }, { row: 4, col: 4 }, { row: 4, col: 5 }, { row: 4, col: 6 }, { row: 4, col: 7 }]
+  },
+  {
+    id: 3,
+    category: 'intro',
+    title: 'Starting Out',
+    subtitle: 'White Moves First',
+    description: 'In Chess, the player with the White pieces always moves first.',
+    icon: '🏳️',
+    board: emptyBoard(),
+    playerColor: 'white',
+    allowedPieces: [],
+    mode: 'demonstrate',
+    objective: {
+      type: 'click',
+      description: 'Click the white king to acknowledge.',
+      targetSquare: { row: 7, col: 4 }
+    },
+    concept: 'White always moves first. This gives White a slight initiative. Players alternate moves until the game ends.',
+    hint: 'Click the white king starting square e1.',
+    successMessage: 'Ready? Let\'s learn how the pieces move!',
+    highlightSquares: [{ row: 7, col: 4 }]
+  },
+
+
+  // PAWN LESSONS (1-5)
+  {
+    id: 4,
     category: 'pawn',
     title: 'Pawn Basics',
     subtitle: 'Forward Movement',
@@ -440,7 +511,7 @@ export const LESSONS: Lesson[] = [
     showArrow: { from: { row: 6, col: 4 }, to: { row: 5, col: 4 } }
   },
   {
-    id: 2,
+    id: 5,
     category: 'pawn',
     title: 'Pawn Double Move',
     subtitle: 'First Move Special',
@@ -460,7 +531,7 @@ export const LESSONS: Lesson[] = [
     showArrow: { from: { row: 6, col: 3 }, to: { row: 4, col: 3 } }
   },
   {
-    id: 3,
+    id: 6,
     category: 'pawn',
     title: 'Pawn Capture',
     subtitle: 'Diagonal Capture',
@@ -482,7 +553,7 @@ export const LESSONS: Lesson[] = [
     showArrow: { from: { row: 4, col: 4 }, to: { row: 3, col: 5 } }
   },
   {
-    id: 4,
+    id: 7,
     category: 'pawn',
     title: 'Pawn Blocking',
     subtitle: 'Blocked Pawns',
@@ -504,7 +575,7 @@ export const LESSONS: Lesson[] = [
     highlightSquares: [{ row: 4, col: 4 }]
   },
   {
-    id: 5,
+    id: 8,
     category: 'pawn',
     title: 'Pawn Promotion',
     subtitle: 'Reaching the End',
@@ -532,7 +603,7 @@ export const LESSONS: Lesson[] = [
 
   // ROOK LESSONS (6-9)
   {
-    id: 6,
+    id: 9,
     category: 'rook',
     title: 'Rook Movement',
     subtitle: 'Horizontal Lines',
@@ -553,7 +624,7 @@ export const LESSONS: Lesson[] = [
     showArrow: { from: { row: 4, col: 0 }, to: { row: 4, col: 7 } }
   },
   {
-    id: 7,
+    id: 10,
     category: 'rook',
     title: 'Rook Vertical',
     subtitle: 'Vertical Lines',
@@ -573,7 +644,7 @@ export const LESSONS: Lesson[] = [
     showArrow: { from: { row: 7, col: 3 }, to: { row: 0, col: 3 } }
   },
   {
-    id: 8,
+    id: 11,
     category: 'rook',
     title: 'Rook Blocking',
     subtitle: 'Path Obstruction',
@@ -595,7 +666,7 @@ export const LESSONS: Lesson[] = [
     highlightSquares: [{ row: 4, col: 4 }]
   },
   {
-    id: 9,
+    id: 12,
     category: 'rook',
     title: 'Rook Capture',
     subtitle: 'Capturing Pieces',
@@ -618,7 +689,7 @@ export const LESSONS: Lesson[] = [
 
   // BISHOP LESSONS (10-12)
   {
-    id: 10,
+    id: 13,
     category: 'bishop',
     title: 'Bishop Diagonal',
     subtitle: 'Diagonal Movement',
@@ -639,7 +710,7 @@ export const LESSONS: Lesson[] = [
     showArrow: { from: { row: 7, col: 2 }, to: { row: 4, col: 5 } }
   },
   {
-    id: 11,
+    id: 14,
     category: 'bishop',
     title: 'Same Color Squares',
     subtitle: 'Color Binding',
@@ -658,7 +729,7 @@ export const LESSONS: Lesson[] = [
     successMessage: 'Notice how all available squares are the same color? Bishops are color-bound!'
   },
   {
-    id: 12,
+    id: 15,
     category: 'bishop',
     title: 'Bishop Blocking',
     subtitle: 'Blocked Diagonals',
@@ -682,7 +753,7 @@ export const LESSONS: Lesson[] = [
 
   // KNIGHT LESSONS (13-15)
   {
-    id: 13,
+    id: 16,
     category: 'knight',
     title: 'Knight L-Shape',
     subtitle: 'Unique Movement',
@@ -702,7 +773,7 @@ export const LESSONS: Lesson[] = [
     showArrow: { from: { row: 7, col: 1 }, to: { row: 5, col: 2 } }
   },
   {
-    id: 14,
+    id: 17,
     category: 'knight',
     title: 'Knight Jumping',
     subtitle: 'The Only Jumper',
@@ -721,7 +792,7 @@ export const LESSONS: Lesson[] = [
     successMessage: 'Amazing! Knights jump over all pieces in their way - the only piece that can!'
   },
   {
-    id: 15,
+    id: 18,
     category: 'knight',
     title: 'Knight Capture',
     subtitle: 'Jumping to Capture',
@@ -744,7 +815,7 @@ export const LESSONS: Lesson[] = [
 
   // QUEEN LESSONS (16-17)
   {
-    id: 16,
+    id: 19,
     category: 'queen',
     title: 'Queen Movement',
     subtitle: 'The Powerful Piece',
@@ -763,7 +834,7 @@ export const LESSONS: Lesson[] = [
     successMessage: 'The queen is indeed the most powerful piece!'
   },
   {
-    id: 17,
+    id: 20,
     category: 'queen',
     title: 'Queen Blocking',
     subtitle: 'Cannot Jump',
@@ -786,7 +857,7 @@ export const LESSONS: Lesson[] = [
 
   // KING LESSONS (18-21)
   {
-    id: 18,
+    id: 21,
     category: 'king',
     title: 'King Movement',
     subtitle: 'One Square Only',
@@ -805,7 +876,7 @@ export const LESSONS: Lesson[] = [
     successMessage: 'The king moves one square at a time, but in any direction!'
   },
   {
-    id: 19,
+    id: 22,
     category: 'king',
     title: 'King Safety',
     subtitle: 'Cannot Move Into Check',
@@ -826,7 +897,7 @@ export const LESSONS: Lesson[] = [
     highlightSquares: [{ row: 3, col: 5 }, { row: 4, col: 5 }, { row: 5, col: 5 }]
   },
   {
-    id: 20,
+    id: 23,
     category: 'king',
     title: 'Castling Kingside',
     subtitle: 'Special King Move',
@@ -847,7 +918,7 @@ export const LESSONS: Lesson[] = [
     showArrow: { from: { row: 7, col: 4 }, to: { row: 7, col: 6 } }
   },
   {
-    id: 21,
+    id: 24,
     category: 'king',
     title: 'Castling Queenside',
     subtitle: 'Long Castle',
@@ -870,7 +941,7 @@ export const LESSONS: Lesson[] = [
 
   // CAPTURING LESSONS (22-23)
   {
-    id: 22,
+    id: 25,
     category: 'capturing',
     title: 'Capturing Basics',
     subtitle: 'Taking Pieces',
@@ -889,7 +960,7 @@ export const LESSONS: Lesson[] = [
     successMessage: 'Captured! The enemy piece is removed from the board.'
   },
   {
-    id: 23,
+    id: 26,
     category: 'capturing',
     title: 'Cannot Capture Allies',
     subtitle: 'Friendly Fire Off',
@@ -913,7 +984,7 @@ export const LESSONS: Lesson[] = [
 
   // CHECK LESSONS (24-27)
   {
-    id: 24,
+    id: 27,
     category: 'check',
     title: 'What Is Check',
     subtitle: 'Threatening the King',
@@ -934,7 +1005,7 @@ export const LESSONS: Lesson[] = [
     showArrow: { from: { row: 7, col: 0 }, to: { row: 0, col: 0 } }
   },
   {
-    id: 25,
+    id: 28,
     category: 'check',
     title: 'Escaping Check',
     subtitle: 'Three Options',
@@ -953,7 +1024,7 @@ export const LESSONS: Lesson[] = [
     successMessage: 'The king escaped! Always have an escape plan.'
   },
   {
-    id: 26,
+    id: 29,
     category: 'check',
     title: 'Blocking Check',
     subtitle: 'Interposing',
@@ -974,7 +1045,7 @@ export const LESSONS: Lesson[] = [
     showArrow: { from: { row: 7, col: 3 }, to: { row: 1, col: 4 } }
   },
   {
-    id: 27,
+    id: 30,
     category: 'check',
     title: 'Checkmate',
     subtitle: 'Game Over',
@@ -997,7 +1068,7 @@ export const LESSONS: Lesson[] = [
 
   // ADVANCED LESSONS (28-30)
   {
-    id: 28,
+    id: 31,
     category: 'advanced',
     title: 'Pins',
     subtitle: 'Frozen Pieces',
@@ -1017,7 +1088,7 @@ export const LESSONS: Lesson[] = [
     highlightSquares: [{ row: 4, col: 4 }]
   },
   {
-    id: 29,
+    id: 32,
     category: 'advanced',
     title: 'Forks',
     subtitle: 'Double Attack',
@@ -1038,7 +1109,7 @@ export const LESSONS: Lesson[] = [
     showArrow: { from: { row: 5, col: 4 }, to: { row: 3, col: 4 } }
   },
   {
-    id: 30,
+    id: 33,
     category: 'advanced',
     title: 'Discovered Attack',
     subtitle: 'Hidden Threats',
@@ -1068,6 +1139,7 @@ export const getLessonsByCategory = (category: LessonCategory): Lesson[] => {
 };
 
 export const LESSON_CATEGORIES: { id: LessonCategory; name: string; icon: string }[] = [
+  { id: 'intro', name: 'Board Basics', icon: '▦' },
   { id: 'pawn', name: 'Pawn', icon: '♙' },
   { id: 'rook', name: 'Rook', icon: '♖' },
   { id: 'bishop', name: 'Bishop', icon: '♗' },
