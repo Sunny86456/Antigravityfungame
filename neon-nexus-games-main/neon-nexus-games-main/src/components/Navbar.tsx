@@ -3,26 +3,87 @@ import { ThemeSwitcher } from './ThemeSwitcher';
 import { useAuth } from '@/contexts/AuthContext';
 import { Gamepad2, Home, LayoutGrid, Trophy, User, Settings, Coins, LogIn, ShoppingBag } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+
+/**
+ * Z-INDEX SYSTEM
+ * - Navbar: 100
+ * - Modals: 1000
+ * - Toasts: 2000
+ */
+const Z_INDEX_NAVBAR = 100;
+
+/**
+ * CSS Variable name for navbar height
+ * This is set dynamically via ResizeObserver
+ */
+const NAVBAR_HEIGHT_VAR = '--navbar-height';
 
 const navLinks = [
   { to: '/', icon: Home, label: 'Home' },
   { to: '/games', icon: LayoutGrid, label: 'Games' },
-  { to: '/leaderboard', icon: Trophy, label: 'Leaderboard' },
-  { to: '/shop', icon: ShoppingBag, label: 'Shop' }, // New Shop Link
+  { to: '/leaderboard', icon: Trophy, label: 'Ranks' },
+  { to: '/shop', icon: ShoppingBag, label: 'Shop' },
   { to: '/profile', icon: User, label: 'Profile' },
-  { to: '/settings', icon: Settings, label: 'Settings' },
 ];
 
 export function Navbar() {
   const location = useLocation();
   const { user, profile } = useAuth();
   const [isVisible, setIsVisible] = useState(true);
+  const navRef = useRef<HTMLElement>(null);
 
+  // Game routes = any path under /games/* except /games itself
   const isGameRoute = location.pathname.startsWith('/games/') && location.pathname !== '/games';
 
+  /**
+   * STEP 1: ResizeObserver for dynamic navbar height
+   * Updates CSS variable whenever navbar size changes
+   */
+  const updateNavbarHeight = useCallback(() => {
+    if (navRef.current) {
+      const height = navRef.current.getBoundingClientRect().height;
+      // Add 16px padding (top-4 = 1rem = 16px)
+      const totalHeight = height + 16;
+      document.documentElement.style.setProperty(NAVBAR_HEIGHT_VAR, `${totalHeight}px`);
+    }
+  }, []);
+
   useEffect(() => {
-    // Force hide on game routes immediately
+    // Skip measurement on game routes
+    if (isGameRoute) {
+      document.documentElement.style.setProperty(NAVBAR_HEIGHT_VAR, '0px');
+      return;
+    }
+
+    const navElement = navRef.current;
+    if (!navElement) return;
+
+    // Initial measurement
+    updateNavbarHeight();
+
+    // ResizeObserver for dynamic updates
+    const resizeObserver = new ResizeObserver(() => {
+      updateNavbarHeight();
+    });
+    resizeObserver.observe(navElement);
+
+    // Also update on orientation change
+    const handleOrientationChange = () => {
+      setTimeout(updateNavbarHeight, 100);
+    };
+    window.addEventListener('orientationchange', handleOrientationChange);
+    window.addEventListener('resize', updateNavbarHeight);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener('orientationchange', handleOrientationChange);
+      window.removeEventListener('resize', updateNavbarHeight);
+    };
+  }, [isGameRoute, updateNavbarHeight]);
+
+  // Scroll visibility logic
+  useEffect(() => {
     if (isGameRoute) {
       setIsVisible(false);
       return;
@@ -32,7 +93,6 @@ export function Navbar() {
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          // Strict logic: Visible only at absolute top (0)
           const atTop = window.scrollY === 0;
           setIsVisible(atTop);
           ticking = false;
@@ -41,129 +101,155 @@ export function Navbar() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-
-    // Initial check triggers visibility correctly on route change or reload
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, [location.pathname, isGameRoute]);
 
-  // If on a game route, we render nothing to prevent any DOM presence/immersion breaking
-  // The requirement says "Force-hide", returning null is the most performant and correct way.
+  // CRITICAL: Return null on game routes
   if (isGameRoute) return null;
 
   return (
     <nav
+      ref={navRef}
       className={cn(
-        "fixed z-50 transition-all duration-300 ease-out", // Updated duration for snappier feel
+        "fixed transition-all duration-300 ease-out",
+        // Centered with safe-area consideration
         "left-1/2 -translate-x-1/2",
-        "bg-background/60 backdrop-blur-xl border border-white/10 shadow-lg shadow-black/5",
-        "rounded-[2rem]",
-        // Strict visibility classes
-        isVisible ? "top-4 opacity-100 translate-y-0" : "-top-20 opacity-0 -translate-y-8",
-        "w-[98%] max-w-[1500px]" // Maximized width for premium feel
+        // Glassmorphism
+        "bg-background/70 backdrop-blur-xl border border-white/10 shadow-lg shadow-black/5",
+        // Capsule shape - smaller radius on very small screens
+        "rounded-[1.5rem] sm:rounded-[2rem]",
+        // Visibility with pointer-events safety
+        isVisible
+          ? "top-[max(0.75rem,env(safe-area-inset-top))] opacity-100 translate-y-0 pointer-events-auto"
+          : "-top-24 opacity-0 -translate-y-8 pointer-events-none",
+        // Width - full on mobile
+        "w-[96%] sm:w-[98%] max-w-[1400px]"
       )}
+      style={{ zIndex: Z_INDEX_NAVBAR }}
     >
-      <div className="px-6 md:px-12">
-        <div className="flex items-center justify-between h-20"> {/* Increased Height slightly for breathing room */}
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="p-2 rounded-xl gradient-primary glow-primary group-hover:scale-110 transition-transform">
-              <Gamepad2 className="w-6 h-6 text-primary-foreground" />
-            </div>
-            <span className="text-xl font-bold gradient-text neon-text">FunGameForYou</span>
-          </Link>
-
-          {/* Navigation Links - Desktop */}
-          <div className="hidden md:flex items-center gap-6 lg:gap-8 xl:gap-10"> {/* Large gaps */}
-            {navLinks.map(({ to, icon: Icon, label }) => {
-              const isShop = to === '/shop';
-              return (
-                <Link
-                  key={to}
-                  to={isShop ? '#' : to}
-                  className={cn(
-                    "flex items-center gap-3 px-5 py-2.5 rounded-full transition-all duration-300 relative group", // More internal padding
-                    location.pathname === to
-                      ? "bg-primary/20 text-primary border border-primary/20 hover:bg-primary/30"
-                      : "text-muted-foreground hover:text-foreground hover:bg-white/5",
-                    isShop && "opacity-70 hover:opacity-100"
-                  )}
-                  onClick={(e) => isShop && e.preventDefault()}
-                >
-                  <Icon className="w-4 h-4" />
-                  <span className="text-sm font-medium">{label}</span>
-
-                  {/* Shop "Coming Soon" Badge */}
-                  {isShop && (
-                    <span className="absolute -top-2 -right-2 px-1.5 py-0.5 bg-primary text-[8px] font-bold text-primary-foreground rounded-full shadow-sm animate-pulse">
-                      SOON
-                    </span>
-                  )}
-                </Link>
-              );
-            })}
+      {/* Main navbar row - NEVER wraps */}
+      <div
+        className={cn(
+          "flex items-center justify-between",
+          // Reduced padding on mobile, more on desktop
+          "px-3 sm:px-5 md:px-8",
+          // Reduced height on short screens
+          "h-12 min-[400px]:h-14 sm:h-16 md:h-18",
+          // Prevent wrapping
+          "flex-nowrap"
+        )}
+      >
+        {/* Logo - compact on mobile */}
+        <Link to="/" className="flex items-center gap-1.5 sm:gap-2 group flex-shrink-0">
+          <div className="p-1 sm:p-1.5 md:p-2 rounded-lg sm:rounded-xl gradient-primary glow-primary group-hover:scale-110 transition-transform">
+            <Gamepad2 className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-primary-foreground" />
           </div>
+          <span className="text-sm sm:text-base md:text-lg font-bold gradient-text neon-text hidden min-[360px]:inline truncate max-w-[100px] sm:max-w-none">
+            FunGameForYou
+          </span>
+        </Link>
 
-          {/* Right Section - Grouping Coins & Profile */}
-          <div className="flex items-center gap-5 lg:gap-8"> {/* Increased spacing */}
-            {/* Coins Display - ALWAYS VISIBLE if Navbar is visible */}
-            <div className="flex items-center gap-3 px-5 py-2.5 rounded-full bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20 transition-colors cursor-default min-w-[100px] justify-center">
-              <Coins className="w-4 h-4 text-amber-500 coin-shimmer" />
-              <span className="font-bold text-sm text-amber-500">
-                {profile?.coins?.toLocaleString() ?? '100'}
-              </span>
-            </div>
-
-            <ThemeSwitcher />
-
-            {/* User Avatar / Login */}
-            {user ? (
+        {/* Desktop Navigation - hidden on mobile */}
+        <div className="hidden lg:flex items-center gap-2 xl:gap-4">
+          {navLinks.map(({ to, icon: Icon, label }) => {
+            const isShop = to === '/shop';
+            return (
               <Link
-                to="/profile"
-                className="w-9 h-9 rounded-full gradient-primary flex items-center justify-center cursor-pointer hover:scale-105 transition-transform ring-2 ring-white/10"
+                key={to}
+                to={isShop ? '#' : to}
+                className={cn(
+                  "flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all duration-200 relative",
+                  location.pathname === to
+                    ? "bg-primary/20 text-primary"
+                    : "text-muted-foreground hover:text-foreground hover:bg-white/5",
+                  isShop && "opacity-60"
+                )}
+                onClick={(e) => isShop && e.preventDefault()}
               >
-                {profile?.avatar_url ? (
-                  <img
-                    src={profile.avatar_url}
-                    alt="Avatar"
-                    className="w-full h-full rounded-full object-cover"
-                  />
-                ) : (
-                  <User className="w-5 h-5 text-primary-foreground" />
+                <Icon className="w-4 h-4" />
+                <span className="text-sm font-medium">{label}</span>
+                {isShop && (
+                  <span className="absolute -top-1.5 -right-1.5 px-1 py-0.5 bg-primary text-[7px] font-bold text-primary-foreground rounded-full">
+                    SOON
+                  </span>
                 )}
               </Link>
-            ) : (
-              <Link
-                to="/auth"
-                className="flex items-center gap-2 px-4 py-2 rounded-full gradient-primary text-primary-foreground font-medium hover:opacity-90 transition-all shadow-lg shadow-primary/20"
-              >
-                <LogIn className="w-4 h-4" />
-                <span className="hidden sm:inline">Sign In</span>
-              </Link>
-            )}
-          </div>
+            );
+          })}
         </div>
 
-        {/* Mobile Navigation */}
-        <div className="flex md:hidden items-center justify-between py-3 border-t border-white/10">
-          {navLinks.map(({ to, icon: Icon, label }) => (
+        {/* Right Section - Always visible, compact on mobile */}
+        <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3 flex-shrink-0">
+          {/* Coins - compact on mobile */}
+          <div className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20">
+            <Coins className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-500" />
+            <span className="font-bold text-[10px] sm:text-xs text-amber-500">
+              {profile?.coins?.toLocaleString() ?? '100'}
+            </span>
+          </div>
+
+          {/* Theme toggle - hidden on very small screens */}
+          <div className="hidden min-[400px]:block">
+            <ThemeSwitcher />
+          </div>
+
+          {/* User Avatar / Login - compact */}
+          {user ? (
             <Link
-              key={to}
-              to={to}
-              className={cn(
-                "flex flex-col items-center gap-1 p-2 rounded-xl transition-all",
-                location.pathname === to
-                  ? "text-primary bg-primary/10"
-                  : "text-muted-foreground hover:text-foreground hover:bg-white/5"
-              )}
+              to="/profile"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full gradient-primary flex items-center justify-center hover:scale-105 transition-transform ring-1 ring-white/10"
             >
-              <Icon className="w-5 h-5" />
-              <span className="text-[10px] font-medium">{label}</span>
+              {profile?.avatar_url ? (
+                <img src={profile.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
+              ) : (
+                <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary-foreground" />
+              )}
             </Link>
-          ))}
+          ) : (
+            <Link
+              to="/auth"
+              className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full gradient-primary text-primary-foreground font-medium text-xs sm:text-sm"
+            >
+              <LogIn className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Login</span>
+            </Link>
+          )}
         </div>
+      </div>
+
+      {/* Mobile Navigation Row - Horizontal scroll if needed */}
+      <div
+        className={cn(
+          "flex lg:hidden items-center justify-around",
+          // Compact padding
+          "py-1.5 sm:py-2",
+          "border-t border-white/10",
+          // Horizontal scroll on overflow
+          "overflow-x-auto scrollbar-hide",
+          // Prevent wrap
+          "flex-nowrap",
+          // Reduce margin from main content
+          "-mx-1 px-1"
+        )}
+      >
+        {navLinks.map(({ to, icon: Icon, label }) => (
+          <Link
+            key={to}
+            to={to}
+            className={cn(
+              "flex flex-col items-center gap-0.5 px-2 sm:px-3 py-1 rounded-lg transition-all flex-shrink-0",
+              location.pathname === to
+                ? "text-primary bg-primary/10"
+                : "text-muted-foreground"
+            )}
+          >
+            <Icon className="w-4 h-4" />
+            <span className="text-[8px] sm:text-[9px] font-medium whitespace-nowrap">{label}</span>
+          </Link>
+        ))}
       </div>
     </nav>
   );

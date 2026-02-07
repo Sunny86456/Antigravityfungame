@@ -1,6 +1,9 @@
 import { Crown, Gamepad2, Puzzle, BookOpen, Brain, Code2 } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
 
+// TEMPORARY: Disable Ludo game for deployment
+const ENABLE_LUDO = false;
+
 export interface Game {
   id: string;
   title: string;
@@ -33,14 +36,15 @@ export const games: Game[] = [
     playable: true,
     route: '/games/coding'
   },
-  {
+  ...(ENABLE_LUDO ? [{
     id: 'ludo',
     title: 'Ludo',
     description: 'Roll the dice and race your tokens to victory! A fun family board game.',
     icon: Gamepad2,
-    tags: ['Multiplayer', 'Strategy'],
-    playable: false
-  },
+    tags: ['Multiplayer', 'Strategy', 'AI'], // Added AI tag
+    playable: true,
+    route: '/games/ludo'
+  }] : []),
   {
     id: 'puzzle',
     title: 'Puzzle',

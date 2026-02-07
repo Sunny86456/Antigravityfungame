@@ -2,3 +2,15 @@ project_id = "pvjosidukxihrzsykwfr"
 
 [functions.execute-code]
 verify_jwt = false
+
+[functions.roll-dice]
+verify_jwt = true
+
+[functions.consume-roll]
+verify_jwt = true
+
+[functions.websocket-auth]
+verify_jwt = true
+
+[functions.rate-limiter]
+verify_jwt = false

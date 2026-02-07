@@ -18,8 +18,13 @@ import ChessLearningHub from "./games/chess/learning/ChessLearningHub";
 import ChessTutorialEngine from "./games/chess/learning/ChessTutorialEngine";
 import ChessPuzzle from "./games/chess/learning/ChessPuzzle";
 import ChessPractice from "./games/chess/learning/ChessPractice";
+import LudoHome from "./games/ludo/LudoHome";
+import LudoGamePage from "./games/ludo/LudoGamePage";
 
 const queryClient = new QueryClient();
+
+// TEMPORARY: Disable Ludo game for deployment
+const ENABLE_LUDO = false;
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -38,6 +43,14 @@ const App = () => (
               <Route path="/games/chess/learn/:id" element={<ChessTutorialEngine />} />
               <Route path="/games/chess/puzzle/:id" element={<ChessPuzzle />} />
               <Route path="/games/chess/practice" element={<ChessPractice />} />
+              {/* LUDO ROUTES - TEMPORARILY DISABLED */}
+              {ENABLE_LUDO && (
+                <>
+                  <Route path="/games/ludo" element={<LudoHome />} />
+                  <Route path="/games/ludo/play" element={<LudoGamePage />} />
+                </>
+              )}
+              <Route path="/games/coding" element={<CodingGame />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
               <Route path="/settings" element={<Settings />} />
