@@ -41,18 +41,36 @@ const Leaderboard = () => {
   // Fetch leaderboard data
   const fetchLeaderboard = async () => {
     setIsLoading(true);
-    
+
     const { data, error } = await supabase
       .from('profiles')
       .select('user_id, username, avatar_url, coins, wins, games_played, xp')
       .order('coins', { ascending: false })
       .limit(50);
-    
+
     if (!error && data) {
+      // FORENSIC AUDIT: Log EXACT raw response from Supabase
+      console.log('=== LEADERBOARD DATA AUDIT ===');
+      console.log('Total records:', data.length);
+      if (data[0]) {
+        console.log('First record KEYS:', Object.keys(data[0]));
+        console.log('First record VALUES:', JSON.stringify(data[0], null, 2));
+      }
+      // Check for ANY field containing @ (email pattern)
+      data.forEach((record, i) => {
+        Object.entries(record).forEach(([key, value]) => {
+          if (typeof value === 'string' && value.includes('@')) {
+            console.error(`🚨 EMAIL LEAK DETECTED in record ${i}, field "${key}":`, value);
+          }
+        });
+      });
+      console.log('=== END AUDIT ===');
+
+      // SECURITY: Username from profiles table only - never expose email
       const entries: LeaderboardEntry[] = data.map((profile, index) => ({
         rank: index + 1,
         user_id: profile.user_id,
-        username: profile.username || `Player ${index + 1}`,
+        username: profile.username || 'Player',
         avatar_url: profile.avatar_url,
         coins: profile.coins ?? 0,
         wins: profile.wins ?? 0,
@@ -62,14 +80,14 @@ const Leaderboard = () => {
       }));
       setLeaderboardData(entries);
     }
-    
+
     setIsLoading(false);
   };
 
   // Initial fetch and realtime subscription
   useEffect(() => {
     fetchLeaderboard();
-    
+
     // Subscribe to realtime updates on profiles table
     const channel = supabase
       .channel('leaderboard-changes')
@@ -86,7 +104,7 @@ const Leaderboard = () => {
         }
       )
       .subscribe();
-    
+
     return () => {
       supabase.removeChannel(channel);
     };
@@ -107,9 +125,9 @@ const Leaderboard = () => {
   return (
     <Layout>
       <div className="container mx-auto px-4">
-        <PageHeader 
-          title="Leaderboard" 
-          subtitle="Top players across all games - Live updates!" 
+        <PageHeader
+          title="Leaderboard"
+          subtitle="Top players across all games - Live updates!"
         />
 
         {/* Tab Selector */}
@@ -215,7 +233,7 @@ const Leaderboard = () => {
             </div>
           ) : (
             leaderboardData.map((player, index) => (
-              <div 
+              <div
                 key={player.user_id}
                 className={cn(
                   "grid grid-cols-12 gap-4 p-4 items-center transition-all hover:bg-muted/30",

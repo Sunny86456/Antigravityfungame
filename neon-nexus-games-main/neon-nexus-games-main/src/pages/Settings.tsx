@@ -1,23 +1,26 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { PageHeader } from '@/components/PageHeader';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { 
-  Volume2, 
-  VolumeX, 
-  Bell, 
-  BellOff, 
-  Globe, 
-  Shield, 
-  HelpCircle, 
-  Sun, 
-  Moon, 
-  Sparkles, 
+import {
+  Volume2,
+  VolumeX,
+  Bell,
+  BellOff,
+  Globe,
+  Shield,
+  HelpCircle,
+  Sun,
+  Moon,
+  Sparkles,
   Loader2,
-  Gamepad2
+  Gamepad2,
+  User,
+  Save,
+  AlertCircle
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -38,7 +41,7 @@ function SettingToggle({ icon: Icon, iconOff: IconOff, label, description, enabl
           "p-3 rounded-xl transition-colors",
           enabled ? "gradient-primary" : "bg-muted"
         )}>
-          {enabled 
+          {enabled
             ? <Icon className="w-5 h-5 text-primary-foreground" />
             : <IconOff className="w-5 h-5 text-muted-foreground" />
           }
@@ -102,13 +105,113 @@ const Settings = () => {
     await updateProfile({ notifications_enabled: !notificationsEnabled });
   };
 
+  // Username change state
+  const [newUsername, setNewUsername] = useState(profile?.username || '');
+  const [usernameError, setUsernameError] = useState('');
+  const [usernameSuccess, setUsernameSuccess] = useState('');
+  const [isSavingUsername, setIsSavingUsername] = useState(false);
+
+  const handleUsernameChange = async () => {
+    setUsernameError('');
+    setUsernameSuccess('');
+
+    // Validation
+    if (!newUsername || newUsername.length < 3) {
+      setUsernameError('Username must be at least 3 characters');
+      return;
+    }
+    if (newUsername.length > 20) {
+      setUsernameError('Username must be at most 20 characters');
+      return;
+    }
+    if (!/^[a-zA-Z0-9_]+$/.test(newUsername)) {
+      setUsernameError('Username can only contain letters, numbers, and underscores');
+      return;
+    }
+    if (newUsername === profile?.username) {
+      setUsernameError('This is already your username');
+      return;
+    }
+
+    setIsSavingUsername(true);
+    const { error } = await updateProfile({ username: newUsername });
+    setIsSavingUsername(false);
+
+    if (error) {
+      // Handle unique constraint violation
+      if (error.message?.includes('23505') || error.message?.includes('unique')) {
+        setUsernameError('Username already taken');
+      } else {
+        setUsernameError(error.message || 'Failed to update username');
+      }
+    } else {
+      setUsernameSuccess('Username updated!');
+      setTimeout(() => setUsernameSuccess(''), 3000);
+    }
+  };
+
   return (
     <Layout>
       <div className="container mx-auto px-4 max-w-3xl">
-        <PageHeader 
-          title="Settings" 
-          subtitle="Customize your gaming experience" 
+        <PageHeader
+          title="Settings"
+          subtitle="Customize your gaming experience"
         />
+
+        {/* Account - Username */}
+        <section className="mb-8 animate-fade-in">
+          <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
+            <User className="w-5 h-5 text-primary" />
+            Account
+          </h3>
+          <div className="p-6 rounded-2xl bg-card border border-border">
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm font-medium text-foreground mb-2 block">
+                  Username
+                </label>
+                <div className="flex gap-3">
+                  <input
+                    type="text"
+                    value={newUsername}
+                    onChange={(e) => setNewUsername(e.target.value)}
+                    className="flex-1 px-4 py-3 rounded-xl bg-muted border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground"
+                    placeholder="Enter username"
+                    maxLength={20}
+                  />
+                  <button
+                    onClick={handleUsernameChange}
+                    disabled={isSavingUsername}
+                    className="px-6 py-3 rounded-xl gradient-primary text-primary-foreground font-medium hover:opacity-90 transition-all disabled:opacity-50 flex items-center gap-2"
+                  >
+                    {isSavingUsername ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Save className="w-4 h-4" />
+                    )}
+                    Save
+                  </button>
+                </div>
+                <p className="text-xs text-muted-foreground mt-2">
+                  3-20 characters, letters, numbers, and underscores only
+                </p>
+              </div>
+
+              {usernameError && (
+                <div className="flex items-center gap-2 p-3 rounded-xl bg-destructive/10 border border-destructive/30 text-destructive text-sm">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                  {usernameError}
+                </div>
+              )}
+
+              {usernameSuccess && (
+                <div className="p-3 rounded-xl bg-success/10 border border-success/30 text-success text-sm">
+                  {usernameSuccess}
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
 
         {/* Theme Selection */}
         <section className="mb-8 animate-fade-in">
@@ -126,8 +229,8 @@ const Settings = () => {
                   onClick={() => setTheme(key)}
                   className={cn(
                     "p-6 rounded-2xl border-2 transition-all text-left",
-                    isActive 
-                      ? "border-primary bg-primary/10 glow-card" 
+                    isActive
+                      ? "border-primary bg-primary/10 glow-card"
                       : "border-border bg-card hover:border-primary/50"
                   )}
                 >

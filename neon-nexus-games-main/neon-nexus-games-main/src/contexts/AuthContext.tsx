@@ -25,7 +25,7 @@ interface AuthContextType {
   session: Session | null;
   profile: Profile | null;
   loading: boolean;
-  signUp: (email: string, password: string) => Promise<{ error: Error | null }>;
+  signUp: (email: string, password: string, username?: string) => Promise<{ error: Error | null }>;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
   updateProfile: (updates: Partial<Profile>) => Promise<{ error: Error | null }>;
@@ -46,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       .select('*')
       .eq('user_id', userId)
       .single();
-    
+
     if (!error && data) {
       setProfile(data as Profile);
     }
@@ -58,7 +58,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        
+
         // Defer profile fetch with setTimeout to avoid deadlock
         if (session?.user) {
           setTimeout(() => {
@@ -84,15 +84,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (email: string, password: string, username?: string) => {
     const redirectUrl = `${window.location.origin}/`;
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: redirectUrl
       }
     });
+
+    // If signup succeeded and username provided, update profile
+    if (!error && data.user && username) {
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({ username })
+        .eq('user_id', data.user.id);
+
+      // Handle unique constraint violation
+      if (profileError?.code === '23505') {
+        return { error: new Error('Username already taken') };
+      }
+      if (profileError) {
+        return { error: profileError };
+      }
+    }
+
     return { error };
   };
 
@@ -111,16 +128,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const updateProfile = async (updates: Partial<Profile>) => {
     if (!user) return { error: new Error('Not authenticated') };
-    
+
     const { error } = await supabase
       .from('profiles')
       .update(updates)
       .eq('user_id', user.id);
-    
+
     if (!error) {
       setProfile(prev => prev ? { ...prev, ...updates } : null);
     }
-    
+
     return { error };
   };
 

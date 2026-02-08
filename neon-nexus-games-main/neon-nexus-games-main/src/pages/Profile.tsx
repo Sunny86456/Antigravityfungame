@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { PageHeader } from '@/components/PageHeader';
 import { useAuth } from '@/contexts/AuthContext';
-import { 
-  User, 
-  Trophy, 
-  Coins, 
-  Calendar, 
-  Gamepad2, 
-  Target, 
+import {
+  User,
+  Trophy,
+  Coins,
+  Calendar,
+  Gamepad2,
+  Target,
   Clock,
   Medal,
   Star,
@@ -51,8 +51,8 @@ const Profile = () => {
     return null;
   }
 
-  const winRate = profile.games_played > 0 
-    ? Math.round((profile.wins / profile.games_played) * 100) 
+  const winRate = profile.games_played > 0
+    ? Math.round((profile.wins / profile.games_played) * 100)
     : 0;
 
   const xpForNextLevel = profile.level * 1000;
@@ -80,9 +80,9 @@ const Profile = () => {
             <div className="relative">
               <div className="w-24 h-24 rounded-full gradient-primary flex items-center justify-center glow-primary">
                 {profile.avatar_url ? (
-                  <img 
-                    src={profile.avatar_url} 
-                    alt="Avatar" 
+                  <img
+                    src={profile.avatar_url}
+                    alt="Avatar"
                     className="w-full h-full rounded-full object-cover"
                   />
                 ) : (
@@ -99,7 +99,7 @@ const Profile = () => {
               <h2 className="text-2xl font-bold text-foreground mb-1">
                 {profile.username || 'Player'}
               </h2>
-              <p className="text-muted-foreground mb-2">{user.email}</p>
+              {/* IMPORTANT: Never expose user.email outside Account/Settings */}
               <div className="flex items-center justify-center md:justify-start gap-4 text-sm text-muted-foreground">
                 <span className="flex items-center gap-1">
                   <Calendar className="w-4 h-4" />
@@ -116,8 +116,8 @@ const Profile = () => {
             <div className="text-center p-4 rounded-xl bg-muted/50">
               <p className="text-sm text-muted-foreground mb-2">Level Progress</p>
               <div className="w-48 h-3 rounded-full bg-muted overflow-hidden">
-                <div 
-                  className="h-full gradient-primary rounded-full transition-all duration-500" 
+                <div
+                  className="h-full gradient-primary rounded-full transition-all duration-500"
                   style={{ width: `${xpProgress}%` }}
                 />
               </div>
@@ -142,7 +142,7 @@ const Profile = () => {
           <PageHeader title="Statistics" subtitle="Your gaming performance" />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {stats.map((stat, index) => (
-              <div 
+              <div
                 key={stat.label}
                 className="p-6 rounded-2xl bg-card border border-border glow-card animate-scale-in"
                 style={{ animationDelay: `${index * 50}ms` }}
@@ -160,12 +160,12 @@ const Profile = () => {
           <PageHeader title="Achievements" subtitle="Unlock rewards as you play" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {achievements.map((achievement, index) => (
-              <div 
+              <div
                 key={achievement.title}
                 className={cn(
                   "p-6 rounded-2xl border transition-all animate-scale-in",
-                  achievement.unlocked 
-                    ? "bg-card border-primary/30 glow-card" 
+                  achievement.unlocked
+                    ? "bg-card border-primary/30 glow-card"
                     : "bg-muted/30 border-border opacity-60"
                 )}
                 style={{ animationDelay: `${index * 50}ms` }}

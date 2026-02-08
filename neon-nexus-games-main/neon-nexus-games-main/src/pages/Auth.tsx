@@ -7,16 +7,18 @@ import { z } from 'zod';
 
 const emailSchema = z.string().email('Please enter a valid email address');
 const passwordSchema = z.string().min(6, 'Password must be at least 6 characters');
+const usernameSchema = z.string().min(3, 'Username must be at least 3 characters').max(20, 'Username must be at most 20 characters').regex(/^[a-zA-Z0-9_]+$/, 'Username can only contain letters, numbers, and underscores').optional().or(z.literal(''));
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const { signIn, signUp, user, loading } = useAuth();
   const navigate = useNavigate();
 
@@ -50,6 +52,18 @@ const Auth = () => {
       return false;
     }
 
+    // Validate username if provided (optional for signup)
+    if (!isLogin && username) {
+      try {
+        usernameSchema.parse(username);
+      } catch (e) {
+        if (e instanceof z.ZodError) {
+          setError(e.errors[0].message);
+          return false;
+        }
+      }
+    }
+
     return true;
   };
 
@@ -73,7 +87,7 @@ const Auth = () => {
           }
         }
       } else {
-        const { error } = await signUp(email, password);
+        const { error } = await signUp(email, password, username || undefined);
         if (error) {
           if (error.message.includes('already registered')) {
             setError('This email is already registered. Please sign in.');
@@ -174,20 +188,36 @@ const Auth = () => {
             </div>
 
             {!isLogin && (
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground flex items-center gap-2">
-                  <Lock className="w-4 h-4" />
-                  Confirm Password
-                </label>
-                <input
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl bg-muted border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground placeholder:text-muted-foreground"
-                  placeholder="••••••••"
-                  required
-                />
-              </div>
+              <>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                    <User className="w-4 h-4" />
+                    Username <span className="text-muted-foreground text-xs">(optional)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl bg-muted border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground placeholder:text-muted-foreground"
+                    placeholder="CoolPlayer123"
+                  />
+                  <p className="text-xs text-muted-foreground">Leave blank for a random username</p>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                    <Lock className="w-4 h-4" />
+                    Confirm Password
+                  </label>
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl bg-muted border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground placeholder:text-muted-foreground"
+                    placeholder="••••••••"
+                    required
+                  />
+                </div>
+              </>
             )}
 
             {error && (

@@ -117,8 +117,8 @@ export function Navbar() {
         "fixed transition-all duration-300 ease-out",
         // Centered with safe-area consideration
         "left-1/2 -translate-x-1/2",
-        // Glassmorphism
-        "bg-background/70 backdrop-blur-xl border border-white/10 shadow-lg shadow-black/5",
+        // Glassmorphism - light theme uses glass-navbar, dark/neon keeps existing
+        "glass-navbar dark:bg-white/5 dark:backdrop-blur-xl dark:border-white/10 dark:shadow-lg dark:shadow-black/10",
         // Capsule shape - smaller radius on very small screens
         "rounded-[1.5rem] sm:rounded-[2rem]",
         // Visibility with pointer-events safety

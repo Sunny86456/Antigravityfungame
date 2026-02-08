@@ -33,7 +33,7 @@ const tagIcons: Record<string, React.ReactNode> = {
 
 export function GameCard({ title, description, icon, tags, featured, playable, route }: GameCardProps) {
   const navigate = useNavigate();
-  
+
   const handlePlay = () => {
     if (playable && route) {
       navigate(route);
@@ -43,7 +43,9 @@ export function GameCard({ title, description, icon, tags, featured, playable, r
   return (
     <div
       className={cn(
-        "group relative rounded-2xl overflow-hidden bg-card border border-border",
+        "group relative rounded-2xl overflow-hidden",
+        "glass-card dark:bg-white/5 dark:backdrop-blur-xl",
+        "dark:border-white/10",
         "card-lift glow-card hover:glow-card-hover",
         featured && "md:col-span-2 md:row-span-2"
       )}
@@ -111,7 +113,7 @@ export function GameCard({ title, description, icon, tags, featured, playable, r
           Featured
         </div>
       )}
-      
+
       {/* Playable Badge */}
       {playable && !featured && (
         <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-success text-primary-foreground text-xs font-bold">

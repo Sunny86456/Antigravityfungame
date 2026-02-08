@@ -6,164 +6,164 @@
 
 @layer base {
   :root {
-    /* Light Theme */
-    --background: 220 20% 97%;
-    --foreground: 220 20% 10%;
+    /* Light Theme - Premium White Glassmorphism (Neutral, no color tint) */
+    --background: 0 0% 97%;
+    --foreground: 0 0% 15%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 20% 10%;
+    --card: 0 0% 100% / 0.75;
+    --card-foreground: 0 0% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 10%;
+    --popover: 0 0% 100% / 0.88;
+    --popover-foreground: 0 0% 15%;
 
-    --primary: 250 84% 54%;
+    --primary: 240 45% 52%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 14% 90%;
-    --secondary-foreground: 220 20% 20%;
+    --secondary: 0 0% 93%;
+    --secondary-foreground: 0 0% 25%;
 
-    --muted: 220 14% 95%;
-    --muted-foreground: 220 10% 40%;
+    --muted: 0 0% 94%;
+    --muted-foreground: 0 0% 42%;
 
-    --accent: 280 80% 60%;
+    --accent: 260 32% 55%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 55% 52%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 14% 88%;
-    --input: 220 14% 88%;
-    --ring: 250 84% 54%;
+    --border: 0 0% 0% / 0.07;
+    --input: 0 0% 93%;
+    --ring: 240 45% 52%;
 
     --radius: 0.75rem;
 
-    /* Gaming-specific tokens */
-    --glow-primary: 250 84% 54%;
-    --glow-accent: 280 80% 60%;
-    --gradient-start: 250 84% 54%;
-    --gradient-end: 280 80% 60%;
-    --card-glow: 250 84% 54% / 0.15;
-    --nav-blur: 0 0% 100% / 0.8;
-    --game-tag-bg: 250 84% 54% / 0.1;
-    --game-tag-text: 250 84% 40%;
-    --coin-color: 45 100% 50%;
-    --success: 142 76% 36%;
-    --warning: 38 92% 50%;
+    /* Light theme design tokens - calm, muted, NO PURPLE for surfaces */
+    --glow-primary: 240 45% 52%;
+    --glow-accent: 260 32% 55%;
+    --gradient-start: 0 0% 18%;
+    --gradient-end: 0 0% 28%;
+    --card-glow: 0 0% 0% / 0.04;
+    --nav-blur: 0 0% 100% / 0.78;
+    --game-tag-bg: 0 0% 0% / 0.05;
+    --game-tag-text: 0 0% 35%;
+    --coin-color: 42 60% 45%;
+    --success: 142 45% 38%;
+    --warning: 38 60% 48%;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 0 0% 97%;
+    --sidebar-foreground: 0 0% 25%;
+    --sidebar-primary: 240 45% 52%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 94%;
+    --sidebar-accent-foreground: 0 0% 25%;
+    --sidebar-border: 0 0% 0% / 0.07;
+    --sidebar-ring: 240 45% 52%;
   }
 
   .dark {
-    /* Dark Gaming Theme */
-    --background: 230 25% 8%;
-    --foreground: 220 20% 95%;
+    /* Dark Theme - Pure Black with White Patterns (Premium Minimal) */
+    --background: 0 0% 4%;
+    --foreground: 0 0% 96%;
 
-    --card: 230 25% 12%;
-    --card-foreground: 220 20% 95%;
+    --card: 0 0% 100% / 0.08;
+    --card-foreground: 0 0% 96%;
 
-    --popover: 230 25% 10%;
-    --popover-foreground: 220 20% 95%;
+    --popover: 0 0% 100% / 0.10;
+    --popover-foreground: 0 0% 96%;
 
-    --primary: 250 84% 60%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 4%;
 
-    --secondary: 230 20% 18%;
-    --secondary-foreground: 220 20% 90%;
+    --secondary: 0 0% 100% / 0.08;
+    --secondary-foreground: 0 0% 90%;
 
-    --muted: 230 20% 15%;
-    --muted-foreground: 220 10% 55%;
+    --muted: 0 0% 100% / 0.06;
+    --muted-foreground: 0 0% 60%;
 
-    --accent: 280 80% 65%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 0 0% 100% / 0.12;
+    --accent-foreground: 0 0% 96%;
 
-    --destructive: 0 62% 50%;
+    --destructive: 0 60% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 230 20% 18%;
-    --input: 230 20% 18%;
-    --ring: 250 84% 60%;
+    --border: 0 0% 100% / 0.10;
+    --input: 0 0% 100% / 0.08;
+    --ring: 0 0% 100% / 0.30;
 
-    /* Gaming-specific tokens - Dark */
-    --glow-primary: 250 84% 60%;
-    --glow-accent: 280 80% 65%;
-    --gradient-start: 250 84% 60%;
-    --gradient-end: 280 80% 65%;
-    --card-glow: 250 84% 60% / 0.2;
-    --nav-blur: 230 25% 8% / 0.85;
-    --game-tag-bg: 250 84% 60% / 0.15;
-    --game-tag-text: 250 84% 75%;
-    --coin-color: 45 100% 55%;
-    --success: 142 76% 45%;
-    --warning: 38 92% 55%;
+    /* Design tokens - Pure white accents on black */
+    --glow-primary: 0 0% 100%;
+    --glow-accent: 0 0% 100%;
+    --gradient-start: 0 0% 100%;
+    --gradient-end: 0 0% 80%;
+    --card-glow: 0 0% 0% / 0.5;
+    --nav-blur: 0 0% 100% / 0.08;
+    --game-tag-bg: 0 0% 100% / 0.10;
+    --game-tag-text: 0 0% 80%;
+    --coin-color: 45 80% 55%;
+    --success: 142 50% 50%;
+    --warning: 38 80% 55%;
 
-    --sidebar-background: 230 25% 10%;
-    --sidebar-foreground: 220 20% 90%;
-    --sidebar-primary: 250 84% 60%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 230 20% 15%;
-    --sidebar-accent-foreground: 220 20% 90%;
-    --sidebar-border: 230 20% 18%;
-    --sidebar-ring: 250 84% 60%;
+    --sidebar-background: 0 0% 5%;
+    --sidebar-foreground: 0 0% 92%;
+    --sidebar-primary: 0 0% 100%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 0 0% 100% / 0.08;
+    --sidebar-accent-foreground: 0 0% 90%;
+    --sidebar-border: 0 0% 100% / 0.10;
+    --sidebar-ring: 0 0% 100% / 0.30;
   }
 
   .neon {
-    /* Neon/Colorful Gaming Theme */
-    --background: 260 30% 6%;
-    --foreground: 180 100% 90%;
+    /* Gradient Theme - Cinematic Wave Style (Premium Gaming) */
+    --background: 240 15% 8%;
+    --foreground: 0 0% 94%;
 
-    --card: 260 30% 10%;
-    --card-foreground: 180 100% 90%;
+    --card: 0 0% 100% / 0.07;
+    --card-foreground: 0 0% 94%;
 
-    --popover: 260 30% 8%;
-    --popover-foreground: 180 100% 90%;
+    --popover: 0 0% 100% / 0.09;
+    --popover-foreground: 0 0% 94%;
 
-    --primary: 180 100% 50%;
-    --primary-foreground: 260 30% 6%;
+    --primary: 0 0% 96%;
+    --primary-foreground: 240 15% 8%;
 
-    --secondary: 320 100% 55%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 280 25% 35%;
+    --secondary-foreground: 0 0% 96%;
 
-    --muted: 260 25% 14%;
-    --muted-foreground: 180 40% 60%;
+    --muted: 0 0% 100% / 0.06;
+    --muted-foreground: 0 0% 60%;
 
-    --accent: 120 100% 50%;
-    --accent-foreground: 260 30% 6%;
+    --accent: 30 50% 50%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 100% 55%;
+    --destructive: 0 55% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 180 100% 50% / 0.2;
-    --input: 260 30% 15%;
-    --ring: 180 100% 50%;
+    --border: 0 0% 100% / 0.10;
+    --input: 0 0% 100% / 0.08;
+    --ring: 0 0% 100% / 0.25;
 
-    /* Gaming-specific tokens - Neon */
-    --glow-primary: 180 100% 50%;
-    --glow-accent: 320 100% 55%;
-    --gradient-start: 180 100% 50%;
-    --gradient-end: 320 100% 55%;
-    --card-glow: 180 100% 50% / 0.3;
-    --nav-blur: 260 30% 6% / 0.9;
-    --game-tag-bg: 180 100% 50% / 0.15;
-    --game-tag-text: 180 100% 70%;
-    --coin-color: 50 100% 60%;
-    --success: 120 100% 50%;
-    --warning: 50 100% 55%;
+    /* Gradient theme tokens - muted wave colors */
+    --glow-primary: 280 30% 45%;
+    --glow-accent: 30 45% 50%;
+    --gradient-start: 0 0% 94%;
+    --gradient-end: 0 0% 78%;
+    --card-glow: 0 0% 0% / 0.4;
+    --nav-blur: 0 0% 100% / 0.07;
+    --game-tag-bg: 0 0% 100% / 0.10;
+    --game-tag-text: 0 0% 80%;
+    --coin-color: 45 70% 55%;
+    --success: 145 45% 45%;
+    --warning: 38 65% 55%;
 
-    --sidebar-background: 260 30% 8%;
-    --sidebar-foreground: 180 100% 85%;
-    --sidebar-primary: 180 100% 50%;
-    --sidebar-primary-foreground: 260 30% 6%;
-    --sidebar-accent: 260 25% 14%;
-    --sidebar-accent-foreground: 180 100% 85%;
-    --sidebar-border: 180 100% 50% / 0.2;
-    --sidebar-ring: 180 100% 50%;
+    --sidebar-background: 240 15% 9%;
+    --sidebar-foreground: 0 0% 92%;
+    --sidebar-primary: 0 0% 96%;
+    --sidebar-primary-foreground: 240 15% 8%;
+    --sidebar-accent: 0 0% 100% / 0.08;
+    --sidebar-accent-foreground: 0 0% 90%;
+    --sidebar-border: 0 0% 100% / 0.10;
+    --sidebar-ring: 0 0% 100% / 0.25;
   }
 }
 
@@ -177,33 +177,124 @@
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 
+  /* Light theme - Wallpaper with white overlay */
+  :root body {
+    background-image: url('/backgrounds/light-theme.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  /* Light overlay for readability - does not modify image colors */
+  :root body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-color: rgba(255, 255, 255, 0.22);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Light Theme: Transparent containers to show wallpaper through */
+  :root #root {
+    position: relative;
+    z-index: 1;
+    background: transparent;
+  }
+
+  :root .bg-background {
+    background: transparent !important;
+  }
+
+  :root .bg-muted\/30 {
+    background: rgba(255, 255, 255, 0.5) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  /* Dark theme - Pure black with white patterns */
+  .dark body {
+    background:
+      /* Soft vignette */
+      radial-gradient(ellipse 120% 120% at 50% 50%, transparent 50%, hsl(0 0% 0% / 0.3) 100%),
+      /* White circular patterns - 3-6% opacity */
+      radial-gradient(circle 1200px at 10% 15%, hsl(0 0% 100% / 0.05), transparent 60%),
+      radial-gradient(circle 1000px at 85% 80%, hsl(0 0% 100% / 0.04), transparent 55%),
+      radial-gradient(circle 800px at 50% 45%, hsl(0 0% 100% / 0.03), transparent 50%),
+      radial-gradient(circle 700px at 75% 25%, hsl(0 0% 100% / 0.045), transparent 50%),
+      /* Pure black base */
+      hsl(0 0% 4%);
+    background-attachment: fixed;
+  }
+
+  /* Gradient theme - Cinematic Wallpaper (Reference Match) */
+  .neon body {
+    background-image: url('/backgrounds/gradient-theme.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  /* Dark overlay for readability - does not modify image colors */
+  .neon body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.28);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Gradient Theme: Transparent containers to show wallpaper through */
+  .neon #root {
+    position: relative;
+    z-index: 1;
+    background: transparent;
+  }
+
+  .neon .bg-background {
+    background: transparent !important;
+  }
+
+  .neon .bg-muted\/30 {
+    background: rgba(255, 255, 255, 0.04) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
   /* Theme transition */
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     transition: background-color 0.3s ease, border-color 0.3s ease, color 0.15s ease, box-shadow 0.3s ease;
   }
 }
 
 @layer utilities {
-  /* Glow effects */
+
+  /* Subtle shadow effects - no glow */
   .glow-primary {
-    box-shadow: 0 0 20px hsl(var(--glow-primary) / 0.4), 
-                0 0 40px hsl(var(--glow-primary) / 0.2);
+    box-shadow: 0 4px 16px hsl(var(--glow-primary) / 0.15);
   }
 
   .glow-accent {
-    box-shadow: 0 0 20px hsl(var(--glow-accent) / 0.4), 
-                0 0 40px hsl(var(--glow-accent) / 0.2);
+    box-shadow: 0 4px 16px hsl(var(--glow-accent) / 0.15);
   }
 
   .glow-card {
-    box-shadow: 0 4px 20px hsl(var(--card-glow)),
-                0 0 0 1px hsl(var(--border));
+    box-shadow: 0 4px 24px hsl(var(--card-glow)),
+      0 0 0 1px hsl(var(--border));
   }
 
   .glow-card-hover {
-    box-shadow: 0 8px 40px hsl(var(--card-glow)),
-                0 0 30px hsl(var(--glow-primary) / 0.3),
-                0 0 0 1px hsl(var(--primary) / 0.3);
+    box-shadow: 0 8px 32px hsl(var(--card-glow)),
+      0 0 0 1px hsl(var(--border));
   }
 
   /* Gradient backgrounds */
@@ -218,11 +309,136 @@
     background-clip: text;
   }
 
-  /* Glass effect */
+  /* Light theme: neutral dark text instead of purple gradient */
+  :root .gradient-text {
+    background: linear-gradient(135deg, hsl(0 0% 15%), hsl(0 0% 25%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Glass effect - base */
   .glass {
     background: hsl(var(--nav-blur));
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* Light theme glassmorphism for navbar */
+  :root .glass-navbar {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Light theme glassmorphism for cards */
+  :root .glass-card {
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(0, 0, 0, 0.09);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07), 0 1px 4px rgba(0, 0, 0, 0.04);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Light theme glassmorphism for panels */
+  :root .glass-panel {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Dark theme glassmorphism for navbar - white glass on black */
+  .dark .glass-navbar {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.5),
+      0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Dark theme glassmorphism for cards - white glass on black */
+  .dark .glass-card {
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.4),
+      0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Dark theme glassmorphism for panels/sections */
+  .dark .glass-panel {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  }
+
+  /* Dark theme: pure white gradient text */
+  .dark .gradient-text {
+    background: linear-gradient(135deg, hsl(0 0% 100%), hsl(0 0% 85%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+
+
+  /* Gradient theme glassmorphism for navbar */
+  .neon .glass-navbar {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.4),
+      0 2px 8px rgba(0, 0, 0, 0.25);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Gradient theme glassmorphism for cards */
+  .neon .glass-card {
+    background: rgba(255, 255, 255, 0.055);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.35),
+      0 2px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Gradient theme glassmorphism for panels */
+  .neon .glass-panel {
+    background: rgba(255, 255, 255, 0.055);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Gradient theme: neutral white gradient text */
+  .neon .gradient-text {
+    background: linear-gradient(135deg, hsl(0 0% 98%), hsl(0 0% 82%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   /* Card hover transform */
@@ -258,8 +474,15 @@
   }
 
   @keyframes shimmer {
-    0%, 100% { filter: brightness(1); }
-    50% { filter: brightness(1.3); }
+
+    0%,
+    100% {
+      filter: brightness(1);
+    }
+
+    50% {
+      filter: brightness(1.3);
+    }
   }
 
   /* Pulse glow */
@@ -268,8 +491,15 @@
   }
 
   @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 5px hsl(var(--glow-primary) / 0.3); }
-    50% { box-shadow: 0 0 20px hsl(var(--glow-primary) / 0.6), 0 0 40px hsl(var(--glow-primary) / 0.3); }
+
+    0%,
+    100% {
+      box-shadow: 0 0 5px hsl(var(--glow-primary) / 0.3);
+    }
+
+    50% {
+      box-shadow: 0 0 20px hsl(var(--glow-primary) / 0.6), 0 0 40px hsl(var(--glow-primary) / 0.3);
+    }
   }
 
   /* Floating animation */
@@ -278,15 +508,20 @@
   }
 
   @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-10px);
+    }
   }
 
-  /* Neon text shadow - only in neon theme */
+  /* Neon text shadow - disabled for clean look */
   .neon .neon-text {
-    text-shadow: 0 0 10px hsl(var(--primary) / 0.8),
-                 0 0 20px hsl(var(--primary) / 0.6),
-                 0 0 40px hsl(var(--primary) / 0.4);
+    text-shadow: none;
   }
 
   /* Game tag styles */
@@ -302,8 +537,13 @@
   }
 
   @keyframes piece-move {
-    0% { transform: scale(1.2); }
-    100% { transform: scale(1); }
+    0% {
+      transform: scale(1.2);
+    }
+
+    100% {
+      transform: scale(1);
+    }
   }
 
   /* Shake animation for failure */
@@ -312,9 +552,21 @@
   }
 
   @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    20%, 60% { transform: translateX(-5px); }
-    40%, 80% { transform: translateX(5px); }
+
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+
+    20%,
+    60% {
+      transform: translateX(-5px);
+    }
+
+    40%,
+    80% {
+      transform: translateX(5px);
+    }
   }
 
   /* Chess move highlight animation */
@@ -322,21 +574,30 @@
     0% {
       opacity: 1;
     }
+
     70% {
       opacity: 1;
     }
+
     100% {
       opacity: 0.4;
     }
   }
-  
+
   /* Scale in for pieces */
   .animate-scale-in {
     animation: scale-in 0.2s ease-out;
   }
-  
+
   @keyframes scale-in {
-    0% { transform: scale(0.8); opacity: 0.5; }
-    100% { transform: scale(1); opacity: 1; }
+    0% {
+      transform: scale(0.8);
+      opacity: 0.5;
+    }
+
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
   }
 }
