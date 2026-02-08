@@ -11,32 +11,55 @@ export const FEATURES = {
     // ========================================
 
     /** 💕 Valentine's Day Mode - Shows special message */
-    VALENTINE_MODE: true,
+    VALENTINE_MODE: false,
 
     // ========================================
-    // GAMES (Disabled for Valentine's)
+    // GAMES
     // ========================================
 
-    LUDO: false,
-    CHESS: false,
-    CODE_RUNNER: false,
-    DICE: false,
+    /** Ludo board game - vs AI mode available */
+    LUDO: true,
+
+    /** Chess game with puzzles and tutorials */
+    CHESS: true,
+
+    /** Code Runner programming challenges */
+    CODE_RUNNER: true,
+
+    /** Dice game (gambling-style) */
+    DICE: true,
 
     // ========================================
-    // PAGES & SECTIONS (Disabled)
+    // PAGES & SECTIONS
     // ========================================
 
-    SHOP: false,
-    LEADERBOARD: false,
-    PROFILE: false,
-    SETTINGS: false,
+    /** Shop page for purchasing items */
+    SHOP: false,  // Coming Soon
+
+    /** Leaderboard rankings */
+    LEADERBOARD: true,
+
+    /** User profiles */
+    PROFILE: true,
+
+    /** Settings page */
+    SETTINGS: true,
 
     // ========================================
     // ONLINE FEATURES
     // ========================================
 
-    LUDO_ONLINE: false,
-    RANKED_MATCHES: false,
+    /** Online multiplayer for Ludo */
+    LUDO_ONLINE: false,  // Coming Soon
+
+    /** Ranked matches with coin betting */
+    RANKED_MATCHES: false,  // Coming Soon
+
+    // ========================================
+    // DEBUG / DEV
+    // ========================================
+
+    /** Enable debug logging in console */
     DEBUG_LOGGING: false,
 
 } as const;
