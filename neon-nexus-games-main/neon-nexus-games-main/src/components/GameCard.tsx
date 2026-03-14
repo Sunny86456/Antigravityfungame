@@ -10,6 +10,7 @@ interface GameCardProps {
   featured?: boolean;
   playable?: boolean;
   route?: string;
+  action?: 'OPEN_LUDO_MODAL';
 }
 
 const tagIcons: Record<string, React.ReactNode> = {
@@ -31,12 +32,18 @@ const tagIcons: Record<string, React.ReactNode> = {
   'Memory': <Brain className="w-3 h-3" />,
 };
 
-export function GameCard({ title, description, icon, tags, featured, playable, route }: GameCardProps) {
+export function GameCard({ title, description, icon, tags, featured, playable, route, action }: GameCardProps) {
   const navigate = useNavigate();
 
   const handlePlay = () => {
-    if (playable && route) {
-      navigate(route);
+    if (playable) {
+      if (action === 'OPEN_LUDO_MODAL') {
+        window.dispatchEvent(new CustomEvent('OPEN_LUDO_MODAL'));
+        return;
+      }
+      if (route) {
+        navigate(route);
+      }
     }
   };
 

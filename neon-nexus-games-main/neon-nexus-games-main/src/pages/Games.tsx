@@ -14,18 +14,18 @@ const Games = () => {
 
   const filteredGames = games.filter(game => {
     const matchesSearch = game.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          game.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesTag = activeTag === 'All' || 
-                       (activeTag === 'Playable' ? game.playable : game.tags.includes(activeTag));
+      game.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesTag = activeTag === 'All' ||
+      (activeTag === 'Playable' ? game.playable : game.tags.includes(activeTag));
     return matchesSearch && matchesTag;
   });
 
   return (
     <Layout>
       <div className="container mx-auto px-4">
-        <PageHeader 
-          title="All Games" 
-          subtitle="Browse our complete collection of browser games" 
+        <PageHeader
+          title="All Games"
+          subtitle="Browse our complete collection of browser games"
         />
 
         {/* Search and Filter */}
@@ -65,12 +65,12 @@ const Games = () => {
         {/* Games Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredGames.map((game, index) => (
-            <div 
-              key={game.id} 
+            <div
+              key={game.id}
               className="animate-scale-in"
               style={{ animationDelay: `${index * 50}ms` }}
             >
-              <GameCard 
+              <GameCard
                 title={game.title}
                 description={game.description}
                 icon={<game.icon className="w-8 h-8 text-primary-foreground" />}
@@ -88,6 +88,7 @@ const Games = () => {
           </div>
         )}
       </div>
+
     </Layout>
   );
 };

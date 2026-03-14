@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Gamepad2, Mail, Lock, User, Loader2 } from 'lucide-react';
@@ -18,6 +18,9 @@ const Auth = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  // Safety: if loading takes more than 3s (slow network), show the form anyway
+  const [forceShow, setForceShow] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { signIn, signUp, user, loading } = useAuth();
   const navigate = useNavigate();
@@ -27,6 +30,19 @@ const Auth = () => {
       navigate('/');
     }
   }, [user, loading, navigate]);
+
+  // Safety timeout — show login form after 3s even if auth check is pending
+  useEffect(() => {
+    if (loading) {
+      timeoutRef.current = setTimeout(() => setForceShow(true), 3000);
+    } else {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      setForceShow(false);
+    }
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [loading]);
 
   const validateForm = (): boolean => {
     try {
@@ -98,14 +114,18 @@ const Auth = () => {
           setSuccess('Account created! Check your email to confirm your account, or sign in if email confirmation is disabled.');
         }
       }
-    } catch (err) {
-      setError('An unexpected error occurred');
+    } catch (err: unknown) {
+      if (err instanceof Error && (err.message.toLowerCase().includes('fetch') || err.message.toLowerCase().includes('network'))) {
+        setError('Cannot connect to server. Please check your internet connection and try again.');
+      } else {
+        setError('An unexpected error occurred. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
-  if (loading) {
+  if (loading && !forceShow) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />

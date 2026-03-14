@@ -1,6 +1,5 @@
-import { Crown, Gamepad2, Puzzle, BookOpen, Brain, Code2 } from 'lucide-react';
+import { Crown, Puzzle, BookOpen, Brain, Code2 } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
-import { FEATURES } from '@/config/features';
 
 export interface Game {
   id: string;
@@ -11,6 +10,7 @@ export interface Game {
   featured?: boolean;
   playable: boolean;
   route?: string;
+  action?: string;
 }
 
 export const games: Game[] = [
@@ -34,15 +34,6 @@ export const games: Game[] = [
     playable: true,
     route: '/games/coding'
   },
-  ...(FEATURES.LUDO ? [{
-    id: 'ludo',
-    title: 'Ludo',
-    description: 'Roll the dice and race your tokens to victory! A fun family board game.',
-    icon: Gamepad2,
-    tags: ['Multiplayer', 'Strategy', 'AI'], // Added AI tag
-    playable: true,
-    route: '/games/ludo'
-  }] : []),
   {
     id: 'puzzle',
     title: 'Puzzle',

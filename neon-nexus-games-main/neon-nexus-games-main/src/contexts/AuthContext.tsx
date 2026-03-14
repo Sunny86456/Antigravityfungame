@@ -41,84 +41,105 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   const fetchProfile = async (userId: string) => {
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('user_id', userId)
-      .single();
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
 
-    if (!error && data) {
-      setProfile(data as Profile);
+      if (!error && data) {
+        setProfile(data as Profile);
+      }
+    } catch {
+      // Network error fetching profile — silently ignore, profile stays null
     }
   };
 
   useEffect(() => {
-    // Set up auth state listener FIRST
+    // Use onAuthStateChange ONLY — it fires immediately with the current session
+    // from localStorage, so no need for a separate getSession() call.
+    // getSession() + onAuthStateChange together causes a double-fetch and a noticeable delay.
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
 
-        // Defer profile fetch with setTimeout to avoid deadlock
         if (session?.user) {
+          // Defer profile fetch with setTimeout to avoid Supabase auth deadlock
           setTimeout(() => {
             fetchProfile(session.user.id);
           }, 0);
         } else {
           setProfile(null);
         }
+
+        // Mark loading done as soon as we get the first auth state
         setLoading(false);
       }
     );
 
-    // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        fetchProfile(session.user.id);
-      }
-      setLoading(false);
-    });
-
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string, username?: string) => {
-    const redirectUrl = `${window.location.origin}/`;
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: redirectUrl
-      }
-    });
-
-    // If signup succeeded and username provided, update profile
-    if (!error && data.user && username) {
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({ username })
-        .eq('user_id', data.user.id);
-
-      // Handle unique constraint violation
-      if (profileError?.code === '23505') {
-        return { error: new Error('Username already taken') };
-      }
-      if (profileError) {
-        return { error: profileError };
-      }
+  const signIn = async (email: string, password: string) => {
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      return { error };
+    } catch (err: unknown) {
+      // Catch network-level errors (e.g., "Failed to fetch" / offline / CORS)
+      const message =
+        err instanceof Error
+          ? err.message.includes('fetch')
+            ? 'Cannot connect to server. Please check your internet connection and try again.'
+            : err.message
+          : 'An unexpected error occurred. Please try again.';
+      return { error: new Error(message) };
     }
-
-    return { error };
   };
 
-  const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    return { error };
+  const signUp = async (email: string, password: string, username?: string) => {
+    try {
+      const redirectUrl = `${window.location.origin}/`;
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: redirectUrl
+        }
+      });
+
+      if (error) return { error };
+
+      // If signup succeeded and username provided, update profile
+      if (data.user && username) {
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .update({ username })
+          .eq('user_id', data.user.id);
+
+        // Handle unique constraint violation
+        if (profileError?.code === '23505') {
+          return { error: new Error('Username already taken') };
+        }
+        if (profileError) {
+          return { error: profileError };
+        }
+      }
+
+      return { error: null };
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error
+          ? err.message.includes('fetch')
+            ? 'Cannot connect to server. Please check your internet connection and try again.'
+            : err.message
+          : 'An unexpected error occurred. Please try again.';
+      return { error: new Error(message) };
+    }
   };
 
   const signOut = async () => {
