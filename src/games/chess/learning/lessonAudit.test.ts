@@ -4,7 +4,7 @@ import { LESSONS } from './lessonData';
 import { ChessValidator } from './ChessValidator';
 
 describe('Lesson Data Integrity Audit', () => {
-    const invalidLessons: any[] = [];
+    const invalidLessons: unknown[] = [];
     const validLessons: number[] = [];
 
     LESSONS.forEach(lesson => {
@@ -39,7 +39,7 @@ describe('Lesson Data Integrity Audit', () => {
             console.log('\n--- INVALID LESSONS ---');
             invalidLessons.forEach(l => {
                 console.log(`[ID ${l.id}] ${l.title}`);
-                l.errors.forEach((e: any) => console.log(`   Error: ${e.reason}`));
+                l.errors.forEach((e: unknown) => console.log(`   Error: ${e.reason}`));
             });
         } else {
             console.log("ALL LESSONS ARE VALID!");

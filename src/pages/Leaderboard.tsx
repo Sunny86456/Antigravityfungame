@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Layout } from '@/components/Layout';
 import { PageHeader } from '@/components/PageHeader';
 import { Trophy, Medal, Crown, TrendingUp, Coins, Loader2, Gamepad2, Code2 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -39,7 +39,7 @@ const Leaderboard = () => {
   const [activeTab, setActiveTab] = useState<'overall' | 'chess' | 'coding'>('overall');
 
   // Fetch leaderboard data
-  const fetchLeaderboard = async () => {
+  const fetchLeaderboard = useCallback(async () => {
     setIsLoading(true);
 
     const { data, error } = await supabase
@@ -82,7 +82,7 @@ const Leaderboard = () => {
     }
 
     setIsLoading(false);
-  };
+  }, [user]);
 
   // Initial fetch and realtime subscription
   useEffect(() => {
@@ -108,7 +108,7 @@ const Leaderboard = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user]);
+  }, [user, fetchLeaderboard]);
 
   if (isLoading) {
     return (

@@ -7,7 +7,7 @@
  * - Puzzle and Practice mode access
  */
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
@@ -27,8 +27,8 @@ import {
   Loader2,
   ChevronRight
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Progress } from '@/components/ui/progress';
+import { cn } from '@/shared/lib/utils';
+import { Progress } from '@/shared/ui/progress';
 
 type TabType = 'learn' | 'puzzles' | 'practice';
 
@@ -43,15 +43,7 @@ export default function ChessLearningHub() {
   const [isLoading, setIsLoading] = useState(true);
   const [expandedCategory, setExpandedCategory] = useState<LessonCategory | null>('pawn');
 
-  useEffect(() => {
-    if (user) {
-      loadProgress();
-    } else {
-      setIsLoading(false);
-    }
-  }, [user]);
-
-  const loadProgress = async () => {
+  const loadProgress = useCallback(async () => {
     if (!user) return;
 
     // Load tutorial progress
@@ -86,7 +78,15 @@ export default function ChessLearningHub() {
     }
 
     setIsLoading(false);
-  };
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      loadProgress();
+    } else {
+      setIsLoading(false);
+    }
+  }, [user, loadProgress]);
 
 
   // Filter lessons based on Audit in Production

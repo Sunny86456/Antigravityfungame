@@ -17,7 +17,7 @@ import {
   Loader2,
   LogOut
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 import { format } from 'date-fns';
 
 const achievements = [

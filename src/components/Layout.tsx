@@ -1,7 +1,7 @@
 import { Navbar } from './Navbar';
 import { Instagram, Linkedin, Mail, User } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 
 interface LayoutProps {
   children: React.ReactNode;

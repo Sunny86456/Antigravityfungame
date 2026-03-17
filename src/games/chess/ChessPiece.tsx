@@ -1,5 +1,5 @@
 import { Piece } from './chessLogic';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 
 interface ChessPieceProps {
   piece: Piece;

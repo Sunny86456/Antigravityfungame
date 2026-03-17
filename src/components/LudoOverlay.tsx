@@ -10,7 +10,7 @@ export function LudoOverlay({ isOpen, onClose }: LudoOverlayProps) {
 
     const handleClose = () => {
         // Clear config
-        // @ts-ignore
+        // @ts-expect-error - External library types mismatch
         delete window.__LUDO_CONFIG__;
         onClose();
     };

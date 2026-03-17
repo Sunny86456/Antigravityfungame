@@ -2,12 +2,12 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
-import { useGameSounds } from '@/hooks/useGameSounds';
-import { useCoinEconomy, ECONOMY } from '@/hooks/useCoinEconomy';
+import { useGameSounds } from '@/shared/hooks/useGameSounds';
+import { useCoinEconomy, ECONOMY } from '@/features/economy/useCoinEconomy';
 import { supabase } from '@/integrations/supabase/client';
 import { ChessPiece } from './ChessPiece';
 import { BOARD_THEMES, BoardTheme, getThemeById } from './themes';
-import { AdsRewardButton } from '@/components/AdsRewardButton';
+import { AdsRewardButton } from '@/features/ads/AdsRewardButton';
 import {
   Board,
   Position,
@@ -41,7 +41,7 @@ import {
   AlertTriangle,
   Swords
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 
 type GameMode = 'menu' | 'settings' | 'shop' | 'playing' | 'match-confirm';
 type OpponentType = 'ai' | 'local';
@@ -109,15 +109,7 @@ export default function ChessGame() {
   }, []);
   
   // Load unlocked boards
-  useEffect(() => {
-    if (user) {
-      loadUnlockedBoards();
-    } else {
-      setIsLoading(false);
-    }
-  }, [user]);
-  
-  const loadUnlockedBoards = async () => {
+  const loadUnlockedBoards = useCallback(async () => {
     if (!user) return;
     
     const { data, error } = await supabase
@@ -130,7 +122,15 @@ export default function ChessGame() {
       setUnlockedBoards(['classic', ...boards]);
     }
     setIsLoading(false);
-  };
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      loadUnlockedBoards();
+    } else {
+      setIsLoading(false);
+    }
+  }, [user, loadUnlockedBoards]);
   
   // Timer effect
   useEffect(() => {

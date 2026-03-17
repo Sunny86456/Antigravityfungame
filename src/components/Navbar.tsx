@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { ThemeSwitcher } from './ThemeSwitcher';
 import { useAuth } from '@/contexts/AuthContext';
 import { Gamepad2, Home, LayoutGrid, Trophy, User, Settings, Coins, LogIn, ShoppingBag } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 import { useState, useEffect, useRef, useCallback } from 'react';
 
 /**

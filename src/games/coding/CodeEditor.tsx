@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Language } from './levels';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 
 interface CodeEditorProps {
   code: string;

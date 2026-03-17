@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
-import { useGameSounds } from '@/hooks/useGameSounds';
+import { useGameSounds } from '@/shared/hooks/useGameSounds';
 import { supabase } from '@/integrations/supabase/client';
 import { ChessBoard } from '../components/ChessBoard';
 import { getPuzzleById, PUZZLES, FREE_PUZZLE_COUNT, PUZZLE_UNLOCK_COST, PUZZLE_REWARDS } from './puzzles';
@@ -27,7 +27,7 @@ import {
   Unlock,
   Target
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 
 export default function ChessPuzzle() {
   const { id } = useParams<{ id: string }>();
@@ -53,36 +53,7 @@ export default function ChessPuzzle() {
   const [lastMove, setLastMove] = useState<{ from: Position; to: Position } | null>(null);
   const [allUnlockedPuzzles, setAllUnlockedPuzzles] = useState<number[]>([]);
   
-  useEffect(() => {
-    if (user && puzzle) {
-      checkUnlockStatus();
-    } else {
-      setIsLoading(false);
-    }
-  }, [user, puzzle]);
-  
-  useEffect(() => {
-    if (puzzle && (isFree || isUnlocked)) {
-      setBoard(cloneBoard(puzzle.board));
-    }
-  }, [puzzle, isFree, isUnlocked]);
-  
-  // Load ALL unlocked puzzles for navigation - must be before early returns
-  useEffect(() => {
-    const loadAllUnlockedPuzzles = async () => {
-      if (!user) return;
-      const { data } = await supabase
-        .from('chess_puzzle_unlocks')
-        .select('puzzle_id')
-        .eq('user_id', user.id);
-      if (data) {
-        setAllUnlockedPuzzles(data.map(d => d.puzzle_id));
-      }
-    };
-    loadAllUnlockedPuzzles();
-  }, [user]);
-  
-  const checkUnlockStatus = async () => {
+  const checkUnlockStatus = useCallback(async () => {
     if (!user || !puzzle) return;
     
     // Check if already unlocked
@@ -110,7 +81,15 @@ export default function ChessPuzzle() {
     }
     
     setIsLoading(false);
-  };
+  }, [user, puzzle, isFree]);
+
+  useEffect(() => {
+    if (user && puzzle) {
+      checkUnlockStatus();
+    } else {
+      setIsLoading(false);
+    }
+  }, [user, puzzle, checkUnlockStatus]);
   
   const unlockPuzzle = async () => {
     if (!user || !profile || !puzzle) return;

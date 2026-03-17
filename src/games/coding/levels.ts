@@ -26,7 +26,7 @@ export interface CodingLevel {
 // Strict validator that runs all test cases and requires ALL to pass
 const createStrictValidator = (
   testCases: TestCase[], 
-  executeFn: (code: string, lang: Language) => ((input: any) => any) | null
+  executeFn: (code: string, lang: Language) => ((input: unknown) => unknown) | null
 ) => {
   return (code: string, language: Language) => {
     const results: { input: string; expected: string; actual: string; passed: boolean }[] = [];
@@ -536,7 +536,7 @@ export const codingLevels: CodingLevel[] = [
 }`
     },
     solutionPattern: {
-      javascript: 'if (seen.hasOwnProperty(complement)) return [seen[complement], i]; seen[nums[i]] = i;',
+      javascript: 'if (Object.prototype.hasOwnProperty.call(seen, complement)) return [seen[complement], i]; seen[nums[i]] = i;',
       python: 'if complement in seen: return [seen[complement], i]; seen[num] = i',
       cpp: 'if (seen.find(complement) != seen.end()) return {seen[complement], i}; seen[nums[i]] = i;',
       java: 'if (seen.containsKey(complement)) return new int[]{seen.get(complement), i}; seen.put(nums[i], i);'
@@ -547,7 +547,7 @@ export const codingLevels: CodingLevel[] = [
         const seen: Record<number, number> = {};
         for (let i = 0; i < input.nums.length; i++) {
           const complement = input.target - input.nums[i];
-          if (seen.hasOwnProperty(complement)) {
+          if (Object.prototype.hasOwnProperty.call(seen, complement)) {
             return [seen[complement], i];
           }
           seen[input.nums[i]] = i;

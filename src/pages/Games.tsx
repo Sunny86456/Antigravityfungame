@@ -4,7 +4,7 @@ import { GameCard } from '@/components/GameCard';
 import { games } from '@/data/games';
 import { Search, Filter } from 'lucide-react';
 import { useState } from 'react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 
 const allTags = ['All', 'Playable', 'Multiplayer', 'Single Player', 'Strategy', 'Puzzle', 'Educational', 'AI'];
 

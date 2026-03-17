@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Play, Users, User, Brain, Puzzle, BookOpen, Code } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 
 interface GameCardProps {
   title: string;

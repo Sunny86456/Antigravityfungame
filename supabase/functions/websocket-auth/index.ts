@@ -141,7 +141,7 @@ serve(async (req: Request) => {
                 // The server NEVER trusts userId from client
                 if (payload && typeof payload === 'object' && 'userId' in payload) {
                     // Strip any client-provided userId - this is a security violation attempt
-                    console.warn(`[websocket-auth] Client attempted to spoof userId: ${(payload as any).userId}, actual: ${user.id}`);
+                    console.warn(`[websocket-auth] Client attempted to spoof userId: ${(payload as Record<string, unknown>).userId}, actual: ${user.id}`);
                 }
 
                 console.log(`[websocket-auth] Message authorized for user: ${user.id}, match: ${matchId}, type: ${messageType}`);

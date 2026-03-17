@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
-import { useGameSounds } from '@/hooks/useGameSounds';
+import { useGameSounds } from '@/shared/hooks/useGameSounds';
 import { ChessPiece } from '../ChessPiece';
 import { ChessBoard } from '../components/ChessBoard';
 import { BOARD_THEMES, BoardTheme, getThemeById } from '../themes';
@@ -31,7 +31,7 @@ import {
   AlertTriangle,
   Play
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 
 type Difficulty = 'easy' | 'medium' | 'hard';
 type GameMode = 'settings' | 'playing';

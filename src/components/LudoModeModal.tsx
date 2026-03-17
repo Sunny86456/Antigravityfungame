@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { X, Users, User, Tv, ShoppingBag, Trophy } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 import { PlayerType } from '@/games/ludo/engine/types';
 
 interface LudoModeModalProps {
@@ -42,7 +42,7 @@ export function LudoModeModal({ isOpen, onClose, onStartGame }: LudoModeModalPro
         }
 
         // Set global config
-        // @ts-ignore
+        // @ts-expect-error - External library types mismatch
         window.__LUDO_CONFIG__ = {
             mode: gameMode,
             players

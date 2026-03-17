@@ -22,7 +22,7 @@ import {
   Save,
   AlertCircle
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 
 interface SettingToggleProps {
   icon: React.ElementType;
@@ -84,6 +84,12 @@ const Settings = () => {
     }
   }, [user, loading, navigate]);
 
+  // Username change state
+  const [newUsername, setNewUsername] = useState(profile?.username || '');
+  const [usernameError, setUsernameError] = useState('');
+  const [usernameSuccess, setUsernameSuccess] = useState('');
+  const [isSavingUsername, setIsSavingUsername] = useState(false);
+
   if (loading) {
     return (
       <Layout>
@@ -93,7 +99,6 @@ const Settings = () => {
       </Layout>
     );
   }
-
   const soundEnabled = profile?.sound_enabled ?? true;
   const notificationsEnabled = profile?.notifications_enabled ?? true;
 
@@ -104,12 +109,6 @@ const Settings = () => {
   const handleNotificationsToggle = async () => {
     await updateProfile({ notifications_enabled: !notificationsEnabled });
   };
-
-  // Username change state
-  const [newUsername, setNewUsername] = useState(profile?.username || '');
-  const [usernameError, setUsernameError] = useState('');
-  const [usernameSuccess, setUsernameSuccess] = useState('');
-  const [isSavingUsername, setIsSavingUsername] = useState(false);
 
   const handleUsernameChange = async () => {
     setUsernameError('');

@@ -4,7 +4,7 @@ import { ChessValidator } from './ChessValidator';
 
 async function runuser() {
     console.log('STARTING AUDIT...');
-    const invalid: any[] = [];
+    const invalid: unknown[] = [];
 
     LESSONS.forEach(l => {
         const audits = ChessValidator.sanityCheckLesson(l);

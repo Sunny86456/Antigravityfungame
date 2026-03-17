@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
-import { useGameSounds } from '@/hooks/useGameSounds';
+import { useGameSounds } from '@/shared/hooks/useGameSounds';
 import { supabase } from '@/integrations/supabase/client';
 import { CodeEditor } from './CodeEditor';
 import { codingLevels, Language, getDifficultyColor, getDifficultyBg, CodingLevel } from './levels';
@@ -22,7 +22,7 @@ import {
   AlertTriangle,
   Terminal
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 
 type GameState = 'menu' | 'playing' | 'results';
 
@@ -111,16 +111,7 @@ export default function CodingGame() {
     setCanSubmit(true);
   }, [code, selectedLevel, language]);
 
-  // Load progress from Supabase
-  useEffect(() => {
-    if (user) {
-      loadProgress();
-    } else {
-      setIsLoading(false);
-    }
-  }, [user]);
-
-  const loadProgress = async () => {
+  const loadProgress = useCallback(async () => {
     if (!user) return;
     
     const { data, error } = await supabase
@@ -132,7 +123,16 @@ export default function CodingGame() {
       setProgress(data as LevelProgress[]);
     }
     setIsLoading(false);
-  };
+  }, [user]);
+
+  // Load progress from Supabase
+  useEffect(() => {
+    if (user) {
+      loadProgress();
+    } else {
+      setIsLoading(false);
+    }
+  }, [user, loadProgress]);
 
   const isLevelUnlocked = (levelId: number): boolean => {
     if (levelId === 1) return true;
@@ -143,33 +143,6 @@ export default function CodingGame() {
   const isLevelCompleted = (levelId: number): boolean => {
     return progress.find(p => p.level_id === levelId)?.completed || false;
   };
-
-  // Timer effect with warning sounds
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    
-    if (isRunning && timeLeft > 0) {
-      interval = setInterval(() => {
-        setTimeLeft(prev => {
-          // Warning at 30, 10, 5 seconds
-          if ([30, 10, 5].includes(prev) && prev !== lastWarningTime.current) {
-            lastWarningTime.current = prev;
-            playSound('timerWarning');
-            setTimerWarning(true);
-            setTimeout(() => setTimerWarning(false), 500);
-          }
-          
-          if (prev <= 1) {
-            handleSubmit();
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    }
-    
-    return () => clearInterval(interval);
-  }, [isRunning, timeLeft, playSound]);
 
   const startLevel = (level: CodingLevel) => {
     if (!isLevelUnlocked(level.id) && !isLevelCompleted(level.id - 1)) {
@@ -436,7 +409,34 @@ export default function CodingGame() {
     
     setGameState('results');
     setIsSubmitting(false);
-  }, [selectedLevel, code, language, timeLeft, user, profile, progress, playSound, isSubmitting]);
+  }, [selectedLevel, code, language, timeLeft, user, profile, progress, playSound, isSubmitting, updateProfile, loadProgress]);
+
+  // Timer effect with warning sounds
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    
+    if (isRunning && timeLeft > 0) {
+      interval = setInterval(() => {
+        setTimeLeft(prev => {
+          // Warning at 30, 10, 5 seconds
+          if ([30, 10, 5].includes(prev) && prev !== lastWarningTime.current) {
+            lastWarningTime.current = prev;
+            playSound('timerWarning');
+            setTimerWarning(true);
+            setTimeout(() => setTimerWarning(false), 500);
+          }
+          
+          if (prev <= 1) {
+            handleSubmit();
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    
+    return () => clearInterval(interval);
+  }, [isRunning, timeLeft, playSound, handleSubmit]);
 
   const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);

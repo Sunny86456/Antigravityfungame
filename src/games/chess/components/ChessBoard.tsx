@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { ChessPiece } from '../ChessPiece';
 import { BoardTheme, getThemeById } from '../themes';
 import { Board, Position, Move, PieceType, PieceColor } from '../chessLogic';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 
 interface LastMoveHighlight {
   from: Position;

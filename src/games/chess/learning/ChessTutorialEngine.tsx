@@ -12,7 +12,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
-import { useGameSounds } from '@/hooks/useGameSounds';
+import { useGameSounds } from '@/shared/hooks/useGameSounds';
 import { supabase } from '@/integrations/supabase/client';
 import { ChessBoard } from '../components/ChessBoard';
 import { Lesson, LESSONS, getLessonById } from './lessonData';
@@ -28,8 +28,8 @@ import {
   cloneBoard,
   getMoveNotation
 } from '../chessLogic';
-import { cn } from '@/lib/utils';
-import { Progress } from '@/components/ui/progress';
+import { cn } from '@/shared/lib/utils';
+import { Progress } from '@/shared/ui/progress';
 import {
   ChevronLeft,
   ChevronRight,
@@ -269,10 +269,11 @@ export default function ChessTutorialEngine() {
         case 'check':
           objectiveMet = isInCheck(newBoard, lesson.playerColor === 'white' ? 'black' : 'white');
           break;
-        case 'checkmate':
+        case 'checkmate': {
           const state = getGameState(newBoard, lesson.playerColor === 'white' ? 'black' : 'white');
           objectiveMet = state === 'checkmate';
           break;
+        }
         case 'castle':
           objectiveMet = !!move.isCastling;
           break;
@@ -297,6 +298,23 @@ export default function ChessTutorialEngine() {
     setLegalMoves([]);
 
   }, [board, lesson, playSound, completeLesson, resetLesson, moveCount, lessonError]);
+
+  const selectPiece = useCallback((row: number, col: number) => {
+    if (!lesson) return;
+
+    playSound('click');
+    setFeedback(null);
+    setIllegalMoveMessage(null);
+    setSelectedSquare({ row, col });
+
+    // Get ALL legal moves for this piece
+    const allMoves = getLegalMoves(board, lesson.playerColor);
+    const pieceMoves = allMoves.filter(m => m.from.row === row && m.from.col === col);
+
+    // In explore mode, show all legal moves
+    // In specific mode, still show all legal moves (but only accept specific ones)
+    setLegalMoves(pieceMoves);
+  }, [board, lesson, playSound]);
 
   const handleSquareClick = useCallback((row: number, col: number) => {
     if (!lesson || isCompleted) return;
@@ -364,24 +382,7 @@ export default function ChessTutorialEngine() {
 
       selectPiece(row, col);
     }
-  }, [board, lesson, selectedSquare, legalMoves, isCompleted, playSound, handleMoveResult, completeLesson]);
-
-  const selectPiece = useCallback((row: number, col: number) => {
-    if (!lesson) return;
-
-    playSound('click');
-    setFeedback(null);
-    setIllegalMoveMessage(null);
-    setSelectedSquare({ row, col });
-
-    // Get ALL legal moves for this piece
-    const allMoves = getLegalMoves(board, lesson.playerColor);
-    const pieceMoves = allMoves.filter(m => m.from.row === row && m.from.col === col);
-
-    // In explore mode, show all legal moves
-    // In specific mode, still show all legal moves (but only accept specific ones)
-    setLegalMoves(pieceMoves);
-  }, [board, lesson, playSound]);
+  }, [board, lesson, selectedSquare, legalMoves, isCompleted, playSound, handleMoveResult, completeLesson, selectPiece]);
 
   // Loading states
   if (authLoading || isLoading) {
