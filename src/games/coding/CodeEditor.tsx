@@ -82,7 +82,7 @@ export function CodeEditor({ code, onChange, language, readOnly = false }: CodeE
       // Check for comment
       if (remaining.startsWith('//') || remaining.startsWith('#')) {
         parts.push(
-          <span key={key++} className="text-muted-foreground italic">
+          <span key={key++} className="text-muted-strong italic">
             {remaining}
           </span>
         );
@@ -128,11 +128,11 @@ export function CodeEditor({ code, onChange, language, readOnly = false }: CodeE
   };
 
   return (
-    <div className="relative rounded-xl border border-border bg-muted/30 overflow-hidden font-mono text-sm">
+    <div className="relative rounded-xl border border-border glass-surface-2 overflow-hidden font-mono text-sm">
       {/* Line numbers and highlighted code (display layer) */}
       <div className="flex pointer-events-none absolute inset-0 overflow-auto">
         {/* Line numbers */}
-        <div className="flex-shrink-0 py-4 px-2 bg-muted/50 text-muted-foreground text-right select-none border-r border-border">
+        <div className="flex-shrink-0 py-4 px-2 glass-chip text-muted-strong text-right select-none border-r border-border">
           {lines.map((_, i) => (
             <div key={i} className="leading-6 h-6">
               {i + 1}

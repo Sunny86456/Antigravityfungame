@@ -148,7 +148,7 @@ export default function ChessLearningHub() {
         <div className="container mx-auto px-4 py-8 text-center">
           <BookOpen className="w-16 h-16 mx-auto mb-4 text-primary" />
           <h2 className="text-2xl font-bold text-foreground mb-2">Sign in to Learn</h2>
-          <p className="text-muted-foreground mb-6">You need to be logged in to track your progress.</p>
+          <p className="text-muted-strong mb-6">You need to be logged in to track your progress.</p>
           <button
             onClick={() => navigate('/auth')}
             className="px-6 py-3 rounded-xl gradient-primary text-primary-foreground font-bold hover:opacity-90 transition-all"
@@ -167,16 +167,16 @@ export default function ChessLearningHub() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-foreground mb-2">Learn Chess</h1>
-            <p className="text-muted-foreground">Master the game from basics to advanced tactics</p>
+            <p className="text-muted-strong">Master the game from basics to advanced tactics</p>
           </div>
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted">
+            <div className="flex items-center gap-2 px-4 py-2 rounded-xl glass-chip">
               <Coins className="w-5 h-5 text-coin" />
               <span className="font-bold">{profile?.coins ?? 0}</span>
             </div>
             <button
               onClick={() => navigate('/games/chess')}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 transition-all"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl glass-button-secondary transition-all"
             >
               <ChevronLeft className="w-4 h-4" />
               Back to Chess
@@ -198,7 +198,7 @@ export default function ChessLearningHub() {
                 "flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all whitespace-nowrap",
                 activeTab === tab.id
                   ? "gradient-primary text-primary-foreground glow-primary"
-                  : "bg-muted hover:bg-muted/80"
+                  : "glass-button-secondary text-foreground"
               )}
             >
               <tab.icon className="w-5 h-5" />
@@ -211,17 +211,17 @@ export default function ChessLearningHub() {
         {activeTab === 'learn' && (
           <div className="space-y-6">
             {/* Progress Overview */}
-            <div className="p-6 rounded-2xl bg-card border border-border">
+            <div className="p-6 rounded-2xl glass-surface-2">
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h3 className="text-lg font-bold text-foreground">Your Progress</h3>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-muted-strong">
                     {completedTutorials.length} of {LESSONS.length} lessons completed
                   </p>
                 </div>
                 <div className="text-right">
                   <div className="text-2xl font-bold text-primary">{Math.round(tutorialProgress)}%</div>
-                  <p className="text-xs text-muted-foreground">Complete</p>
+                  <p className="text-xs text-muted-strong">Complete</p>
                 </div>
               </div>
               <Progress value={tutorialProgress} className="h-3" />
@@ -233,7 +233,7 @@ export default function ChessLearningHub() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="font-bold text-foreground mb-1">Continue Learning</h3>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-muted-strong">
                       {/* Calculate next lesson dynamically */}
                       {(() => {
                         // Find first uncompleted visible lesson
@@ -265,11 +265,11 @@ export default function ChessLearningHub() {
                 const isExpanded = expandedCategory === category.id;
 
                 return (
-                  <div key={category.id} className="rounded-2xl border border-border overflow-hidden">
+                  <div key={category.id} className="rounded-2xl border border-border overflow-hidden glass-surface-1">
                     {/* Category Header */}
                     <button
                       onClick={() => setExpandedCategory(isExpanded ? null : category.id)}
-                      className="w-full p-4 bg-card hover:bg-muted/50 transition-all flex items-center justify-between"
+                      className="w-full p-4 glass-surface-1 transition-all flex items-center justify-between"
                     >
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center text-2xl">
@@ -277,7 +277,7 @@ export default function ChessLearningHub() {
                         </div>
                         <div className="text-left">
                           <h3 className="font-bold text-foreground">{category.name}</h3>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-sm text-muted-strong">
                             {completedInCategory}/{categoryLessons.length} lessons completed
                           </p>
                         </div>
@@ -285,7 +285,7 @@ export default function ChessLearningHub() {
                       <div className="flex items-center gap-4">
                         <Progress value={(completedInCategory / categoryLessons.length) * 100} className="w-24 h-2" />
                         <ChevronRight className={cn(
-                          "w-5 h-5 text-muted-foreground transition-transform",
+                          "w-5 h-5 text-muted-strong transition-transform",
                           isExpanded && "rotate-90"
                         )} />
                       </div>
@@ -307,8 +307,8 @@ export default function ChessLearningHub() {
                                 isCompleted
                                   ? "bg-success/5"
                                   : isUnlocked
-                                    ? "bg-card hover:bg-muted/50 cursor-pointer"
-                                    : "bg-muted/30 opacity-60 cursor-not-allowed"
+                                    ? "glass-surface-1 hover:bg-primary/5 cursor-pointer"
+                                    : "glass-surface-1 opacity-60 cursor-not-allowed"
                               )}
                             >
                               <div className={cn(
@@ -317,12 +317,12 @@ export default function ChessLearningHub() {
                                   ? "bg-success/20"
                                   : isUnlocked
                                     ? "bg-primary/20"
-                                    : "bg-muted"
+                                    : "glass-chip"
                               )}>
                                 {isCompleted ? (
                                   <CheckCircle className="w-5 h-5 text-success" />
                                 ) : !isUnlocked ? (
-                                  <Lock className="w-4 h-4 text-muted-foreground" />
+                                  <Lock className="w-4 h-4 text-muted-strong" />
                                 ) : (
                                   <span>{lesson.icon}</span>
                                 )}
@@ -330,7 +330,7 @@ export default function ChessLearningHub() {
 
                               <div className="flex-1">
                                 <div className="flex items-center gap-2">
-                                  <span className="text-xs text-muted-foreground">#{lesson.id}</span>
+                                  <span className="text-xs text-muted-strong">#{lesson.id}</span>
                                   <h4 className="font-medium text-foreground">{lesson.title}</h4>
                                   {isCompleted && (
                                     <span className="text-xs px-2 py-0.5 rounded-full bg-success/20 text-success">
@@ -338,11 +338,11 @@ export default function ChessLearningHub() {
                                     </span>
                                   )}
                                 </div>
-                                <p className="text-sm text-muted-foreground">{lesson.description}</p>
+                                <p className="text-sm text-muted-strong">{lesson.description}</p>
                               </div>
 
                               {isUnlocked && !isCompleted && (
-                                <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                                <ChevronRight className="w-5 h-5 text-muted-strong" />
                               )}
                             </div>
                           );
@@ -360,15 +360,15 @@ export default function ChessLearningHub() {
         {activeTab === 'puzzles' && (
           <div className="space-y-6">
             {/* Progress Overview */}
-            <div className="p-6 rounded-2xl bg-card border border-border">
+            <div className="p-6 rounded-2xl glass-surface-2">
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h3 className="text-lg font-bold text-foreground">Puzzle Progress</h3>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-muted-strong">
                     {completedPuzzles.length} of {PUZZLES.length} puzzles solved
                   </p>
                 </div>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-muted-strong">
                   First {FREE_PUZZLE_COUNT} puzzles are free!
                 </div>
               </div>
@@ -392,8 +392,8 @@ export default function ChessLearningHub() {
                       isCompleted
                         ? "border-success/50 bg-success/10"
                         : isUnlocked
-                          ? "border-border bg-card hover:border-primary cursor-pointer hover:glow-card"
-                          : "border-border/50 bg-muted/30"
+                          ? "border-border glass-surface-1 hover:border-primary cursor-pointer hover:glow-card"
+                          : "border-border/50 glass-surface-1 opacity-70"
                     )}
                   >
                     <div className="flex items-center justify-between mb-3">
@@ -409,12 +409,12 @@ export default function ChessLearningHub() {
                       {isCompleted ? (
                         <CheckCircle className="w-5 h-5 text-success" />
                       ) : !isUnlocked ? (
-                        <Lock className="w-5 h-5 text-muted-foreground" />
+                        <Lock className="w-5 h-5 text-muted-strong" />
                       ) : null}
                     </div>
 
                     <h3 className="font-bold text-foreground mb-1">{puzzle.title}</h3>
-                    <p className="text-xs text-muted-foreground capitalize mb-3">
+                    <p className="text-xs text-muted-strong capitalize mb-3">
                       {puzzle.category.replace('-', ' ')}
                     </p>
 
@@ -433,7 +433,7 @@ export default function ChessLearningHub() {
                           "w-full py-2 rounded-xl font-medium transition-all flex items-center justify-center gap-2 text-sm",
                           canAfford
                             ? "gradient-primary text-primary-foreground hover:opacity-90"
-                            : "bg-muted text-muted-foreground cursor-not-allowed"
+                            : "glass-button-disabled cursor-not-allowed"
                         )}
                       >
                         <Coins className="w-4 h-4" />
@@ -450,17 +450,17 @@ export default function ChessLearningHub() {
         {/* Practice Tab */}
         {activeTab === 'practice' && (
           <div className="max-w-2xl mx-auto">
-            <div className="p-8 rounded-2xl bg-card border border-border text-center">
+            <div className="p-8 rounded-2xl glass-surface-2 text-center">
               <Gamepad2 className="w-16 h-16 mx-auto mb-4 text-primary" />
               <h2 className="text-2xl font-bold text-foreground mb-2">Practice Mode</h2>
-              <p className="text-muted-foreground mb-6">
+              <p className="text-muted-strong mb-6">
                 Play against AI without affecting your stats. Perfect for experimenting
                 with new strategies and learning from mistakes!
               </p>
 
-              <div className="p-4 rounded-xl bg-muted/50 mb-6">
+              <div className="p-4 rounded-xl glass-chip mb-6">
                 <h3 className="font-medium text-foreground mb-2">🛡️ Safe Environment</h3>
-                <ul className="text-sm text-muted-foreground space-y-1">
+                <ul className="text-sm text-muted-strong space-y-1">
                   <li>✓ No coins earned or lost</li>
                   <li>✓ No leaderboard impact</li>
                   <li>✓ No win/loss tracking</li>

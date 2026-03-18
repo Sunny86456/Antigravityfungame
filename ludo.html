@@ -9,8 +9,10 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #0f172a;
-            /* Slate 900 */
+            background:
+                radial-gradient(circle at top left, rgba(99, 102, 241, 0.24), transparent 30%),
+                radial-gradient(circle at top right, rgba(16, 185, 129, 0.16), transparent 26%),
+                #070b17;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -21,12 +23,13 @@
 
         #game-container {
             position: relative;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 28px 60px rgba(3, 7, 18, 0.55);
         }
 
         canvas {
             display: block;
             border-radius: 12px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
         }
 
         /* ── Pause button ────────────────────────────────────── */
@@ -40,21 +43,25 @@
             border-radius: 50%;
             border: none;
             cursor: pointer;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.03)),
+                rgba(30, 41, 84, 0.72);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 20px;
-            color: #fff;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+            color: #f8fafc;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1);
             transition: background 0.2s, transform 0.15s;
             user-select: none;
         }
 
         #pause-btn:hover {
-            background: rgba(255, 255, 255, 0.28);
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.04)),
+                rgba(45, 58, 117, 0.78);
             transform: scale(1.1);
         }
 

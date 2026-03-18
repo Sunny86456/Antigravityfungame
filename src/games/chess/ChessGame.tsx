@@ -444,7 +444,7 @@ export default function ChessGame() {
         <div className="container mx-auto px-4 py-8 text-center">
           <Crown className="w-16 h-16 mx-auto mb-4 text-primary" />
           <h2 className="text-2xl font-bold text-foreground mb-2">Sign in to Play</h2>
-          <p className="text-muted-foreground mb-6">You need to be logged in to save your progress.</p>
+          <p className="text-muted-strong mb-6">You need to be logged in to save your progress.</p>
           <button
             onClick={() => navigate('/auth')}
             className="px-6 py-3 rounded-xl gradient-primary text-primary-foreground font-bold hover:opacity-90 transition-all"
@@ -464,11 +464,11 @@ export default function ChessGame() {
           <div className="flex items-center justify-between mb-8">
             <div>
               <h1 className="text-3xl font-bold text-foreground mb-2">Chess</h1>
-              <p className="text-muted-foreground">Test your strategy against AI or friends</p>
+              <p className="text-muted-strong">Test your strategy against AI or friends</p>
             </div>
             <button
               onClick={() => navigate('/games')}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 transition-all"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl glass-button-secondary text-foreground hover:scale-[1.01] transition-all"
             >
               <ChevronLeft className="w-4 h-4" />
               Back to Games
@@ -479,47 +479,47 @@ export default function ChessGame() {
             {/* Learn Chess */}
             <div
               onClick={() => navigate('/games/chess/learn')}
-              className="p-8 rounded-2xl bg-card border border-border hover:glow-card transition-all cursor-pointer"
+              className="p-8 rounded-2xl glass-surface-2 hover:glow-card transition-all cursor-pointer"
             >
               <BookOpen className="w-12 h-12 mb-4 text-success" />
               <h3 className="text-xl font-bold text-foreground mb-2">Learn Chess</h3>
-              <p className="text-sm text-muted-foreground">Tutorials, puzzles & practice mode</p>
+              <p className="text-sm text-muted-strong">Tutorials, puzzles & practice mode</p>
             </div>
             
             {/* Play vs AI */}
             <div
               onClick={() => setGameMode('settings')}
-              className="p-8 rounded-2xl bg-card border border-border hover:glow-card transition-all cursor-pointer"
+              className="p-8 rounded-2xl glass-surface-2 hover:glow-card transition-all cursor-pointer"
             >
               <Cpu className="w-12 h-12 mb-4 text-primary" />
               <h3 className="text-xl font-bold text-foreground mb-2">Play vs AI</h3>
-              <p className="text-sm text-muted-foreground">Challenge the computer at different difficulty levels</p>
+              <p className="text-sm text-muted-strong">Challenge the computer at different difficulty levels</p>
             </div>
             
             {/* Local Multiplayer */}
             <div
               onClick={() => startGame('local', false)}
-              className="p-8 rounded-2xl bg-card border border-border hover:glow-card transition-all cursor-pointer"
+              className="p-8 rounded-2xl glass-surface-2 hover:glow-card transition-all cursor-pointer"
             >
               <Users className="w-12 h-12 mb-4 text-accent" />
               <h3 className="text-xl font-bold text-foreground mb-2">Local Multiplayer</h3>
-              <p className="text-sm text-muted-foreground">Play against a friend on the same device</p>
+              <p className="text-sm text-muted-strong">Play against a friend on the same device</p>
             </div>
             
             {/* Board Shop */}
             <div
               onClick={() => setGameMode('shop')}
-              className="p-8 rounded-2xl bg-card border border-border hover:glow-card transition-all cursor-pointer"
+              className="p-8 rounded-2xl glass-surface-2 hover:glow-card transition-all cursor-pointer"
             >
               <Crown className="w-12 h-12 mb-4 text-coin" />
               <h3 className="text-xl font-bold text-foreground mb-2">Board Shop</h3>
-              <p className="text-sm text-muted-foreground">Unlock beautiful chess board themes</p>
+              <p className="text-sm text-muted-strong">Unlock beautiful chess board themes</p>
             </div>
           </div>
           
           {/* Current Board Theme Preview */}
           <div className="mt-8 text-center">
-            <p className="text-sm text-muted-foreground mb-2">Current Board: {currentTheme.name}</p>
+            <p className="text-sm text-muted-strong mb-2">Current Board: {currentTheme.name}</p>
             <div className="inline-flex gap-1">
               {[0, 1, 2, 3].map(i => (
                 <div
@@ -537,7 +537,7 @@ export default function ChessGame() {
               onClick={() => setAnimationsEnabled(!animationsEnabled)}
               className={cn(
                 "px-4 py-2 rounded-lg text-sm transition-all",
-                animationsEnabled ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                animationsEnabled ? "bg-primary text-primary-foreground glow-primary" : "glass-button-secondary text-muted-strong"
               )}
             >
               Animations: {animationsEnabled ? 'ON' : 'OFF'}
@@ -559,7 +559,7 @@ export default function ChessGame() {
         <div className="container mx-auto px-4 py-8 max-w-md">
           <button
             onClick={() => setGameMode('menu')}
-            className="flex items-center gap-2 mb-8 text-muted-foreground hover:text-foreground"
+            className="flex items-center gap-2 mb-8 text-muted-strong hover:text-foreground"
           >
             <ChevronLeft className="w-4 h-4" />
             Back
@@ -573,7 +573,7 @@ export default function ChessGame() {
                 "flex-1 py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2",
                 matchType === 'ranked'
                   ? "gradient-primary text-primary-foreground"
-                  : "bg-muted text-muted-foreground"
+                  : "glass-button-secondary text-muted-strong"
               )}
             >
               <Swords className="w-4 h-4" />
@@ -585,7 +585,7 @@ export default function ChessGame() {
                 "flex-1 py-3 rounded-xl font-bold transition-all",
                 matchType === 'casual'
                   ? "bg-accent text-accent-foreground"
-                  : "bg-muted text-muted-foreground"
+                  : "glass-button-secondary text-muted-strong"
               )}
             >
               Casual
@@ -623,14 +623,14 @@ export default function ChessGame() {
                   className={cn(
                     "w-full p-6 rounded-2xl border-2 transition-all text-left",
                     difficulty === d
-                      ? "border-primary bg-primary/10 glow-card"
-                      : "border-border bg-card hover:border-primary/50"
+                      ? "border-primary glass-surface-2 glow-card"
+                      : "border-border glass-surface-1 hover:border-primary/50"
                   )}
                 >
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="text-lg font-bold text-foreground capitalize">{d}</h3>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-sm text-muted-strong">
                         {d === 'easy' && 'Perfect for beginners'}
                         {d === 'medium' && 'Balanced challenge'}
                         {d === 'hard' && 'For experienced players'}
@@ -639,7 +639,7 @@ export default function ChessGame() {
                     {matchType === 'ranked' ? (
                       <div className="text-right">
                         <div className="text-coin flex items-center gap-1 justify-end">
-                          <span className="text-xs text-muted-foreground">Fee:</span>
+                          <span className="text-xs text-muted-strong">Fee:</span>
                           <Coins className="w-4 h-4" />
                           {fee}
                         </div>
@@ -660,8 +660,8 @@ export default function ChessGame() {
           </div>
           
           {/* Coins display */}
-          <div className="flex items-center justify-center gap-2 mt-6 p-3 rounded-xl bg-muted/50">
-            <span className="text-muted-foreground">Your balance:</span>
+          <div className="flex items-center justify-center gap-2 mt-6 p-3 rounded-xl glass-chip">
+            <span className="text-muted-strong">Your balance:</span>
             <Coins className="w-5 h-5 text-coin" />
             <span className="font-bold">{profile?.coins ?? 0}</span>
           </div>
@@ -672,7 +672,7 @@ export default function ChessGame() {
             className={cn(
               "w-full mt-6 py-4 rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2",
               matchType === 'ranked' && !userCanAfford
-                ? "bg-muted text-muted-foreground cursor-not-allowed"
+                ? "glass-button-disabled cursor-not-allowed"
                 : "gradient-primary text-primary-foreground hover:opacity-90 glow-primary"
             )}
           >
@@ -699,40 +699,40 @@ export default function ChessGame() {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-8 max-w-md">
-          <div className="p-8 rounded-2xl bg-card border border-border text-center">
+          <div className="p-8 rounded-2xl glass-surface-2 text-center">
             <Swords className="w-16 h-16 mx-auto mb-4 text-primary" />
             <h2 className="text-2xl font-bold text-foreground mb-2">Ranked Match</h2>
-            <p className="text-muted-foreground mb-6 capitalize">
+            <p className="text-muted-strong mb-6 capitalize">
               {difficulty} difficulty vs AI
             </p>
             
-            <div className="p-4 rounded-xl bg-muted/50 mb-6 space-y-3">
+            <div className="p-4 rounded-xl glass-chip mb-6 space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Entry Fee:</span>
+                <span className="text-muted-strong">Entry Fee:</span>
                 <span className="font-bold text-destructive flex items-center gap-1">
                   <Coins className="w-4 h-4" />
                   -{matchFee}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">If You Win:</span>
+                <span className="text-muted-strong">If You Win:</span>
                 <span className="font-bold text-success flex items-center gap-1">
                   <Coins className="w-4 h-4" />
                   +{potentialWin}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">If You Lose:</span>
+                <span className="text-muted-strong">If You Lose:</span>
                 <span className="font-bold text-destructive">0 (fee lost)</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">If Draw:</span>
+                <span className="text-muted-strong">If Draw:</span>
                 <span className="font-bold">Fee Refunded</span>
               </div>
             </div>
             
-            <div className="flex items-center justify-center gap-2 mb-6 p-3 rounded-xl bg-muted/50">
-              <span className="text-muted-foreground">Your balance:</span>
+            <div className="flex items-center justify-center gap-2 mb-6 p-3 rounded-xl glass-chip">
+              <span className="text-muted-strong">Your balance:</span>
               <Coins className="w-5 h-5 text-coin" />
               <span className="font-bold">{profile?.coins ?? 0}</span>
             </div>
@@ -740,7 +740,7 @@ export default function ChessGame() {
             <div className="flex gap-3">
               <button
                 onClick={() => setGameMode('settings')}
-                className="flex-1 py-3 rounded-xl bg-muted hover:bg-muted/80 transition-all font-medium"
+                className="flex-1 py-3 rounded-xl glass-button-secondary transition-all font-medium"
               >
                 Cancel
               </button>
@@ -751,7 +751,7 @@ export default function ChessGame() {
                   "flex-1 py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2",
                   userCanAfford
                     ? "gradient-primary text-primary-foreground hover:opacity-90"
-                    : "bg-muted text-muted-foreground cursor-not-allowed"
+                    : "glass-button-disabled cursor-not-allowed"
                 )}
               >
                 <Coins className="w-4 h-4" />
@@ -778,16 +778,16 @@ export default function ChessGame() {
           <div className="flex items-center justify-between mb-8">
             <div>
               <h2 className="text-2xl font-bold text-foreground">Board Shop</h2>
-              <p className="text-muted-foreground">Customize your chess experience</p>
+              <p className="text-muted-strong">Customize your chess experience</p>
             </div>
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-xl glass-chip">
                 <Coins className="w-5 h-5 text-coin" />
                 <span className="font-bold">{profile?.coins ?? 0}</span>
               </div>
               <button
                 onClick={() => setGameMode('menu')}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 transition-all"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl glass-button-secondary transition-all"
               >
                 <ChevronLeft className="w-4 h-4" />
                 Back
@@ -808,8 +808,8 @@ export default function ChessGame() {
                   className={cn(
                     "p-4 rounded-2xl border-2 transition-all",
                     isSelected
-                      ? "border-primary bg-primary/10 glow-card"
-                      : "border-border bg-card hover:border-primary/50"
+                      ? "border-primary glass-surface-2 glow-card"
+                      : "border-border glass-surface-1 hover:border-primary/50"
                   )}
                 >
                   {/* Preview */}
@@ -828,7 +828,7 @@ export default function ChessGame() {
                   </div>
                   
                   <h3 className="font-bold text-foreground mb-1">{theme.name}</h3>
-                  <p className="text-xs text-muted-foreground mb-3">{theme.preview}</p>
+                  <p className="text-xs text-muted-strong mb-3">{theme.preview}</p>
                   
                   {isUnlocked ? (
                     <button
@@ -837,7 +837,7 @@ export default function ChessGame() {
                         "w-full py-2 rounded-xl font-medium transition-all flex items-center justify-center gap-2",
                         isSelected
                           ? "bg-success text-primary-foreground"
-                          : "bg-muted hover:bg-muted/80"
+                          : "glass-button-secondary text-foreground"
                       )}
                     >
                       {isSelected ? (
@@ -857,7 +857,7 @@ export default function ChessGame() {
                         "w-full py-2 rounded-xl font-medium transition-all flex items-center justify-center gap-2",
                         canAffordTheme
                           ? "gradient-primary text-primary-foreground hover:opacity-90"
-                          : "bg-muted text-muted-foreground cursor-not-allowed"
+                          : "glass-button-disabled cursor-not-allowed"
                       )}
                     >
                       {canAffordTheme ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
@@ -891,7 +891,7 @@ export default function ChessGame() {
                       "p-4 rounded-2xl border-2 transition-all relative overflow-hidden",
                       isSelected
                         ? "border-coin bg-coin/10 glow-card"
-                        : "border-coin/30 bg-card hover:border-coin/60"
+                        : "border-coin/30 glass-surface-1 hover:border-coin/60"
                     )}
                   >
                     {/* Legendary badge */}
@@ -915,7 +915,7 @@ export default function ChessGame() {
                     </div>
                     
                     <h3 className="font-bold text-coin mb-1">{theme.name}</h3>
-                    <p className="text-xs text-muted-foreground mb-3">{theme.preview}</p>
+                    <p className="text-xs text-muted-strong mb-3">{theme.preview}</p>
                     
                     {isUnlocked ? (
                       <button
@@ -924,7 +924,7 @@ export default function ChessGame() {
                           "w-full py-2 rounded-xl font-medium transition-all flex items-center justify-center gap-2",
                           isSelected
                             ? "bg-coin text-background"
-                            : "bg-muted hover:bg-muted/80"
+                            : "glass-button-secondary text-foreground"
                         )}
                       >
                         {isSelected ? (
@@ -944,7 +944,7 @@ export default function ChessGame() {
                           "w-full py-2 rounded-xl font-medium transition-all flex items-center justify-center gap-2",
                           canAffordTheme
                             ? "bg-coin text-background hover:opacity-90"
-                            : "bg-muted text-muted-foreground cursor-not-allowed"
+                            : "glass-button-disabled cursor-not-allowed"
                         )}
                       >
                         {canAffordTheme ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
@@ -971,13 +971,13 @@ export default function ChessGame() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => setGameMode('menu')}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 transition-all"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl glass-button-secondary transition-all"
             >
               <ChevronLeft className="w-4 h-4" />
               Exit
             </button>
             
-            <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted">
+            <div className="flex items-center gap-2 px-4 py-2 rounded-xl glass-chip">
               <Clock className="w-5 h-5" />
               {formatTime(gameTime)}
             </div>
@@ -1000,7 +1000,7 @@ export default function ChessGame() {
           
           <button
             onClick={() => startGame(opponentType)}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 transition-all"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl glass-button-secondary transition-all"
           >
             <RotateCcw className="w-4 h-4" />
             Restart
@@ -1113,14 +1113,14 @@ export default function ChessGame() {
             {/* Promotion Dialog */}
             {promotionPending && (
               <div className="absolute inset-0 bg-background/80 flex items-center justify-center rounded-xl">
-                <div className="p-4 rounded-xl bg-card border border-border">
+                <div className="p-4 rounded-xl glass-surface-2">
                   <p className="text-sm font-medium text-foreground mb-3 text-center">Promote to:</p>
                   <div className="flex gap-2">
                     {(['queen', 'rook', 'bishop', 'knight'] as PieceType[]).map(type => (
                       <button
                         key={type}
                         onClick={() => handlePromotion(type)}
-                        className="p-2 rounded-lg bg-muted hover:bg-muted/80 transition-all"
+                        className="p-2 rounded-lg glass-button-secondary transition-all"
                       >
                         <ChessPiece piece={{ type, color: currentTurn }} size={40} />
                       </button>
@@ -1136,14 +1136,14 @@ export default function ChessGame() {
                 <div className="text-center p-8">
                   <Trophy className={cn(
                     "w-16 h-16 mx-auto mb-4",
-                    winner === 'white' ? "text-coin animate-bounce" : winner === 'black' ? "text-accent" : "text-muted-foreground"
+                    winner === 'white' ? "text-coin animate-bounce" : winner === 'black' ? "text-accent" : "text-muted-strong"
                   )} />
                   <h2 className="text-2xl font-bold text-foreground mb-2">
                     {gameResult === 'checkmate' && `${winner === 'white' ? 'White' : 'Black'} Wins!`}
                     {gameResult === 'stalemate' && 'Stalemate!'}
                     {gameResult === 'draw' && 'Draw!'}
                   </h2>
-                  <p className="text-muted-foreground mb-6">
+                  <p className="text-muted-strong mb-6">
                     {gameResult === 'checkmate' && 'Checkmate!'}
                     {gameResult === 'stalemate' && 'No legal moves available'}
                     {gameResult === 'draw' && 'The game ended in a draw'}
@@ -1157,7 +1157,7 @@ export default function ChessGame() {
                     </button>
                     <button
                       onClick={() => setGameMode('menu')}
-                      className="px-6 py-3 rounded-xl bg-muted hover:bg-muted/80 transition-all"
+                      className="px-6 py-3 rounded-xl glass-button-secondary transition-all"
                     >
                       Menu
                     </button>
@@ -1168,17 +1168,17 @@ export default function ChessGame() {
           </div>
           
           {/* Move History */}
-          <div className="w-full lg:w-64 p-4 rounded-xl bg-card border border-border">
+          <div className="w-full lg:w-64 p-4 rounded-xl glass-surface-2">
             <h3 className="font-bold text-foreground mb-3 flex items-center gap-2">
               <Settings className="w-4 h-4" />
               Move History
             </h3>
             
-            <div className="mb-4 p-3 rounded-lg bg-muted/50">
-              <p className="text-sm text-muted-foreground">
+            <div className="mb-4 p-3 rounded-lg glass-chip">
+              <p className="text-sm text-muted-strong">
                 Turn: <span className="font-bold text-foreground">{currentTurn === 'white' ? 'White' : 'Black'}</span>
               </p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-strong">
                 Mode: <span className="font-bold text-foreground">
                   {opponentType === 'ai' ? `AI (${difficulty})` : 'Local'}
                 </span>
@@ -1187,14 +1187,14 @@ export default function ChessGame() {
             
             <div className="max-h-64 overflow-y-auto space-y-1">
               {moveHistory.length === 0 ? (
-                <p className="text-sm text-muted-foreground italic">No moves yet</p>
+                <p className="text-sm text-muted-strong italic">No moves yet</p>
               ) : (
                 moveHistory.map((move, i) => (
                   <div
                     key={i}
-                    className="flex items-center gap-2 text-sm px-2 py-1 rounded hover:bg-muted/50"
+                    className="flex items-center gap-2 text-sm px-2 py-1 rounded hover:bg-primary/5"
                   >
-                    <span className="text-muted-foreground w-6">{Math.floor(i / 2) + 1}.</span>
+                    <span className="text-muted-strong w-6">{Math.floor(i / 2) + 1}.</span>
                     <span className={cn(
                       "font-mono",
                       move.piece.color === 'white' ? "text-foreground" : "text-accent"

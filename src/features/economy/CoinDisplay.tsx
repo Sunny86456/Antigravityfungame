@@ -47,35 +47,35 @@ export function CoinDisplay({ className }: { className?: string }) {
     <div className={cn("relative", className)}>
       <button
         onClick={handleToggleHistory}
-        className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 transition-all"
+        className="flex items-center gap-2 px-4 py-2 rounded-xl glass-chip transition-all"
       >
         <Coins className="w-5 h-5 text-coin" />
         <span className="font-bold">{profile?.coins ?? 0}</span>
-        <History className="w-4 h-4 text-muted-foreground" />
+        <History className="w-4 h-4 text-muted-strong" />
       </button>
       
       {showHistory && (
-        <div className="absolute top-full right-0 mt-2 w-80 max-h-96 overflow-y-auto rounded-xl bg-card border border-border shadow-xl z-50">
-          <div className="sticky top-0 bg-card p-4 border-b border-border flex items-center justify-between">
+        <div className="absolute top-full right-0 mt-2 w-80 max-h-96 overflow-y-auto rounded-xl glass-surface-3 shadow-xl z-50">
+          <div className="sticky top-0 glass-surface-2 p-4 border-b border-border flex items-center justify-between">
             <h3 className="font-bold text-foreground">Transaction History</h3>
             <button
               onClick={() => setShowHistory(false)}
-              className="p-1 rounded-lg hover:bg-muted"
+              className="p-1 rounded-lg glass-chip"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
           
           {isLoading ? (
-            <div className="p-4 text-center text-muted-foreground">Loading...</div>
+            <div className="p-4 text-center text-muted-strong">Loading...</div>
           ) : transactions.length === 0 ? (
-            <div className="p-4 text-center text-muted-foreground">No transactions yet</div>
+            <div className="p-4 text-center text-muted-strong">No transactions yet</div>
           ) : (
             <div className="p-2">
               {transactions.map(tx => (
                 <div
                   key={tx.id}
-                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50"
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-primary/5"
                 >
                   <div className={cn(
                     "w-8 h-8 rounded-full flex items-center justify-center",
@@ -92,7 +92,7 @@ export function CoinDisplay({ className }: { className?: string }) {
                     <p className="text-sm font-medium text-foreground truncate">
                       {tx.description}
                     </p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-muted-strong">
                       {formatDate(tx.created_at)}
                     </p>
                   </div>

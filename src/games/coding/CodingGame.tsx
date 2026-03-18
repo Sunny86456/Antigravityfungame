@@ -200,7 +200,7 @@ export default function CodingGame() {
       case 'time_limit_exceeded':
         return { icon: Clock, text: 'Time Limit Exceeded', color: 'text-yellow-500', bg: 'bg-yellow-500/10' };
       case 'empty_code':
-        return { icon: Code2, text: 'Empty or Incomplete Code', color: 'text-muted-foreground', bg: 'bg-muted' };
+        return { icon: Code2, text: 'Empty or Incomplete Code', color: 'text-muted-strong', bg: 'glass-chip' };
     }
   };
 
@@ -477,7 +477,7 @@ export default function CodingGame() {
         <div className="container mx-auto px-4 py-8 text-center">
           <Code2 className="w-16 h-16 mx-auto mb-4 text-primary" />
           <h2 className="text-2xl font-bold text-foreground mb-2">Sign in to Play</h2>
-          <p className="text-muted-foreground mb-6">You need to be logged in to save your progress.</p>
+          <p className="text-muted-strong mb-6">You need to be logged in to save your progress.</p>
           <button
             onClick={() => navigate('/auth')}
             className="px-6 py-3 rounded-xl gradient-primary text-primary-foreground font-bold hover:opacity-90 transition-all"
@@ -497,11 +497,11 @@ export default function CodingGame() {
           <div className="flex items-center justify-between mb-8">
             <div>
               <h1 className="text-3xl font-bold text-foreground mb-2">DSA Coding Challenge</h1>
-              <p className="text-muted-foreground">Complete levels to earn coins and master algorithms</p>
+              <p className="text-muted-strong">Complete levels to earn coins and master algorithms</p>
             </div>
             <button
               onClick={() => navigate('/games')}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 transition-all"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl glass-button-secondary text-foreground transition-all"
             >
               <ChevronLeft className="w-4 h-4" />
               Back to Games
@@ -509,7 +509,7 @@ export default function CodingGame() {
           </div>
 
           {/* Language Selector */}
-          <div className="mb-8 p-4 rounded-xl bg-card border border-border">
+          <div className="mb-8 p-4 rounded-xl glass-surface-2">
             <p className="text-sm font-medium text-foreground mb-3">Select Language:</p>
             <div className="flex gap-2 flex-wrap">
               {(['javascript', 'python', 'cpp', 'java'] as Language[]).map(lang => (
@@ -520,7 +520,7 @@ export default function CodingGame() {
                     "px-4 py-2 rounded-lg font-medium transition-all",
                     language === lang
                       ? "gradient-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground hover:text-foreground"
+                      : "glass-button-secondary text-muted-strong hover:text-foreground"
                   )}
                 >
                   {lang === 'cpp' ? 'C++' : lang.charAt(0).toUpperCase() + lang.slice(1)}
@@ -543,8 +543,8 @@ export default function CodingGame() {
                   className={cn(
                     "p-6 rounded-2xl border transition-all animate-scale-in",
                     unlocked
-                      ? "bg-card border-border hover:glow-card cursor-pointer"
-                      : "bg-muted/30 border-border/50 opacity-60 cursor-not-allowed"
+                      ? "glass-surface-2 border-border hover:glow-card cursor-pointer"
+                      : "glass-surface-1 border-border/50 opacity-70 cursor-not-allowed"
                   )}
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
@@ -567,13 +567,13 @@ export default function CodingGame() {
                         </span>
                       </div>
                     </div>
-                    {!unlocked && <Lock className="w-5 h-5 text-muted-foreground" />}
+                    {!unlocked && <Lock className="w-5 h-5 text-muted-strong" />}
                   </div>
                   
-                  <p className="text-sm text-muted-foreground mb-4">{level.description}</p>
+                  <p className="text-sm text-muted-strong mb-4">{level.description}</p>
                   
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground flex items-center gap-1">
+                    <span className="text-muted-strong flex items-center gap-1">
                       <Clock className="w-4 h-4" />
                       {formatTime(level.timeLimit)}
                     </span>
@@ -584,7 +584,7 @@ export default function CodingGame() {
                   </div>
                   
                   {levelProgress && (
-                    <div className="mt-3 pt-3 border-t border-border text-xs text-muted-foreground">
+                    <div className="mt-3 pt-3 border-t border-border text-xs text-muted-strong">
                       Attempts: {levelProgress.attempts}
                       {levelProgress.best_time_seconds && (
                         <span className="ml-2">Best: {formatTime(levelProgress.best_time_seconds)}</span>
@@ -624,7 +624,7 @@ export default function CodingGame() {
               {/* Timer */}
               <div className={cn(
                 "flex items-center gap-2 px-4 py-2 rounded-xl font-mono text-lg font-bold transition-all",
-                timeLeft < 30 ? "bg-destructive/20 text-destructive" : "bg-muted",
+                timeLeft < 30 ? "bg-destructive/20 text-destructive" : "glass-chip text-foreground",
                 timerWarning && "animate-pulse scale-110"
               )}>
                 <Clock className={cn("w-5 h-5", timeLeft < 10 && "animate-ping")} />
@@ -632,7 +632,7 @@ export default function CodingGame() {
               </div>
               
               {/* Coins */}
-              <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-muted">
+              <div className="flex items-center gap-2 px-3 py-2 rounded-xl glass-chip">
                 <Coins className="w-5 h-5 text-coin" />
                 <span className="font-bold">{profile?.coins ?? 0}</span>
               </div>
@@ -640,7 +640,7 @@ export default function CodingGame() {
           </div>
 
           {/* Problem Description */}
-          <div className="p-4 rounded-xl bg-card border border-border mb-4">
+          <div className="p-4 rounded-xl glass-surface-2 mb-4">
             <p className="text-foreground">{selectedLevel.description}</p>
           </div>
 
@@ -653,14 +653,14 @@ export default function CodingGame() {
                 "flex items-center gap-2 px-4 py-2 rounded-xl transition-all",
                 hintsUsed < selectedLevel.hints.length && (profile?.coins ?? 0) >= selectedLevel.hintCost
                   ? "bg-coin/20 text-coin hover:bg-coin/30"
-                  : "bg-muted text-muted-foreground cursor-not-allowed"
+                  : "glass-button-disabled cursor-not-allowed"
               )}
             >
               <Lightbulb className="w-4 h-4" />
               Get Hint ({selectedLevel.hintCost} coins)
             </button>
             
-            <span className="text-sm text-muted-foreground">
+            <span className="text-sm text-muted-strong">
               Hints used: {hintsUsed}/{selectedLevel.hints.length}
             </span>
 
@@ -674,7 +674,7 @@ export default function CodingGame() {
                     "px-3 py-1 rounded-lg text-sm font-medium transition-all",
                     language === lang
                       ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground hover:text-foreground"
+                      : "glass-button-secondary text-muted-strong hover:text-foreground"
                   )}
                 >
                   {lang === 'cpp' ? 'C++' : lang.charAt(0).toUpperCase() + lang.slice(1)}
@@ -717,20 +717,20 @@ export default function CodingGame() {
           )}
 
           {/* Test Cases Preview */}
-          <div className="mt-4 p-4 rounded-xl bg-muted/50">
+          <div className="mt-4 p-4 rounded-xl glass-chip">
             <p className="text-sm font-medium text-foreground mb-2">
               Test Cases ({selectedLevel.testCases.length} total - ALL must pass):
             </p>
             <div className="space-y-2">
               {selectedLevel.testCases.slice(0, 3).map((tc, i) => (
-                <div key={i} className="text-sm text-muted-foreground">
+                <div key={i} className="text-sm text-muted-strong">
                   <span className="font-mono">Input: {tc.input}</span>
                   <span className="mx-2">→</span>
                   <span className="font-mono">Expected: {tc.expectedOutput}</span>
                 </div>
               ))}
               {selectedLevel.testCases.length > 3 && (
-                <p className="text-xs text-muted-foreground italic">
+                <p className="text-xs text-muted-strong italic">
                   + {selectedLevel.testCases.length - 3} hidden test cases
                 </p>
               )}
@@ -745,7 +745,7 @@ export default function CodingGame() {
               className={cn(
                 "flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-lg transition-all",
                 isSubmitting || !canSubmit
-                  ? "bg-muted text-muted-foreground cursor-not-allowed"
+                  ? "glass-button-disabled cursor-not-allowed"
                   : "gradient-primary text-primary-foreground hover:opacity-90 glow-primary"
               )}
             >
@@ -785,7 +785,7 @@ export default function CodingGame() {
               <>
                 <Trophy className="w-16 h-16 mx-auto mb-4 text-coin animate-bounce" />
                 <h2 className="text-3xl font-bold text-success mb-2">Accepted!</h2>
-                <p className="text-muted-foreground mb-4">All {totalCount} test cases passed!</p>
+                <p className="text-muted-strong mb-4">All {totalCount} test cases passed!</p>
                 <div className="flex items-center justify-center gap-2 text-coin text-xl font-bold">
                   <Coins className="w-6 h-6 animate-pulse" />
                   +{selectedLevel.coinReward} coins earned!
@@ -797,10 +797,10 @@ export default function CodingGame() {
                 <h2 className={cn("text-3xl font-bold mb-2", verdictDisplay.color)}>
                   {verdictDisplay.text}
                 </h2>
-                <p className="text-muted-foreground mb-4">
+                <p className="text-muted-strong mb-4">
                   {passedCount}/{totalCount} test cases passed. ALL tests must pass!
                 </p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-strong">
                   No coins awarded - fix your code and try again!
                 </p>
               </>
@@ -826,7 +826,7 @@ export default function CodingGame() {
                     <span className="font-medium text-foreground">
                       Test Case {i + 1}
                       {result.executionTime && (
-                        <span className="text-xs text-muted-foreground ml-2">
+                          <span className="text-xs text-muted-strong ml-2">
                           ({result.executionTime}ms)
                         </span>
                       )}
@@ -838,10 +838,10 @@ export default function CodingGame() {
                     )}
                   </div>
                   <div className="text-sm font-mono space-y-1">
-                    <p><span className="text-muted-foreground">Input:</span> {result.input}</p>
-                    <p><span className="text-muted-foreground">Expected:</span> {result.expected}</p>
+                    <p><span className="text-muted-strong">Input:</span> {result.input}</p>
+                    <p><span className="text-muted-strong">Expected:</span> {result.expected}</p>
                     <p className={result.passed ? "text-success" : "text-destructive"}>
-                      <span className="text-muted-foreground">Actual:</span> {result.actual}
+                      <span className="text-muted-strong">Actual:</span> {result.actual}
                     </p>
                     {result.error && (
                       <p className="text-destructive text-xs mt-1">
@@ -870,7 +870,7 @@ export default function CodingGame() {
               className={cn(
                 "px-8 py-3 rounded-xl font-bold transition-all",
                 passed
-                  ? "bg-muted hover:bg-muted/80 text-foreground"
+                  ? "glass-button-secondary text-foreground"
                   : "gradient-primary text-primary-foreground hover:opacity-90 glow-primary"
               )}
             >
@@ -879,7 +879,7 @@ export default function CodingGame() {
             
             <button
               onClick={() => setGameState('menu')}
-              className="px-8 py-3 rounded-xl bg-muted hover:bg-muted/80 transition-all text-foreground"
+              className="px-8 py-3 rounded-xl glass-button-secondary transition-all text-foreground"
             >
               Back to Menu
             </button>
