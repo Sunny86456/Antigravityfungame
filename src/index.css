@@ -9,17 +9,17 @@
 
 @layer base {
   :root {
-    /* ─── Light Theme — Deep Indigo + Emerald Daylight ───────── */
+    /* ─── Light Theme — Electric Blue + Teal Daylight ────────── */
     --background: 220 20% 97%;
     --foreground: 230 25% 12%;
 
-    --card: 243 40% 99% / 0.72;
+    --card: 220 44% 99% / 0.72;
     --card-foreground: 230 25% 12%;
 
-    --popover: 243 42% 99% / 0.88;
+    --popover: 220 46% 99% / 0.88;
     --popover-foreground: 230 25% 12%;
 
-    --primary: 243 75% 52%;
+    --primary: 220 90% 52%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 220 16% 91%;
@@ -28,7 +28,7 @@
     --muted: 220 16% 93%;
     --muted-foreground: 220 12% 42%;
 
-    --accent: 160 84% 39%;
+    --accent: 175 85% 42%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 51%;
@@ -36,26 +36,26 @@
 
     --border: 220 16% 86%;
     --input: 220 16% 90%;
-    --ring: 243 75% 52%;
+    --ring: 220 90% 52%;
 
     --radius: 0.75rem;
 
     /* Design tokens */
-    --glow-primary: 243 75% 52%;
-    --glow-accent: 160 84% 39%;
-    --gradient-start: 243 75% 52%;
-    --gradient-end: 160 84% 39%;
-    --card-glow: 243 75% 52% / 0.06;
+    --glow-primary: 220 90% 52%;
+    --glow-accent: 175 85% 42%;
+    --gradient-start: 220 90% 52%;
+    --gradient-end: 175 85% 42%;
+    --card-glow: 220 90% 52% / 0.06;
     --nav-blur: 0 0% 100% / 0.78;
-    --game-tag-bg: 243 75% 52% / 0.08;
-    --game-tag-text: 243 50% 42%;
+    --game-tag-bg: 220 90% 52% / 0.08;
+    --game-tag-text: 220 68% 42%;
     --coin-color: 43 96% 56%;
-    --success: 160 84% 39%;
+    --success: 175 85% 42%;
     --warning: 38 92% 50%;
-    --surface-base: 243 60% 98% / 0.58;
-    --surface-elevated: 243 55% 99% / 0.72;
-    --surface-strong: 243 45% 100% / 0.82;
-    --surface-edge: 243 34% 82% / 0.42;
+    --surface-base: 220 60% 98% / 0.58;
+    --surface-elevated: 220 55% 99% / 0.72;
+    --surface-strong: 220 45% 100% / 0.82;
+    --surface-edge: 220 38% 82% / 0.42;
     --surface-highlight: 0 0% 100% / 0.8;
     --surface-shadow: 228 30% 18% / 0.08;
     --surface-shadow-strong: 228 30% 18% / 0.14;
@@ -63,22 +63,22 @@
     --text-muted-strong: 226 12% 46%;
 
     /* Aurora blob colors */
-    --aurora-1: 243 80% 60%;
-    --aurora-2: 160 84% 45%;
-    --aurora-3: 200 80% 55%;
+    --aurora-1: 220 92% 60%;
+    --aurora-2: 175 88% 46%;
+    --aurora-3: 195 88% 56%;
 
     --sidebar-background: 220 20% 97%;
     --sidebar-foreground: 220 16% 28%;
-    --sidebar-primary: 243 75% 52%;
+    --sidebar-primary: 220 90% 52%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 220 16% 93%;
     --sidebar-accent-foreground: 220 16% 28%;
     --sidebar-border: 220 16% 86%;
-    --sidebar-ring: 243 75% 52%;
+    --sidebar-ring: 220 90% 52%;
   }
 
   .dark {
-    /* ─── Dark Theme — Deep Indigo Night ─────────────────────── */
+    /* ─── Dark Theme — Electric Blue Night ───────────────────── */
     --background: 228 35% 7%;
     --foreground: 210 25% 96%;
 
@@ -88,7 +88,7 @@
     --popover: 238 28% 14% / 0.9;
     --popover-foreground: 210 25% 96%;
 
-    --primary: 243 75% 65%;
+    --primary: 220 90% 62%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 238 24% 20% / 0.8;
@@ -97,32 +97,32 @@
     --muted: 239 20% 18% / 0.82;
     --muted-foreground: 214 18% 76%;
 
-    --accent: 160 84% 48%;
+    --accent: 175 85% 52%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 242 26% 33% / 0.76;
-    --input: 239 23% 19% / 0.88;
-    --ring: 243 75% 65%;
+    --border: 221 34% 33% / 0.76;
+    --input: 222 28% 19% / 0.88;
+    --ring: 220 90% 62%;
 
     /* Design tokens */
-    --glow-primary: 243 75% 65%;
-    --glow-accent: 160 84% 48%;
-    --gradient-start: 243 75% 65%;
-    --gradient-end: 160 84% 48%;
-    --card-glow: 243 75% 65% / 0.10;
+    --glow-primary: 220 90% 62%;
+    --glow-accent: 175 85% 52%;
+    --gradient-start: 220 90% 62%;
+    --gradient-end: 175 85% 52%;
+    --card-glow: 220 90% 62% / 0.10;
     --nav-blur: 0 0% 100% / 0.10;
-    --game-tag-bg: 160 84% 48% / 0.15;
-    --game-tag-text: 160 60% 75%;
+    --game-tag-bg: 175 85% 52% / 0.15;
+    --game-tag-text: 182 72% 78%;
     --coin-color: 43 96% 56%;
-    --success: 160 84% 48%;
+    --success: 175 85% 52%;
     --warning: 38 92% 50%;
-    --surface-base: 236 28% 15% / 0.72;
-    --surface-elevated: 237 30% 18% / 0.8;
-    --surface-strong: 238 32% 20% / 0.88;
-    --surface-edge: 243 52% 62% / 0.24;
+    --surface-base: 223 30% 15% / 0.72;
+    --surface-elevated: 223 32% 18% / 0.8;
+    --surface-strong: 223 34% 20% / 0.88;
+    --surface-edge: 220 70% 64% / 0.24;
     --surface-highlight: 210 40% 98% / 0.16;
     --surface-shadow: 228 50% 3% / 0.5;
     --surface-shadow-strong: 228 55% 2% / 0.72;
@@ -130,85 +130,85 @@
     --text-muted-strong: 214 16% 78%;
 
     /* Aurora blob colors */
-    --aurora-1: 243 78% 52%;
-    --aurora-2: 160 84% 34%;
-    --aurora-3: 210 78% 36%;
+    --aurora-1: 220 92% 58%;
+    --aurora-2: 175 85% 38%;
+    --aurora-3: 195 92% 42%;
 
     --sidebar-background: 228 35% 8%;
     --sidebar-foreground: 210 25% 92%;
-    --sidebar-primary: 243 75% 65%;
+    --sidebar-primary: 220 90% 62%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 0 0% 100% / 0.10;
     --sidebar-accent-foreground: 210 25% 92%;
     --sidebar-border: 0 0% 100% / 0.14;
-    --sidebar-ring: 243 75% 65%;
+    --sidebar-ring: 220 90% 62%;
   }
 
   .neon {
-    /* ─── Neon Theme — Cyberpunk Violet + Green ──────────────── */
-    --background: 260 30% 6%;
+    /* ─── Neon Theme — Electric Cyan + Purple ────────────────── */
+    --background: 208 34% 6%;
     --foreground: 0 0% 97%;
 
-    --card: 265 34% 15% / 0.76;
+    --card: 205 40% 15% / 0.76;
     --card-foreground: 0 0% 97%;
 
-    --popover: 266 38% 12% / 0.9;
+    --popover: 208 42% 12% / 0.9;
     --popover-foreground: 0 0% 97%;
 
-    --primary: 270 80% 64%;
+    --primary: 195 100% 55%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 275 36% 21% / 0.82;
+    --secondary: 208 36% 21% / 0.82;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 268 24% 18% / 0.84;
+    --muted: 208 24% 18% / 0.84;
     --muted-foreground: 220 20% 78%;
 
-    --accent: 150 90% 50%;
-    --accent-foreground: 0 0% 8%;
+    --accent: 280 80% 65%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 270 50% 40% / 0.48;
-    --input: 268 28% 19% / 0.9;
-    --ring: 270 80% 64%;
+    --border: 195 56% 40% / 0.48;
+    --input: 208 28% 19% / 0.9;
+    --ring: 195 100% 55%;
 
     /* Design tokens */
-    --glow-primary: 270 80% 64%;
-    --glow-accent: 150 90% 50%;
-    --gradient-start: 270 80% 64%;
-    --gradient-end: 150 90% 50%;
-    --card-glow: 270 80% 64% / 0.12;
+    --glow-primary: 195 100% 55%;
+    --glow-accent: 280 80% 65%;
+    --gradient-start: 195 100% 55%;
+    --gradient-end: 280 80% 65%;
+    --card-glow: 195 100% 55% / 0.12;
     --nav-blur: 0 0% 100% / 0.08;
-    --game-tag-bg: 150 90% 50% / 0.15;
-    --game-tag-text: 150 70% 75%;
+    --game-tag-bg: 280 80% 65% / 0.15;
+    --game-tag-text: 281 78% 82%;
     --coin-color: 43 96% 56%;
-    --success: 150 90% 50%;
+    --success: 195 100% 55%;
     --warning: 38 92% 50%;
-    --surface-base: 266 34% 14% / 0.72;
-    --surface-elevated: 268 40% 16% / 0.8;
-    --surface-strong: 270 42% 18% / 0.9;
-    --surface-edge: 270 80% 64% / 0.34;
-    --surface-highlight: 160 90% 50% / 0.12;
-    --surface-shadow: 260 70% 2% / 0.54;
-    --surface-shadow-strong: 260 70% 1% / 0.76;
+    --surface-base: 206 34% 14% / 0.72;
+    --surface-elevated: 208 40% 16% / 0.8;
+    --surface-strong: 210 42% 18% / 0.9;
+    --surface-edge: 195 100% 55% / 0.34;
+    --surface-highlight: 280 80% 65% / 0.12;
+    --surface-shadow: 214 70% 2% / 0.54;
+    --surface-shadow-strong: 214 70% 1% / 0.76;
     --text-soft: 214 22% 86%;
     --text-muted-strong: 214 20% 80%;
 
     /* Aurora blob colors */
-    --aurora-1: 270 90% 58%;
-    --aurora-2: 300 70% 46%;
-    --aurora-3: 160 90% 38%;
+    --aurora-1: 195 100% 58%;
+    --aurora-2: 280 82% 62%;
+    --aurora-3: 225 92% 46%;
 
-    --sidebar-background: 260 30% 7%;
+    --sidebar-background: 208 30% 7%;
     --sidebar-foreground: 0 0% 92%;
-    --sidebar-primary: 270 80% 64%;
+    --sidebar-primary: 195 100% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 0 0% 100% / 0.10;
     --sidebar-accent-foreground: 0 0% 92%;
     --sidebar-border: 0 0% 100% / 0.14;
-    --sidebar-ring: 270 80% 64%;
+    --sidebar-ring: 195 100% 55%;
   }
 }
 
@@ -462,23 +462,23 @@
   .dark .glass-navbar {
     background:
       linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.02)),
-      linear-gradient(135deg, hsl(243 75% 65% / 0.12), transparent 52%),
+      linear-gradient(135deg, hsl(220 90% 62% / 0.12), transparent 52%),
       rgba(17, 20, 39, 0.76);
     backdrop-filter: blur(32px) saturate(1.8);
     -webkit-backdrop-filter: blur(32px) saturate(1.8);
-    border: 1px solid rgba(123, 132, 210, 0.24);
-    box-shadow: 0 24px 56px rgba(0,0,0,0.58), 0 0 0 1px rgba(76, 88, 158, 0.18), inset 0 1px 0 rgba(255,255,255,0.12);
+    border: 1px solid rgba(86, 145, 243, 0.24);
+    box-shadow: 0 24px 56px rgba(0,0,0,0.58), 0 0 0 1px rgba(52, 106, 195, 0.18), inset 0 1px 0 rgba(255,255,255,0.12);
   }
 
   .dark .glass-card {
     background:
       linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02)),
-      linear-gradient(135deg, hsl(243 75% 65% / 0.08), transparent 48%),
+      linear-gradient(135deg, hsl(220 90% 62% / 0.08), transparent 48%),
       rgba(20, 24, 44, 0.76);
     backdrop-filter: blur(24px) saturate(1.6);
     -webkit-backdrop-filter: blur(24px) saturate(1.6);
-    border: 1px solid rgba(123, 132, 210, 0.2);
-    box-shadow: 0 20px 44px rgba(0,0,0,0.42), 0 0 0 1px rgba(76, 88, 158, 0.16), inset 0 1px 0 rgba(255,255,255,0.1);
+    border: 1px solid rgba(86, 145, 243, 0.2);
+    box-shadow: 0 20px 44px rgba(0,0,0,0.42), 0 0 0 1px rgba(52, 106, 195, 0.16), inset 0 1px 0 rgba(255,255,255,0.1);
   }
 
   .dark .glass-panel {
@@ -487,32 +487,32 @@
       rgba(20, 24, 44, 0.64);
     backdrop-filter: blur(16px) saturate(1.4);
     -webkit-backdrop-filter: blur(16px) saturate(1.4);
-    border: 1px solid rgba(123, 132, 210, 0.16);
+    border: 1px solid rgba(86, 145, 243, 0.16);
     box-shadow: 0 12px 30px rgba(0,0,0,0.34);
   }
 
   .neon .glass-navbar {
     background:
       linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02)),
-      linear-gradient(135deg, hsl(270 80% 64% / 0.14), transparent 42%),
-      linear-gradient(315deg, hsl(160 90% 50% / 0.07), transparent 45%),
+      linear-gradient(135deg, hsl(195 100% 55% / 0.14), transparent 42%),
+      linear-gradient(315deg, hsl(280 80% 65% / 0.07), transparent 45%),
       rgba(21, 14, 42, 0.8);
     backdrop-filter: blur(32px) saturate(1.8);
     -webkit-backdrop-filter: blur(32px) saturate(1.8);
-    border: 1px solid rgba(173, 111, 236, 0.28);
-    box-shadow: 0 24px 60px rgba(0,0,0,0.62), 0 0 0 1px rgba(105, 255, 190, 0.08), 0 0 24px hsl(var(--glow-primary) / 0.08), inset 0 1px 0 rgba(255,255,255,0.12);
+    border: 1px solid rgba(87, 220, 255, 0.28);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.62), 0 0 0 1px rgba(192, 120, 238, 0.08), 0 0 24px hsl(var(--glow-primary) / 0.08), inset 0 1px 0 rgba(255,255,255,0.12);
   }
 
   .neon .glass-card {
     background:
       linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02)),
-      linear-gradient(135deg, hsl(270 80% 64% / 0.12), transparent 46%),
-      linear-gradient(315deg, hsl(160 90% 50% / 0.06), transparent 44%),
+      linear-gradient(135deg, hsl(195 100% 55% / 0.12), transparent 46%),
+      linear-gradient(315deg, hsl(280 80% 65% / 0.06), transparent 44%),
       rgba(24, 16, 48, 0.78);
     backdrop-filter: blur(24px) saturate(1.6);
     -webkit-backdrop-filter: blur(24px) saturate(1.6);
-    border: 1px solid rgba(173, 111, 236, 0.22);
-    box-shadow: 0 20px 46px rgba(0,0,0,0.46), 0 0 0 1px rgba(105, 255, 190, 0.06), 0 0 18px hsl(var(--glow-primary) / 0.08), inset 0 1px 0 rgba(255,255,255,0.1);
+    border: 1px solid rgba(87, 220, 255, 0.22);
+    box-shadow: 0 20px 46px rgba(0,0,0,0.46), 0 0 0 1px rgba(192, 120, 238, 0.06), 0 0 18px hsl(var(--glow-primary) / 0.08), inset 0 1px 0 rgba(255,255,255,0.1);
   }
 
   .neon .glass-panel {
@@ -521,7 +521,7 @@
       rgba(24, 16, 48, 0.66);
     backdrop-filter: blur(16px) saturate(1.4);
     -webkit-backdrop-filter: blur(16px) saturate(1.4);
-    border: 1px solid rgba(173, 111, 236, 0.16);
+    border: 1px solid rgba(87, 220, 255, 0.16);
     box-shadow: 0 12px 32px rgba(0,0,0,0.38);
   }
 
@@ -543,21 +543,21 @@
 
   /* Light theme: deeper gradient for readability */
   :root .gradient-text {
-    background: linear-gradient(135deg, hsl(243 80% 48%), hsl(160 84% 35%));
+    background: linear-gradient(135deg, hsl(220 92% 48%), hsl(175 85% 38%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .dark .gradient-text {
-    background: linear-gradient(135deg, hsl(243 80% 72%), hsl(160 84% 58%));
+    background: linear-gradient(135deg, hsl(220 92% 70%), hsl(175 88% 58%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .neon .gradient-text {
-    background: linear-gradient(135deg, hsl(270 80% 72%), hsl(150 90% 55%));
+    background: linear-gradient(135deg, hsl(195 100% 62%), hsl(280 82% 68%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

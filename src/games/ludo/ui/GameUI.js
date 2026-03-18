@@ -88,7 +88,7 @@ export class GameUI {
         const { ctx, width, height } = this.renderer.getContext();
         // Semi-transparent dark overlay
         ctx.save();
-        ctx.fillStyle = 'rgba(7, 11, 23, 0.62)';
+        ctx.fillStyle = 'rgba(6, 12, 24, 0.64)';
         ctx.fillRect(0, 0, width, height);
         // Pause icon — two vertical bars
         const cx = width / 2;
@@ -99,7 +99,7 @@ export class GameUI {
         ctx.roundRect(cx + 8,  cy - 36, 20, 72, 6);
         ctx.fill();
         // "PAUSED" label
-        ctx.fillStyle = 'rgba(165, 180, 252, 0.92)';
+        ctx.fillStyle = 'rgba(97, 164, 255, 0.94)';
         ctx.font = 'bold 22px sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText('PAUSED', cx, cy + 70);

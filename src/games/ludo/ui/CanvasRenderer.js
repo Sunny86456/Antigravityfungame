@@ -62,7 +62,7 @@ export class CanvasRenderer {
      * Clear the canvas
      */
     clear() {
-        this.ctx.fillStyle = '#070b17';
+        this.ctx.fillStyle = '#060c18';
         this.ctx.fillRect(0, 0, this.width, this.height);
     }
 

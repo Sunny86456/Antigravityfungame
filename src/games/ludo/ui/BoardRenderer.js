@@ -19,13 +19,13 @@ import { SAFE_CELLS, HOME_ENTRANCES } from '../engine/BoardConfig.js';
 // Visual Colors
 const COLORS = {
     RED: '#f43f5e',
-    GREEN: '#10b981',
+    GREEN: '#14b8a6',
     YELLOW: '#f59e0b',
-    BLUE: '#6366f1',
-    BOARD_BG: '#f8faff',
-    TRACK_BG: '#eef2ff',
-    BORDER: '#94a3d5',
-    SAFE_STAR: '#5b6fb8'
+    BLUE: '#1d6fff',
+    BOARD_BG: '#f6fbff',
+    TRACK_BG: '#e8f4ff',
+    BORDER: '#8ab6ea',
+    SAFE_STAR: '#3a78d9'
 };
 
 export class BoardRenderer {

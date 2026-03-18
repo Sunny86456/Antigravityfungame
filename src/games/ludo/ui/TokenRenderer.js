@@ -115,9 +115,9 @@ export class TokenRenderer {
 
         const colorMap = {
             'RED': '#f43f5e',
-            'GREEN': '#10b981',
+            'GREEN': '#14b8a6',
             'YELLOW': '#f59e0b',
-            'BLUE': '#6366f1'
+            'BLUE': '#1d6fff'
         };
         const color = colorMap[colorString] || '#999';
 
@@ -125,11 +125,11 @@ export class TokenRenderer {
         if (isMovable) {
             ctx.beginPath();
             ctx.arc(x, y, r * 1.3, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(99, 102, 241, 0.24)';
+            ctx.fillStyle = 'rgba(29, 111, 255, 0.22)';
             ctx.fill();
 
             ctx.lineWidth = 3;
-            ctx.strokeStyle = '#ecfeff';
+            ctx.strokeStyle = '#dff8ff';
             ctx.stroke();
         }
 
