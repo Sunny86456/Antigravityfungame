@@ -1,73 +1,82 @@
-# Welcome to your Lovable project
+# Neon Nexus Games
+**"Play, Compete, Win Big!"**
 
-## Project info
+Neon Nexus Games (FunGameForYou) is a modern, high-performance browser-based gaming platform. Built with a focus on competitive play, educational challenges, and social interaction, it features a sleek "Neo-Nexus" aesthetic with a robust backend powered by Supabase.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+---
 
-## How can I edit this code?
+## Top Features
+- **User Economy**: Earn coins through gameplay and ads, spend them on board themes and cosmetic upgrades.
+- **Progression System**: Track your XP and Level across all games.
+- **Global Leaderboards**: Compete with players worldwide for the top spot.
+- **Competitive Matches**: Entry fees and high stakes in ranked game modes.
+- **Responsive Design**: Fully optimized for Desktop and Mobile with dark mode support.
 
-There are several ways of editing your application.
+## Games Selection
+### Chess
+A complete strategy experience featuring:
+- AI opponents with varying difficulty.
+- Puzzle mode to sharpen your tactics.
+- Learning Hub with structured tutorials.
+- Customizable board themes and piece styles.
 
-**Use Lovable**
+### DSA Coding Challenge
+Master algorithms and data structures through:
+- Level-based progression.
+- Real-time code editing and validation.
+- Track best times and completion stats.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+### Ludo (In Development)
+A modern take on the classic board game, currently being rebuilt from the ground up for superior multiplayer performance.
 
-Changes made via Lovable will be committed automatically to this repo.
+---
 
-**Use your preferred IDE**
+## Technology Stack
+- **Frontend**: [Vite](https://vitejs.dev/) + [React](https://reactjs.org/) + [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) + [shadcn-ui](https://ui.shadcn.com/)
+- **State Management**: [TanStack Query (React Query)](https://tanstack.com/query/latest)
+- **Backend/Database**: [Supabase](https://supabase.com/) (Auth, DB, Realtime)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Testing**: [Vitest](https://vitest.dev/) + [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+---
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Getting Started
 
-Follow these steps:
+### Prerequisites
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [npm](https://www.npmjs.com/)
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Local Development
+1. **Clone the repository**:
+   ```sh
+   git clone https://github.com/Sunny86456/Antigravityfungame.git
+   cd Antigravityfungame
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+2. **Install dependencies**:
+   ```sh
+   npm install
+   ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+3. **Set up environment variables**:
+   Create a `.env` file based on the provided configuration (contact project owner for Supabase keys).
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+4. **Start the development server**:
+   ```sh
+   npm run dev
+   ```
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Contributing
+As an owner-owned project, we follow a professional workflow:
+1. **Create a branch** for your feature/fix: `git checkout -b feature/your-feature-name`.
+2. **Commit your changes**: `git commit -m "feat: your contribution description"`.
+3. **Push to the branch**: `git push origin feature/your-feature-name`.
+4. **Open a Pull Request** for review.
 
-**Use GitHub Codespaces**
+---
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## License
+Check project settings or contact the owner for licensing information.
