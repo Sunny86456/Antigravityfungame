@@ -68,8 +68,8 @@ export function AdsRewardButton({ onRewardClaimed, className, variant = 'default
         className={cn(
           "flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all",
           canWatch && !isLoading
-            ? "bg-success/20 text-success hover:bg-success/30"
-            : "bg-muted text-muted-foreground cursor-not-allowed",
+            ? "glass-chip text-success hover:scale-[1.01]"
+            : "glass-button-disabled cursor-not-allowed",
           className
         )}
       >
@@ -100,10 +100,10 @@ export function AdsRewardButton({ onRewardClaimed, className, variant = 'default
   }
   
   return (
-    <div className={cn("p-4 rounded-2xl bg-card border border-border", className)}>
+    <div className={cn("p-4 rounded-2xl glass-surface-2", className)}>
       <div className="flex items-center justify-between mb-3">
         <h3 className="font-bold text-foreground">Watch Ad for Coins</h3>
-        <div className="text-sm text-muted-foreground">
+        <div className="text-sm text-muted-strong">
           {adsToday}/{ECONOMY.DAILY_AD_LIMIT} today
         </div>
       </div>
@@ -115,7 +115,7 @@ export function AdsRewardButton({ onRewardClaimed, className, variant = 'default
           "w-full py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2",
           canWatch && !isLoading
             ? "gradient-primary text-primary-foreground hover:opacity-90 glow-primary"
-            : "bg-muted text-muted-foreground cursor-not-allowed"
+            : "glass-button-disabled cursor-not-allowed"
         )}
       >
         {isLoading ? (
@@ -144,7 +144,7 @@ export function AdsRewardButton({ onRewardClaimed, className, variant = 'default
       </button>
       
       {cooldown > 0 && (
-        <p className="text-xs text-muted-foreground text-center mt-2">
+        <p className="text-xs text-muted-strong text-center mt-2">
           Next ad available in {cooldown} minute{cooldown !== 1 ? 's' : ''}
         </p>
       )}

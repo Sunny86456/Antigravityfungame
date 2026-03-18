@@ -35,27 +35,27 @@ interface SettingToggleProps {
 
 function SettingToggle({ icon: Icon, iconOff: IconOff, label, description, enabled, onToggle }: SettingToggleProps) {
   return (
-    <div className="flex items-center justify-between p-4 rounded-xl bg-card border border-border hover:glow-card transition-all">
-      <div className="flex items-center gap-4">
-        <div className={cn(
-          "p-3 rounded-xl transition-colors",
-          enabled ? "gradient-primary" : "bg-muted"
-        )}>
+    <div className="flex items-center justify-between p-4 rounded-xl glass-surface-1 hover:glow-card transition-all">
+        <div className="flex items-center gap-4">
+          <div className={cn(
+            "p-3 rounded-xl transition-colors",
+            enabled ? "gradient-primary glow-primary" : "glass-chip"
+          )}>
           {enabled
             ? <Icon className="w-5 h-5 text-primary-foreground" />
-            : <IconOff className="w-5 h-5 text-muted-foreground" />
+            : <IconOff className="w-5 h-5 text-muted-strong" />
           }
         </div>
         <div>
           <p className="font-medium text-foreground">{label}</p>
-          <p className="text-sm text-muted-foreground">{description}</p>
+          <p className="text-sm text-muted-strong">{description}</p>
         </div>
       </div>
       <button
         onClick={onToggle}
         className={cn(
           "relative w-14 h-8 rounded-full transition-all",
-          enabled ? "gradient-primary" : "bg-muted"
+          enabled ? "gradient-primary glow-primary" : "glass-chip"
         )}
       >
         <span className={cn(
@@ -163,7 +163,7 @@ const Settings = () => {
             <User className="w-5 h-5 text-primary" />
             Account
           </h3>
-          <div className="p-6 rounded-2xl bg-card border border-border">
+          <div className="p-6 rounded-2xl glass-surface-2">
             <div className="space-y-4">
               <div>
                 <label className="text-sm font-medium text-foreground mb-2 block">
@@ -174,7 +174,7 @@ const Settings = () => {
                     type="text"
                     value={newUsername}
                     onChange={(e) => setNewUsername(e.target.value)}
-                    className="flex-1 px-4 py-3 rounded-xl bg-muted border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground"
+                    className="flex-1 px-4 py-3 rounded-xl glass-input transition-all"
                     placeholder="Enter username"
                     maxLength={20}
                   />
@@ -191,7 +191,7 @@ const Settings = () => {
                     Save
                   </button>
                 </div>
-                <p className="text-xs text-muted-foreground mt-2">
+                <p className="text-xs text-muted-strong mt-2">
                   3-20 characters, letters, numbers, and underscores only
                 </p>
               </div>
@@ -229,16 +229,16 @@ const Settings = () => {
                   className={cn(
                     "p-6 rounded-2xl border-2 transition-all text-left",
                     isActive
-                      ? "border-primary bg-primary/10 glow-card"
-                      : "border-border bg-card hover:border-primary/50"
+                      ? "border-primary glass-surface-2 glow-card"
+                      : "glass-surface-1 hover:border-primary/50"
                   )}
                 >
                   <Icon className={cn(
                     "w-8 h-8 mb-3",
-                    isActive ? "text-primary" : "text-muted-foreground"
+                    isActive ? "text-primary" : "text-muted-strong"
                   )} />
                   <p className="font-bold text-foreground">{label}</p>
-                  <p className="text-sm text-muted-foreground">{desc}</p>
+                  <p className="text-sm text-muted-strong">{desc}</p>
                 </button>
               );
             })}
@@ -246,11 +246,11 @@ const Settings = () => {
         </section>
 
         {/* Quick Theme Switch */}
-        <section className="mb-8 p-6 rounded-2xl bg-card border border-border glow-card animate-fade-in" style={{ animationDelay: '100ms' }}>
+        <section className="mb-8 p-6 rounded-2xl glass-surface-2 animate-rise" style={{ animationDelay: '100ms' }}>
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-bold text-foreground mb-1">Quick Theme Switch</h3>
-              <p className="text-sm text-muted-foreground">Use the theme switcher in the navbar for quick access</p>
+              <p className="text-sm text-muted-strong">Use the theme switcher in the navbar for quick access</p>
             </div>
             <ThemeSwitcher />
           </div>
@@ -283,23 +283,23 @@ const Settings = () => {
         </section>
 
         {/* Game Settings Info */}
-        <section className="mb-8 p-6 rounded-2xl bg-card border border-border animate-fade-in" style={{ animationDelay: '250ms' }}>
+        <section className="mb-8 p-6 rounded-2xl glass-surface-2 animate-rise" style={{ animationDelay: '250ms' }}>
           <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
             <Gamepad2 className="w-5 h-5 text-primary" />
             Game Controls
           </h3>
           <div className="space-y-3 text-sm">
-            <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
+            <div className="flex items-center justify-between p-3 rounded-lg glass-chip">
               <span className="text-foreground">Chess Animations</span>
-              <span className="text-muted-foreground">Toggle in Chess menu</span>
+              <span className="text-muted-strong">Toggle in Chess menu</span>
             </div>
-            <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
+            <div className="flex items-center justify-between p-3 rounded-lg glass-chip">
               <span className="text-foreground">Chess Board Theme</span>
-              <span className="text-muted-foreground">Select in Board Shop</span>
+              <span className="text-muted-strong">Select in Board Shop</span>
             </div>
-            <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
+            <div className="flex items-center justify-between p-3 rounded-lg glass-chip">
               <span className="text-foreground">Coding Language</span>
-              <span className="text-muted-foreground">Select per level</span>
+              <span className="text-muted-strong">Select per level</span>
             </div>
           </div>
         </section>
@@ -318,15 +318,15 @@ const Settings = () => {
             ].map((item) => (
               <button
                 key={item.label}
-                className="w-full flex items-center justify-between p-4 rounded-xl bg-card border border-border hover:glow-card transition-all"
+                className="w-full flex items-center justify-between p-4 rounded-xl glass-surface-1 hover:glow-card transition-all"
               >
                 <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-xl bg-muted">
-                    <item.icon className="w-5 h-5 text-muted-foreground" />
+                  <div className="p-3 rounded-xl glass-chip">
+                    <item.icon className="w-5 h-5 text-muted-strong" />
                   </div>
                   <p className="font-medium text-foreground">{item.label}</p>
                 </div>
-                <span className="text-muted-foreground">{item.value} →</span>
+                <span className="text-muted-strong">{item.value} →</span>
               </button>
             ))}
           </div>

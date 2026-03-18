@@ -400,7 +400,7 @@ export default function ChessTutorialEngine() {
       <Layout>
         <div className="container mx-auto px-4 py-8 text-center">
           <h2 className="text-2xl font-bold text-foreground mb-2">Sign in Required</h2>
-          <p className="text-muted-foreground mb-6">Please sign in to access lessons.</p>
+          <p className="text-muted-strong mb-6">Please sign in to access lessons.</p>
           <button
             onClick={() => navigate('/auth')}
             className="px-6 py-3 rounded-xl gradient-primary text-primary-foreground font-bold hover:opacity-90 transition-all"
@@ -419,7 +419,7 @@ export default function ChessTutorialEngine() {
           <h2 className="text-2xl font-bold text-foreground mb-2">Lesson Not Found</h2>
           <button
             onClick={() => navigate('/games/chess/learn')}
-            className="px-6 py-3 rounded-xl bg-muted hover:bg-muted/80 transition-all"
+            className="px-6 py-3 rounded-xl glass-button-secondary transition-all"
           >
             Back to Learning Hub
           </button>
@@ -450,7 +450,7 @@ export default function ChessTutorialEngine() {
         <div className="flex items-center justify-between mb-4">
           <button
             onClick={() => navigate('/games/chess/learn')}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 transition-all"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl glass-button-secondary transition-all"
           >
             <ChevronLeft className="w-4 h-4" />
             Exit
@@ -461,7 +461,7 @@ export default function ChessTutorialEngine() {
               <span className="text-2xl">{lesson.icon}</span>
               <h2 className="font-bold text-foreground">{lesson.title}</h2>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-strong">
               Lesson {lesson.id} of {LESSONS.length} • {lesson.category}
             </p>
           </div>
@@ -475,15 +475,15 @@ export default function ChessTutorialEngine() {
         {/* Intro Overlay */}
         {showIntro && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4 animate-in fade-in">
-            <div className="max-w-md w-full bg-card border border-border rounded-2xl shadow-2xl p-6 relative">
+            <div className="max-w-md w-full glass-surface-3 rounded-2xl shadow-2xl p-6 relative">
               <div className="text-center mb-6">
-                <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center text-4xl mx-auto mb-4">
+                <div className="w-16 h-16 rounded-2xl glass-chip flex items-center justify-center text-4xl mx-auto mb-4">
                   {lesson.icon}
                 </div>
                 <h2 className="text-2xl font-bold text-foreground mb-2">{lesson.title}</h2>
                 <p className="text-lg text-primary font-medium mb-4">{lesson.subtitle}</p>
-                <div className="p-4 rounded-xl bg-muted/50 text-left">
-                  <p className="text-muted-foreground leading-relaxed">{lesson.concept}</p>
+                <div className="p-4 rounded-xl glass-chip text-left">
+                  <p className="text-muted-strong leading-relaxed">{lesson.concept}</p>
                 </div>
               </div>
               <button
@@ -530,15 +530,15 @@ export default function ChessTutorialEngine() {
           {/* Side panel */}
           <div className="w-full lg:w-96 space-y-4">
             {/* Objective */}
-            <div className="p-6 rounded-xl bg-card border border-border">
+            <div className="p-6 rounded-xl glass-surface-2">
               <div className="flex items-start gap-3 mb-4">
                 <Info className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                 <div>
                   <h3 className="font-bold text-foreground mb-1">{lesson.subtitle}</h3>
-                  <p className="text-sm text-muted-foreground">{lesson.objective.description}</p>
+                  <p className="text-sm text-muted-strong">{lesson.objective.description}</p>
                 </div>
               </div>
-              <div className="p-4 rounded-lg bg-muted/50">
+              <div className="p-4 rounded-lg glass-chip">
                 <p className="text-foreground leading-relaxed">{lesson.concept}</p>
               </div>
             </div>
@@ -584,7 +584,7 @@ export default function ChessTutorialEngine() {
             {/* Hint */}
             <button
               onClick={() => setShowHint(v => !v)}
-              className="w-full p-4 rounded-xl bg-muted hover:bg-muted/80 transition-all flex items-center gap-2"
+              className="w-full p-4 rounded-xl glass-button-secondary transition-all flex items-center gap-2"
             >
               <Lightbulb className="w-5 h-5 text-coin" />
               <span className="text-sm">{showHint ? lesson.hint : 'Show Hint'}</span>
@@ -594,7 +594,7 @@ export default function ChessTutorialEngine() {
             <div className="flex gap-2">
               <button
                 onClick={resetLesson}
-                className="flex-1 py-3 rounded-xl bg-muted hover:bg-muted/80 transition-all flex items-center justify-center gap-2"
+                className="flex-1 py-3 rounded-xl glass-button-secondary transition-all flex items-center justify-center gap-2"
               >
                 <RotateCcw className="w-4 h-4" />
                 Reset
@@ -607,7 +607,7 @@ export default function ChessTutorialEngine() {
                   'flex-1 py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2',
                   isCompleted && nextLesson
                     ? 'gradient-primary text-primary-foreground hover:opacity-90'
-                    : 'bg-muted text-muted-foreground cursor-not-allowed'
+                    : 'glass-button-disabled cursor-not-allowed'
                 )}
                 title={!isCompleted ? 'Complete the lesson first' : !nextLesson ? 'No more lessons' : undefined}
               >
@@ -620,7 +620,7 @@ export default function ChessTutorialEngine() {
             {prevLesson && (
               <button
                 onClick={() => navigate(`/games/chess/learn/${prevLesson.id}`)}
-                className="w-full py-2 rounded-xl bg-muted/50 hover:bg-muted/80 transition-all text-sm text-muted-foreground"
+                className="w-full py-2 rounded-xl glass-chip transition-all text-sm text-muted-strong"
               >
                 ← Previous: {prevLesson.title}
               </button>
@@ -634,7 +634,7 @@ export default function ChessTutorialEngine() {
             )}
 
             {/* Mode indicator */}
-            <div className="p-3 rounded-xl bg-muted/50 text-xs text-muted-foreground">
+            <div className="p-3 rounded-xl glass-chip text-xs text-muted-strong">
               <span className="font-medium">Mode: </span>
               {lesson.mode === 'explore'
                 ? 'Explore freely - any legal move will complete the lesson'

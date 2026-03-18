@@ -29,22 +29,22 @@ const Games = () => {
         />
 
         {/* Search and Filter */}
-        <div className="mb-8 space-y-4 animate-fade-in" style={{ animationDelay: '100ms' }}>
+        <div className="mb-10 space-y-4 animate-rise delay-1">
           {/* Search Bar */}
           <div className="relative max-w-md">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-strong" />
             <input
               type="text"
               placeholder="Search games..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 rounded-xl bg-card border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+              className="w-full pl-12 pr-4 py-3 rounded-xl glass-input transition-all"
             />
           </div>
 
           {/* Filter Tags */}
           <div className="flex items-center gap-2 flex-wrap">
-            <Filter className="w-4 h-4 text-muted-foreground" />
+            <Filter className="w-4 h-4 text-muted-strong" />
             {allTags.map(tag => (
               <button
                 key={tag}
@@ -53,7 +53,7 @@ const Games = () => {
                   "px-4 py-2 rounded-full text-sm font-medium transition-all",
                   activeTag === tag
                     ? "gradient-primary text-primary-foreground glow-primary"
-                    : "bg-muted text-muted-foreground hover:text-foreground hover:bg-muted/80"
+                    : "glass-chip text-muted-strong hover:text-foreground"
                 )}
               >
                 {tag}
@@ -67,8 +67,8 @@ const Games = () => {
           {filteredGames.map((game, index) => (
             <div
               key={game.id}
-              className="animate-scale-in"
-              style={{ animationDelay: `${index * 50}ms` }}
+              className="animate-rise"
+              style={{ animationDelay: `${200 + index * 60}ms` }}
             >
               <GameCard
                 title={game.title}
@@ -83,12 +83,11 @@ const Games = () => {
         </div>
 
         {filteredGames.length === 0 && (
-          <div className="text-center py-16">
-            <p className="text-xl text-muted-foreground">No games found matching your criteria.</p>
+          <div className="text-center py-16 rounded-2xl glass-surface-1">
+            <p className="text-xl text-muted-strong">No games found matching your criteria.</p>
           </div>
         )}
       </div>
-
     </Layout>
   );
 };

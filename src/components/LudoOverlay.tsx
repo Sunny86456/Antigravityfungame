@@ -16,12 +16,12 @@ export function LudoOverlay({ isOpen, onClose }: LudoOverlayProps) {
     };
 
     return (
-        <div className="fixed inset-0 z-50 bg-black/90 flex flex-col animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-50 bg-black/90 flex flex-col animate-in fade-in duration-300 backdrop-blur-sm">
             {/* Toolbar */}
             <div className="absolute top-4 right-4 z-50 flex items-center gap-4">
                 <button
                     onClick={handleClose}
-                    className="p-3 bg-red-500/80 hover:bg-red-600 text-white rounded-full transition-colors shadow-lg backdrop-blur-sm"
+                    className="p-3 rounded-full glass-surface-2 text-destructive hover:scale-105 transition-all shadow-lg"
                     title="Exit Game"
                 >
                     <X className="w-6 h-6" />

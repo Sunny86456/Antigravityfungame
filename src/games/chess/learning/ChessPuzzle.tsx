@@ -233,7 +233,7 @@ export default function ChessPuzzle() {
       <Layout>
         <div className="container mx-auto px-4 py-8 text-center">
           <h2 className="text-2xl font-bold text-foreground mb-2">Sign in Required</h2>
-          <p className="text-muted-foreground mb-6">Please sign in to solve puzzles.</p>
+          <p className="text-muted-strong mb-6">Please sign in to solve puzzles.</p>
           <button
             onClick={() => navigate('/auth')}
             className="px-6 py-3 rounded-xl gradient-primary text-primary-foreground font-bold hover:opacity-90 transition-all"
@@ -252,7 +252,7 @@ export default function ChessPuzzle() {
           <h2 className="text-2xl font-bold text-foreground mb-2">Puzzle Not Found</h2>
           <button
             onClick={() => navigate('/games/chess/learn')}
-            className="px-6 py-3 rounded-xl bg-muted hover:bg-muted/80 transition-all"
+            className="px-6 py-3 rounded-xl glass-button-secondary transition-all"
           >
             Back to Learning Hub
           </button>
@@ -269,21 +269,21 @@ export default function ChessPuzzle() {
       <Layout>
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-md mx-auto text-center">
-            <div className="p-8 rounded-2xl bg-card border border-border">
-              <Lock className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
+            <div className="p-8 rounded-2xl glass-surface-2">
+              <Lock className="w-16 h-16 mx-auto mb-4 text-muted-strong" />
               <h2 className="text-2xl font-bold text-foreground mb-2">{puzzle.title}</h2>
-              <p className="text-muted-foreground mb-2">{puzzle.objective}</p>
-              <p className="text-sm text-muted-foreground mb-6 capitalize">
+              <p className="text-muted-strong mb-2">{puzzle.objective}</p>
+              <p className="text-sm text-muted-strong mb-6 capitalize">
                 {puzzle.difficulty} • {puzzle.category.replace('-', ' ')}
               </p>
               
-              <div className="flex items-center justify-center gap-2 mb-6 p-4 rounded-xl bg-muted/50">
+              <div className="flex items-center justify-center gap-2 mb-6 p-4 rounded-xl glass-chip">
                 <Coins className="w-6 h-6 text-coin" />
                 <span className="text-xl font-bold">{PUZZLE_UNLOCK_COST} coins to unlock</span>
               </div>
               
               <div className="flex items-center justify-center gap-2 mb-6">
-                <span className="text-muted-foreground">Your balance:</span>
+                <span className="text-muted-strong">Your balance:</span>
                 <Coins className="w-5 h-5 text-coin" />
                 <span className="font-bold">{profile?.coins ?? 0}</span>
               </div>
@@ -296,7 +296,7 @@ export default function ChessPuzzle() {
                     "w-full py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2",
                     canAffordPuzzle
                       ? "gradient-primary text-primary-foreground hover:opacity-90"
-                      : "bg-muted text-muted-foreground cursor-not-allowed"
+                      : "glass-button-disabled cursor-not-allowed"
                   )}
                 >
                   <Unlock className="w-5 h-5" />
@@ -304,7 +304,7 @@ export default function ChessPuzzle() {
                 </button>
                 <button
                   onClick={() => navigate('/games/chess/learn')}
-                  className="w-full py-3 rounded-xl bg-muted hover:bg-muted/80 transition-all"
+                  className="w-full py-3 rounded-xl glass-button-secondary transition-all"
                 >
                   Back to Puzzles
                 </button>
@@ -338,7 +338,7 @@ export default function ChessPuzzle() {
         <div className="flex items-center justify-between mb-4">
           <button
             onClick={() => navigate('/games/chess/learn')}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 transition-all"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl glass-button-secondary transition-all"
           >
             <ChevronLeft className="w-4 h-4" />
             Exit
@@ -346,12 +346,12 @@ export default function ChessPuzzle() {
           
           <div className="text-center">
             <h2 className="font-bold text-foreground">{puzzle.title}</h2>
-            <p className="text-sm text-muted-foreground capitalize">
+            <p className="text-sm text-muted-strong capitalize">
               {puzzle.difficulty} • {puzzle.category.replace('-', ' ')}
             </p>
           </div>
           
-          <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted">
+          <div className="flex items-center gap-2 px-4 py-2 rounded-xl glass-chip">
             <Coins className="w-5 h-5 text-coin" />
             <span className="font-bold">{profile?.coins ?? 0}</span>
           </div>
@@ -384,7 +384,7 @@ export default function ChessPuzzle() {
                     </div>
                   )}
                   
-                  <p className="text-sm text-muted-foreground mb-4">
+                  <p className="text-sm text-muted-strong mb-4">
                     Solved in {attempts} {attempts === 1 ? 'attempt' : 'attempts'}
                   </p>
                   
@@ -410,14 +410,14 @@ export default function ChessPuzzle() {
                         <ChevronRight className="w-4 h-4" />
                       </button>
                     ) : (
-                      <div className="py-3 px-4 rounded-xl bg-muted/50 text-center">
-                        <Lock className="w-5 h-5 mx-auto mb-2 text-muted-foreground" />
-                        <p className="text-sm text-muted-foreground">Unlock more puzzles to continue!</p>
+                      <div className="py-3 px-4 rounded-xl glass-chip text-center">
+                        <Lock className="w-5 h-5 mx-auto mb-2 text-muted-strong" />
+                        <p className="text-sm text-muted-strong">Unlock more puzzles to continue!</p>
                       </div>
                     )}
                     <button
                       onClick={() => navigate('/games/chess/learn')}
-                      className="py-2 px-4 rounded-xl bg-muted hover:bg-muted/80 transition-all"
+                      className="py-2 px-4 rounded-xl glass-button-secondary transition-all"
                     >
                       Back to Puzzles
                     </button>
@@ -430,14 +430,14 @@ export default function ChessPuzzle() {
           {/* Instructions Panel */}
           <div className="w-full lg:w-80 space-y-4">
             {/* Objective */}
-            <div className="p-6 rounded-xl bg-card border border-border">
+            <div className="p-6 rounded-xl glass-surface-2">
               <div className="flex items-center gap-2 mb-2">
                 <Target className="w-5 h-5 text-primary" />
                 <h3 className="font-bold text-foreground">Objective</h3>
               </div>
               <p className="text-foreground">{puzzle.objective}</p>
               {puzzle.solution.length > 1 && (
-                <p className="text-sm text-muted-foreground mt-2">
+                <p className="text-sm text-muted-strong mt-2">
                   Move {currentMoveIndex + 1} of {puzzle.solution.length}
                 </p>
               )}
@@ -467,7 +467,7 @@ export default function ChessPuzzle() {
             {!puzzleCompleted && (
               <button
                 onClick={() => setShowHint(!showHint)}
-                className="w-full p-4 rounded-xl bg-muted hover:bg-muted/80 transition-all flex items-center gap-2"
+                className="w-full p-4 rounded-xl glass-button-secondary transition-all flex items-center gap-2"
               >
                 <Lightbulb className="w-5 h-5 text-coin" />
                 <span className="text-sm">
@@ -477,13 +477,13 @@ export default function ChessPuzzle() {
             )}
             
             {/* Stats */}
-            <div className="p-4 rounded-xl bg-muted/50">
+            <div className="p-4 rounded-xl glass-chip">
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Attempts:</span>
+                <span className="text-muted-strong">Attempts:</span>
                 <span className="font-bold">{attempts}</span>
               </div>
               <div className="flex justify-between text-sm mt-1">
-                <span className="text-muted-foreground">Reward:</span>
+                <span className="text-muted-strong">Reward:</span>
                 <span className="font-bold text-coin flex items-center gap-1">
                   <Coins className="w-4 h-4" />
                   +{reward}
@@ -494,7 +494,7 @@ export default function ChessPuzzle() {
             {/* Actions */}
             <button
               onClick={resetPuzzle}
-              className="w-full py-3 rounded-xl bg-muted hover:bg-muted/80 transition-all flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-xl glass-button-secondary transition-all flex items-center justify-center gap-2"
             >
               <RotateCcw className="w-4 h-4" />
               Reset Puzzle

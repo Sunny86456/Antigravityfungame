@@ -77,15 +77,15 @@ export class DiceUI {
         }
 
         // Draw Dice Box
-        ctx.fillStyle = canRoll ? '#fff' : '#e2e8f0';
-        ctx.shadowColor = 'rgba(0,0,0,0.2)';
+        ctx.fillStyle = canRoll ? '#f8faff' : '#dbe4ff';
+        ctx.shadowColor = 'rgba(12, 18, 38, 0.28)';
         ctx.shadowBlur = 10;
         ctx.fillRect(x, y, size, size);
         ctx.shadowBlur = 0;
 
         // Draw Border
         ctx.lineWidth = canRoll ? 3 : 1;
-        ctx.strokeStyle = canRoll ? '#2563eb' : '#94a3b8'; // Blue highlight if movable
+        ctx.strokeStyle = canRoll ? '#6366f1' : '#94a3b8';
         ctx.strokeRect(x, y, size, size);
 
         // Draw Pips (if value exists)
@@ -93,7 +93,7 @@ export class DiceUI {
             DiceUI._drawPips(ctx, x, y, size, diceValue);
         } else if (canRoll) {
             // Draw "Roll" text
-            ctx.fillStyle = '#64748b';
+            ctx.fillStyle = '#5b6fb8';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.font = `bold ${size / 3}px sans-serif`;
@@ -126,7 +126,7 @@ export class DiceUI {
     }
 
     static _drawPips(ctx, x, y, size, value) {
-        ctx.fillStyle = '#1e293b';
+        ctx.fillStyle = '#1d2854';
         const r = size * 0.1;
         const cx = x + size / 2;
         const cy = y + size / 2;

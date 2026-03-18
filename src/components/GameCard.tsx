@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Play, Users, User, Brain, Puzzle, BookOpen, Code } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
+import { useRef, useCallback } from 'react';
 
 interface GameCardProps {
   title: string;
@@ -34,6 +35,7 @@ const tagIcons: Record<string, React.ReactNode> = {
 
 export function GameCard({ title, description, icon, tags, featured, playable, route, action }: GameCardProps) {
   const navigate = useNavigate();
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const handlePlay = () => {
     if (playable) {
@@ -47,29 +49,54 @@ export function GameCard({ title, description, icon, tags, featured, playable, r
     }
   };
 
+  // ── Mouse-follow tilt + inner glow ─────────────────────────
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    // Tilt: max 4 degrees
+    const rotateX = ((y - centerY) / centerY) * -4;
+    const rotateY = ((x - centerX) / centerX) * 4;
+
+    card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px) scale(1.01)`;
+    // Inner glow position
+    card.style.setProperty('--mouse-x', `${x}px`);
+    card.style.setProperty('--mouse-y', `${y}px`);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    const card = cardRef.current;
+    if (!card) return;
+    card.style.transform = '';
+  }, []);
+
   return (
     <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       className={cn(
         "group relative rounded-2xl overflow-hidden",
-        "glass-card dark:bg-white/5 dark:backdrop-blur-xl",
-        "dark:border-white/10",
-        "card-lift glow-card hover:glow-card-hover",
+        "glass-card card-glow-inner",
+        "transition-[box-shadow,border-color] duration-300",
+        "glow-card hover:glow-card-hover",
         featured && "md:col-span-2 md:row-span-2"
       )}
+      style={{ transformStyle: 'preserve-3d', transition: 'transform 0.2s ease-out, box-shadow 0.3s ease' }}
     >
-      {/* Gradient Background */}
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-        <div className="absolute inset-0 bg-gradient-radial" />
-      </div>
-
       {/* Content */}
       <div className={cn(
-        "relative p-6 flex flex-col h-full",
+        "relative p-6 flex flex-col h-full z-[2]",
         featured ? "min-h-[300px]" : "min-h-[220px]"
       )}>
         {/* Icon */}
         <div className={cn(
-          "w-16 h-16 rounded-2xl gradient-primary flex items-center justify-center mb-4",
+          "w-14 h-14 rounded-2xl gradient-primary flex items-center justify-center mb-4",
           "group-hover:scale-110 group-hover:rotate-3 transition-all duration-300",
           "glow-primary"
         )}>
@@ -78,12 +105,12 @@ export function GameCard({ title, description, icon, tags, featured, playable, r
 
         {/* Title & Description */}
         <h3 className={cn(
-          "font-bold text-card-foreground mb-2 neon-text",
+          "font-bold text-card-foreground mb-2",
           featured ? "text-2xl" : "text-xl"
         )}>
           {title}
         </h3>
-        <p className="text-muted-foreground text-sm mb-4 flex-grow">
+        <p className="text-muted-strong text-sm mb-4 flex-grow leading-relaxed">
           {description}
         </p>
 
@@ -103,27 +130,27 @@ export function GameCard({ title, description, icon, tags, featured, playable, r
           disabled={!playable}
           className={cn(
             "flex items-center justify-center gap-2 w-full py-3 rounded-xl",
-            "transition-all duration-300",
+            "transition-all duration-300 font-semibold",
             playable
-              ? "gradient-primary text-primary-foreground hover:opacity-90 glow-primary cursor-pointer"
-              : "bg-muted text-muted-foreground cursor-not-allowed border border-border"
+              ? "gradient-primary text-primary-foreground hover:opacity-90 glow-primary cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+              : "glass-button-disabled cursor-not-allowed"
           )}
         >
           <Play className="w-5 h-5" />
-          <span className="font-semibold">{playable ? 'Play Now' : 'Coming Soon'}</span>
+          <span>{playable ? 'Play Now' : 'Coming Soon'}</span>
         </button>
       </div>
 
       {/* Featured Badge */}
       {featured && (
-        <div className="absolute top-4 right-4 px-3 py-1 rounded-full gradient-primary text-primary-foreground text-xs font-bold">
-          Featured
+        <div className="absolute top-4 right-4 z-[3] px-3 py-1 rounded-full gradient-primary text-primary-foreground text-xs font-bold badge-glow">
+          ✨ Featured
         </div>
       )}
 
       {/* Playable Badge */}
       {playable && !featured && (
-        <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-success text-primary-foreground text-xs font-bold">
+        <div className="absolute top-4 right-4 z-[3] px-3 py-1 rounded-full border border-accent/25 bg-accent/85 text-accent-foreground text-xs font-bold backdrop-blur-md shadow-[0_0_20px_hsl(var(--glow-accent)/0.22)]">
           Playable
         </div>
       )}

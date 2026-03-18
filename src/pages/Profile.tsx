@@ -74,8 +74,8 @@ const Profile = () => {
     <Layout>
       <div className="container mx-auto px-4">
         {/* Profile Header */}
-        <div className="relative mb-8 animate-fade-in">
-          <div className="flex flex-col md:flex-row items-center gap-6 p-6 rounded-2xl bg-card border border-border glow-card">
+        <div className="relative mb-8 animate-rise">
+          <div className="flex flex-col md:flex-row items-center gap-6 p-6 rounded-2xl glass-surface-2">
             {/* Avatar */}
             <div className="relative">
               <div className="w-24 h-24 rounded-full gradient-primary flex items-center justify-center glow-primary">
@@ -89,7 +89,7 @@ const Profile = () => {
                   <User className="w-12 h-12 text-primary-foreground" />
                 )}
               </div>
-              <div className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-success flex items-center justify-center border-4 border-card">
+              <div className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full glass-chip flex items-center justify-center border-2 border-success/40">
                 <span className="text-xs font-bold text-primary-foreground">{profile.level}</span>
               </div>
             </div>
@@ -100,7 +100,7 @@ const Profile = () => {
                 {profile.username || 'Player'}
               </h2>
               {/* IMPORTANT: Never expose user.email outside Account/Settings */}
-              <div className="flex items-center justify-center md:justify-start gap-4 text-sm text-muted-foreground">
+              <div className="flex items-center justify-center md:justify-start gap-4 text-sm text-muted-strong">
                 <span className="flex items-center gap-1">
                   <Calendar className="w-4 h-4" />
                   Joined {format(new Date(profile.created_at), 'MMM yyyy')}
@@ -113,15 +113,15 @@ const Profile = () => {
             </div>
 
             {/* Level Progress */}
-            <div className="text-center p-4 rounded-xl bg-muted/50">
-              <p className="text-sm text-muted-foreground mb-2">Level Progress</p>
-              <div className="w-48 h-3 rounded-full bg-muted overflow-hidden">
+            <div className="text-center p-4 rounded-xl glass-chip">
+              <p className="text-sm text-muted-strong mb-2">Level Progress</p>
+              <div className="w-48 h-3 rounded-full bg-foreground/8 overflow-hidden">
                 <div
                   className="h-full gradient-primary rounded-full transition-all duration-500"
                   style={{ width: `${xpProgress}%` }}
                 />
               </div>
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-xs text-muted-strong mt-1">
                 {profile.xp % 1000} / 1000 XP
               </p>
             </div>
@@ -144,12 +144,12 @@ const Profile = () => {
             {stats.map((stat, index) => (
               <div
                 key={stat.label}
-                className="p-6 rounded-2xl bg-card border border-border glow-card animate-scale-in"
+                className="p-6 rounded-2xl glass-surface-2 animate-rise"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
                 <stat.icon className={cn("w-8 h-8 mb-3", stat.color)} />
                 <p className="text-3xl font-bold text-foreground mb-1">{stat.value}</p>
-                <p className="text-sm text-muted-foreground">{stat.label}</p>
+                <p className="text-sm text-muted-strong">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -163,19 +163,19 @@ const Profile = () => {
               <div
                 key={achievement.title}
                 className={cn(
-                  "p-6 rounded-2xl border transition-all animate-scale-in",
+                  "p-6 rounded-2xl transition-all animate-rise",
                   achievement.unlocked
-                    ? "bg-card border-primary/30 glow-card"
-                    : "bg-muted/30 border-border opacity-60"
+                    ? "glass-surface-2 border border-primary/20 glow-primary"
+                    : "glass-surface-1 opacity-70"
                 )}
                 style={{ animationDelay: `${index * 50}ms` }}
               >
                 <achievement.icon className={cn(
                   "w-10 h-10 mb-3",
-                  achievement.unlocked ? "text-coin" : "text-muted-foreground"
+                  achievement.unlocked ? "text-coin" : "text-muted-strong"
                 )} />
                 <p className="font-bold text-foreground">{achievement.title}</p>
-                <p className="text-sm text-muted-foreground">{achievement.description}</p>
+                <p className="text-sm text-muted-strong">{achievement.description}</p>
               </div>
             ))}
           </div>

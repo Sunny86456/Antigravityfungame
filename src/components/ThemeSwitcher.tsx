@@ -12,7 +12,7 @@ export function ThemeSwitcher() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <div className="flex items-center gap-1 p-1 rounded-full bg-muted/50 border border-border">
+    <div className="flex items-center gap-1 p-1 rounded-full glass-surface-1">
       {themes.map(({ id, icon: Icon, label }) => (
         <button
           key={id}
@@ -21,7 +21,7 @@ export function ThemeSwitcher() {
             "relative p-2 rounded-full transition-all duration-300",
             theme === id 
               ? "bg-primary text-primary-foreground glow-primary" 
-              : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              : "text-muted-strong hover:text-foreground glass-button-secondary hover:scale-105"
           )}
           title={label}
         >

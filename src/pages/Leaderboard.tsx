@@ -21,9 +21,9 @@ interface LeaderboardEntry {
 const getRankIcon = (rank: number) => {
   switch (rank) {
     case 1: return <Crown className="w-6 h-6 text-coin" />;
-    case 2: return <Medal className="w-6 h-6 text-muted-foreground" />;
+    case 2: return <Medal className="w-6 h-6 text-muted-strong" />;
     case 3: return <Medal className="w-6 h-6 text-warning" />;
-    default: return <span className="text-lg font-bold text-muted-foreground">#{rank}</span>;
+    default: return <span className="text-lg font-bold text-muted-strong">#{rank}</span>;
   }
 };
 
@@ -32,16 +32,20 @@ const getAvatarEmoji = (index: number) => {
   return emojis[index % emojis.length];
 };
 
+const tabs = [
+  { id: 'overall', label: 'Overall', icon: Trophy },
+  { id: 'chess', label: 'Chess', icon: Gamepad2 },
+  { id: 'coding', label: 'Coding', icon: Code2 }
+];
+
 const Leaderboard = () => {
   const { user } = useAuth();
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'overall' | 'chess' | 'coding'>('overall');
 
-  // Fetch leaderboard data
   const fetchLeaderboard = useCallback(async () => {
     setIsLoading(true);
-
     const { data, error } = await supabase
       .from('profiles')
       .select('user_id, username, avatar_url, coins, wins, games_played, xp')
@@ -49,24 +53,6 @@ const Leaderboard = () => {
       .limit(50);
 
     if (!error && data) {
-      // FORENSIC AUDIT: Log EXACT raw response from Supabase
-      console.log('=== LEADERBOARD DATA AUDIT ===');
-      console.log('Total records:', data.length);
-      if (data[0]) {
-        console.log('First record KEYS:', Object.keys(data[0]));
-        console.log('First record VALUES:', JSON.stringify(data[0], null, 2));
-      }
-      // Check for ANY field containing @ (email pattern)
-      data.forEach((record, i) => {
-        Object.entries(record).forEach(([key, value]) => {
-          if (typeof value === 'string' && value.includes('@')) {
-            console.error(`🚨 EMAIL LEAK DETECTED in record ${i}, field "${key}":`, value);
-          }
-        });
-      });
-      console.log('=== END AUDIT ===');
-
-      // SECURITY: Username from profiles table only - never expose email
       const entries: LeaderboardEntry[] = data.map((profile, index) => ({
         rank: index + 1,
         user_id: profile.user_id,
@@ -80,34 +66,16 @@ const Leaderboard = () => {
       }));
       setLeaderboardData(entries);
     }
-
     setIsLoading(false);
   }, [user]);
 
-  // Initial fetch and realtime subscription
   useEffect(() => {
     fetchLeaderboard();
-
-    // Subscribe to realtime updates on profiles table
     const channel = supabase
       .channel('leaderboard-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'profiles'
-        },
-        () => {
-          // Refetch leaderboard when any profile changes
-          fetchLeaderboard();
-        }
-      )
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, () => fetchLeaderboard())
       .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    return () => { supabase.removeChannel(channel); };
   }, [user, fetchLeaderboard]);
 
   if (isLoading) {
@@ -127,24 +95,20 @@ const Leaderboard = () => {
       <div className="container mx-auto px-4">
         <PageHeader
           title="Leaderboard"
-          subtitle="Top players across all games - Live updates!"
+          subtitle="Top players across all games — Live updates!"
         />
 
-        {/* Tab Selector */}
-        <div className="flex justify-center gap-2 mb-8">
-          {[
-            { id: 'overall', label: 'Overall', icon: Trophy },
-            { id: 'chess', label: 'Chess', icon: Gamepad2 },
-            { id: 'coding', label: 'Coding', icon: Code2 }
-          ].map(tab => (
+        {/* ── Tab Selector ─────────────────────────────────── */}
+        <div className="flex justify-center gap-2 mb-10 animate-rise delay-1">
+          {tabs.map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
               className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-xl transition-all",
+                "flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all font-medium",
                 activeTab === tab.id
-                  ? "gradient-primary text-primary-foreground"
-                  : "bg-muted text-muted-foreground hover:text-foreground"
+                  ? "gradient-primary text-primary-foreground glow-primary"
+                  : "glass-chip text-muted-strong hover:text-foreground"
               )}
             >
               <tab.icon className="w-4 h-4" />
@@ -153,43 +117,39 @@ const Leaderboard = () => {
           ))}
         </div>
 
-        {/* Top 3 Podium */}
+        {/* ── Top 3 Podium with Glow ──────────────────────── */}
         {top3.length >= 3 && (
-          <div className="flex justify-center items-end gap-4 mb-12 animate-fade-in">
+          <div className="flex justify-center items-end gap-3 sm:gap-5 mb-14 animate-rise delay-2">
             {/* 2nd Place */}
             <div className="flex flex-col items-center">
               <div className={cn(
-                "w-20 h-20 rounded-full bg-card border-4 border-muted-foreground flex items-center justify-center text-4xl mb-2 glow-card",
+                "w-18 h-18 sm:w-20 sm:h-20 rounded-full glass-surface-2 border-4 flex items-center justify-center text-3xl sm:text-4xl mb-2 glow-silver",
                 top3[1].isCurrentUser && "ring-2 ring-primary"
               )}>
                 {top3[1].avatar_url ? (
                   <img src={top3[1].avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
-                ) : (
-                  getAvatarEmoji(1)
-                )}
+                ) : getAvatarEmoji(1)}
               </div>
-              <p className="font-bold text-foreground">{top3[1].username}</p>
-              <p className="text-sm text-muted-foreground">{top3[1].coins.toLocaleString()}</p>
-              <div className="mt-2 w-24 h-20 rounded-t-lg bg-muted border border-border flex items-center justify-center">
-                <Medal className="w-8 h-8 text-muted-foreground" />
+              <p className="font-bold text-foreground text-sm sm:text-base">{top3[1].username}</p>
+              <p className="text-xs text-muted-strong stat-number">{top3[1].coins.toLocaleString()}</p>
+              <div className="mt-2 w-20 sm:w-24 h-20 rounded-t-xl glass-surface-1 flex items-center justify-center border-t-2 border-slate-300/20">
+                <Medal className="w-8 h-8 text-gray-400" />
               </div>
             </div>
 
             {/* 1st Place */}
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center -mt-4">
               <div className={cn(
-                "w-24 h-24 rounded-full gradient-primary border-4 border-coin flex items-center justify-center text-5xl mb-2 glow-primary float",
+                "w-22 h-22 sm:w-24 sm:h-24 rounded-full gradient-primary border-4 flex items-center justify-center text-4xl sm:text-5xl mb-2 glow-gold float",
                 top3[0].isCurrentUser && "ring-2 ring-white"
               )}>
                 {top3[0].avatar_url ? (
                   <img src={top3[0].avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
-                ) : (
-                  getAvatarEmoji(0)
-                )}
+                ) : getAvatarEmoji(0)}
               </div>
               <p className="font-bold text-lg text-foreground">{top3[0].username}</p>
-              <p className="text-sm text-muted-foreground">{top3[0].coins.toLocaleString()}</p>
-              <div className="mt-2 w-28 h-28 rounded-t-lg gradient-primary flex items-center justify-center glow-primary">
+              <p className="text-xs text-muted-strong stat-number">{top3[0].coins.toLocaleString()}</p>
+              <div className="mt-2 w-24 sm:w-28 h-28 rounded-t-xl gradient-primary flex items-center justify-center glow-primary">
                 <Crown className="w-10 h-10 text-coin" />
               </div>
             </div>
@@ -197,28 +157,26 @@ const Leaderboard = () => {
             {/* 3rd Place */}
             <div className="flex flex-col items-center">
               <div className={cn(
-                "w-20 h-20 rounded-full bg-card border-4 border-warning flex items-center justify-center text-4xl mb-2 glow-card",
+                "w-18 h-18 sm:w-20 sm:h-20 rounded-full glass-surface-2 border-4 flex items-center justify-center text-3xl sm:text-4xl mb-2 glow-bronze",
                 top3[2].isCurrentUser && "ring-2 ring-primary"
               )}>
                 {top3[2].avatar_url ? (
                   <img src={top3[2].avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
-                ) : (
-                  getAvatarEmoji(2)
-                )}
+                ) : getAvatarEmoji(2)}
               </div>
-              <p className="font-bold text-foreground">{top3[2].username}</p>
-              <p className="text-sm text-muted-foreground">{top3[2].coins.toLocaleString()}</p>
-              <div className="mt-2 w-24 h-16 rounded-t-lg bg-warning/20 border border-warning/50 flex items-center justify-center">
+              <p className="font-bold text-foreground text-sm sm:text-base">{top3[2].username}</p>
+              <p className="text-xs text-muted-strong stat-number">{top3[2].coins.toLocaleString()}</p>
+              <div className="mt-2 w-20 sm:w-24 h-16 rounded-t-xl glass-surface-1 flex items-center justify-center border-t-2 border-amber-500/30">
                 <Medal className="w-8 h-8 text-warning" />
               </div>
             </div>
           </div>
         )}
 
-        {/* Full Leaderboard Table */}
-        <div className="rounded-2xl bg-card border border-border overflow-hidden glow-card animate-fade-in" style={{ animationDelay: '200ms' }}>
+        {/* ── Full Leaderboard Table ───────────────────────── */}
+        <div className="rounded-2xl glass-surface-2 overflow-hidden animate-rise delay-3">
           {/* Header */}
-          <div className="grid grid-cols-12 gap-4 p-4 bg-muted/50 border-b border-border text-sm font-medium text-muted-foreground">
+          <div className="grid grid-cols-12 gap-4 p-4 border-b border-border text-sm font-medium text-muted-strong">
             <div className="col-span-1">Rank</div>
             <div className="col-span-4">Player</div>
             <div className="col-span-2 text-right">Games</div>
@@ -228,7 +186,7 @@ const Leaderboard = () => {
 
           {/* Rows */}
           {leaderboardData.length === 0 ? (
-            <div className="p-8 text-center text-muted-foreground">
+            <div className="p-8 text-center text-muted-strong">
               No players yet. Be the first to play!
             </div>
           ) : (
@@ -236,8 +194,8 @@ const Leaderboard = () => {
               <div
                 key={player.user_id}
                 className={cn(
-                  "grid grid-cols-12 gap-4 p-4 items-center transition-all hover:bg-muted/30",
-                  index !== leaderboardData.length - 1 && "border-b border-border",
+                  "grid grid-cols-12 gap-4 p-4 items-center transition-all hover:bg-primary/5",
+                  index !== leaderboardData.length - 1 && "border-b border-border/50",
                   player.isCurrentUser && "bg-primary/5 border-l-4 border-l-primary"
                 )}
               >
@@ -245,40 +203,35 @@ const Leaderboard = () => {
                   {getRankIcon(player.rank)}
                 </div>
                 <div className="col-span-4 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-xl overflow-hidden">
+                  <div className="w-10 h-10 rounded-full glass-surface-1 flex items-center justify-center text-xl overflow-hidden">
                     {player.avatar_url ? (
                       <img src={player.avatar_url} alt="" className="w-full h-full object-cover" />
-                    ) : (
-                      getAvatarEmoji(index)
-                    )}
+                    ) : getAvatarEmoji(index)}
                   </div>
                   <div>
-                    <p className={cn(
-                      "font-medium",
-                      player.isCurrentUser ? "text-primary" : "text-foreground"
-                    )}>
+                    <p className={cn("font-medium", player.isCurrentUser ? "text-primary" : "text-foreground")}>
                       {player.username}
                       {player.isCurrentUser && <span className="ml-2 text-xs text-primary">(You)</span>}
                     </p>
-                    <p className="text-xs text-muted-foreground">Level {Math.floor((player.xp ?? 0) / 100) + 1}</p>
+                    <p className="text-xs text-muted-strong">Level {Math.floor((player.xp ?? 0) / 100) + 1}</p>
                   </div>
                 </div>
                 <div className="col-span-2 text-right">
                   <div className="flex items-center justify-end gap-2">
-                    <Gamepad2 className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-foreground">{player.games_played}</span>
+                    <Gamepad2 className="w-4 h-4 text-muted-strong" />
+                    <span className="text-foreground stat-number">{player.games_played}</span>
                   </div>
                 </div>
                 <div className="col-span-2 text-right">
                   <div className="flex items-center justify-end gap-2">
                     <Trophy className="w-4 h-4 text-coin" />
-                    <span className="font-bold text-foreground">{player.wins}</span>
+                    <span className="font-bold text-foreground stat-number">{player.wins}</span>
                   </div>
                 </div>
                 <div className="col-span-3 text-right">
                   <div className="flex items-center justify-end gap-2">
                     <Coins className="w-4 h-4 text-coin" />
-                    <span className="font-bold text-coin">{player.coins.toLocaleString()}</span>
+                    <span className="font-bold text-coin stat-number">{player.coins.toLocaleString()}</span>
                     <TrendingUp className="w-4 h-4 text-success" />
                   </div>
                 </div>

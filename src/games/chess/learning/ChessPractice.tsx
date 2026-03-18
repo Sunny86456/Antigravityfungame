@@ -265,7 +265,7 @@ export default function ChessPractice() {
       <Layout>
         <div className="container mx-auto px-4 py-8 text-center">
           <h2 className="text-2xl font-bold text-foreground mb-2">Sign in Required</h2>
-          <p className="text-muted-foreground mb-6">Please sign in to access practice mode.</p>
+          <p className="text-muted-strong mb-6">Please sign in to access practice mode.</p>
           <button
             onClick={() => navigate('/auth')}
             className="px-6 py-3 rounded-xl gradient-primary text-primary-foreground font-bold hover:opacity-90 transition-all"
@@ -284,7 +284,7 @@ export default function ChessPractice() {
         <div className="container mx-auto px-4 py-8 max-w-md">
           <button
             onClick={() => navigate('/games/chess/learn')}
-            className="flex items-center gap-2 mb-8 text-muted-foreground hover:text-foreground"
+            className="flex items-center gap-2 mb-8 text-muted-strong hover:text-foreground"
           >
             <ChevronLeft className="w-4 h-4" />
             Back to Learning Hub
@@ -313,14 +313,14 @@ export default function ChessPractice() {
                 className={cn(
                   "w-full p-6 rounded-2xl border-2 transition-all text-left",
                   difficulty === d
-                    ? "border-primary bg-primary/10 glow-card"
-                    : "border-border bg-card hover:border-primary/50"
+                    ? "border-primary glass-surface-2 glow-card"
+                    : "border-border glass-surface-1 hover:border-primary/50"
                 )}
               >
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="text-lg font-bold text-foreground capitalize">{d}</h3>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-muted-strong">
                       {d === 'easy' && 'Perfect for beginners'}
                       {d === 'medium' && 'Balanced challenge'}
                       {d === 'hard' && 'For experienced players'}
@@ -352,13 +352,13 @@ export default function ChessPractice() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => setGameMode('settings')}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 transition-all"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl glass-button-secondary transition-all"
             >
               <ChevronLeft className="w-4 h-4" />
               Exit
             </button>
             
-            <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted">
+            <div className="flex items-center gap-2 px-4 py-2 rounded-xl glass-chip">
               <Clock className="w-5 h-5" />
               {formatTime(gameTime)}
             </div>
@@ -385,7 +385,7 @@ export default function ChessPractice() {
           
           <button
             onClick={startGame}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 transition-all"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl glass-button-secondary transition-all"
           >
             <RotateCcw className="w-4 h-4" />
             Restart
@@ -410,14 +410,14 @@ export default function ChessPractice() {
             {/* Promotion Dialog - positioned over the board */}
             {promotionPending && (
               <div className="absolute inset-0 bg-background/80 flex items-center justify-center rounded-xl z-10">
-                <div className="p-4 rounded-xl bg-card border border-border">
+                <div className="p-4 rounded-xl glass-surface-2">
                   <p className="text-sm font-medium text-foreground mb-3 text-center">Promote to:</p>
                   <div className="flex gap-2">
                     {(['queen', 'rook', 'bishop', 'knight'] as PieceType[]).map(type => (
                       <button
                         key={type}
                         onClick={() => handlePromotion(type)}
-                        className="p-2 rounded-lg bg-muted hover:bg-muted/80 transition-all"
+                        className="p-2 rounded-lg glass-button-secondary transition-all"
                       >
                         <ChessPiece piece={{ type, color: currentTurn }} size={40} />
                       </button>
@@ -433,14 +433,14 @@ export default function ChessPractice() {
                 <div className="text-center p-8">
                   <Trophy className={cn(
                     "w-16 h-16 mx-auto mb-4",
-                    winner === 'white' ? "text-coin animate-bounce" : winner === 'black' ? "text-accent" : "text-muted-foreground"
+                    winner === 'white' ? "text-coin animate-bounce" : winner === 'black' ? "text-accent" : "text-muted-strong"
                   )} />
                   <h2 className="text-2xl font-bold text-foreground mb-2">
                     {gameResult === 'checkmate' && `${winner === 'white' ? 'White' : 'Black'} Wins!`}
                     {gameResult === 'stalemate' && 'Stalemate!'}
                     {gameResult === 'draw' && 'Draw!'}
                   </h2>
-                  <p className="text-muted-foreground mb-2">
+                  <p className="text-muted-strong mb-2">
                     {gameResult === 'checkmate' && 'Checkmate!'}
                     {gameResult === 'stalemate' && 'No legal moves available'}
                     {gameResult === 'draw' && 'The game ended in a draw'}
@@ -457,7 +457,7 @@ export default function ChessPractice() {
                     </button>
                     <button
                       onClick={() => navigate('/games/chess/learn')}
-                      className="px-6 py-3 rounded-xl bg-muted hover:bg-muted/80 transition-all"
+                      className="px-6 py-3 rounded-xl glass-button-secondary transition-all"
                     >
                       Back to Hub
                     </button>
@@ -468,31 +468,31 @@ export default function ChessPractice() {
           </div>
           
           {/* Move History */}
-          <div className="w-full lg:w-64 p-4 rounded-xl bg-card border border-border">
+          <div className="w-full lg:w-64 p-4 rounded-xl glass-surface-2">
             <h3 className="font-bold text-foreground mb-3 flex items-center gap-2">
               <Settings className="w-4 h-4" />
               Move History
             </h3>
             
-            <div className="mb-4 p-3 rounded-lg bg-muted/50">
-              <p className="text-sm text-muted-foreground">
+            <div className="mb-4 p-3 rounded-lg glass-chip">
+              <p className="text-sm text-muted-strong">
                 Turn: <span className="font-bold text-foreground">{currentTurn === 'white' ? 'White' : 'Black'}</span>
               </p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-strong">
                 Mode: <span className="font-bold text-foreground">Practice ({difficulty})</span>
               </p>
             </div>
             
             <div className="max-h-64 overflow-y-auto space-y-1">
               {moveHistory.length === 0 ? (
-                <p className="text-sm text-muted-foreground italic">No moves yet</p>
+                <p className="text-sm text-muted-strong italic">No moves yet</p>
               ) : (
                 moveHistory.map((move, i) => (
                   <div
                     key={i}
-                    className="flex items-center gap-2 text-sm px-2 py-1 rounded hover:bg-muted/50"
+                    className="flex items-center gap-2 text-sm px-2 py-1 rounded hover:bg-primary/5"
                   >
-                    <span className="text-muted-foreground w-6">{Math.floor(i / 2) + 1}.</span>
+                    <span className="text-muted-strong w-6">{Math.floor(i / 2) + 1}.</span>
                     <span className={cn(
                       "font-mono",
                       move.piece.color === 'white' ? "text-foreground" : "text-accent"

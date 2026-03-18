@@ -891,7 +891,7 @@ export const getDifficultyColor = (difficulty: Difficulty): string => {
     case 'medium': return 'text-warning border-warning/50';
     case 'hard': return 'text-destructive border-destructive/50';
     case 'expert': return 'text-primary border-primary/50';
-    default: return 'text-muted-foreground border-border';
+    default: return 'text-muted-strong border-border';
   }
 };
 
@@ -901,6 +901,6 @@ export const getDifficultyBg = (difficulty: Difficulty): string => {
     case 'medium': return 'bg-warning/10';
     case 'hard': return 'bg-destructive/10';
     case 'expert': return 'bg-primary/10';
-    default: return 'bg-muted';
+    default: return 'glass-chip';
   }
 };

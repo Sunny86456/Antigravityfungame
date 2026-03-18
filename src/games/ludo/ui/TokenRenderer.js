@@ -115,9 +115,9 @@ export class TokenRenderer {
 
         const colorMap = {
             'RED': '#f43f5e',
-            'GREEN': '#22c55e',
-            'YELLOW': '#eab308',
-            'BLUE': '#3b82f6'
+            'GREEN': '#10b981',
+            'YELLOW': '#f59e0b',
+            'BLUE': '#6366f1'
         };
         const color = colorMap[colorString] || '#999';
 
@@ -125,11 +125,11 @@ export class TokenRenderer {
         if (isMovable) {
             ctx.beginPath();
             ctx.arc(x, y, r * 1.3, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'; // Glow
+            ctx.fillStyle = 'rgba(99, 102, 241, 0.24)';
             ctx.fill();
 
             ctx.lineWidth = 3;
-            ctx.strokeStyle = '#fff'; // White border
+            ctx.strokeStyle = '#ecfeff';
             ctx.stroke();
         }
 
@@ -141,13 +141,13 @@ export class TokenRenderer {
 
         // Stroke
         ctx.lineWidth = 2;
-        ctx.strokeStyle = '#fff';
+        ctx.strokeStyle = '#f8fafc';
         ctx.stroke();
 
         // Inner shadow/detail
         ctx.beginPath();
         ctx.arc(x, y, r * 0.6, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0,0,0,0.1)';
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.12)';
         ctx.fill();
 
         ctx.restore();

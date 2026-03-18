@@ -127,14 +127,14 @@ const Auth = () => {
 
   if (loading && !forceShow) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
@@ -144,21 +144,21 @@ const Auth = () => {
             </div>
             <span className="text-3xl font-bold gradient-text neon-text">GameHub</span>
           </div>
-          <p className="text-muted-foreground">
+          <p className="text-muted-strong">
             {isLogin ? 'Welcome back, gamer!' : 'Join the gaming community'}
           </p>
         </div>
 
         {/* Auth Card */}
-        <div className="bg-card border border-border rounded-2xl p-8 glow-card animate-scale-in">
+        <div className="glass-surface-2 rounded-2xl p-8 animate-rise border-gradient">
           {/* Toggle */}
-          <div className="flex mb-8 p-1 bg-muted rounded-xl">
+          <div className="flex mb-8 p-1 glass-chip rounded-xl">
             <button
               type="button"
               onClick={() => { setIsLogin(true); setError(''); setSuccess(''); }}
               className={cn(
                 "flex-1 py-3 rounded-lg font-medium transition-all",
-                isLogin ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+                isLogin ? "bg-primary text-primary-foreground glow-primary" : "text-muted-strong hover:text-foreground"
               )}
             >
               Sign In
@@ -168,7 +168,7 @@ const Auth = () => {
               onClick={() => { setIsLogin(false); setError(''); setSuccess(''); }}
               className={cn(
                 "flex-1 py-3 rounded-lg font-medium transition-all",
-                !isLogin ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+                !isLogin ? "bg-primary text-primary-foreground glow-primary" : "text-muted-strong hover:text-foreground"
               )}
             >
               Sign Up
@@ -186,7 +186,7 @@ const Auth = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-muted border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground placeholder:text-muted-foreground"
+                className="w-full px-4 py-3 rounded-xl glass-input transition-all"
                 placeholder="player@example.com"
                 required
               />
@@ -201,7 +201,7 @@ const Auth = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-muted border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground placeholder:text-muted-foreground"
+                className="w-full px-4 py-3 rounded-xl glass-input transition-all"
                 placeholder="••••••••"
                 required
               />
@@ -212,16 +212,16 @@ const Auth = () => {
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-foreground flex items-center gap-2">
                     <User className="w-4 h-4" />
-                    Username <span className="text-muted-foreground text-xs">(optional)</span>
+                    Username <span className="text-muted-strong text-xs">(optional)</span>
                   </label>
                   <input
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-muted border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground placeholder:text-muted-foreground"
+                    className="w-full px-4 py-3 rounded-xl glass-input transition-all"
                     placeholder="CoolPlayer123"
                   />
-                  <p className="text-xs text-muted-foreground">Leave blank for a random username</p>
+                  <p className="text-xs text-muted-strong">Leave blank for a random username</p>
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-foreground flex items-center gap-2">
@@ -232,7 +232,7 @@ const Auth = () => {
                     type="password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-muted border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground placeholder:text-muted-foreground"
+                    className="w-full px-4 py-3 rounded-xl glass-input transition-all"
                     placeholder="••••••••"
                     required
                   />
@@ -273,7 +273,7 @@ const Auth = () => {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-sm text-muted-foreground mt-6">
+        <p className="text-center text-sm text-muted-strong mt-6">
           By continuing, you agree to our Terms of Service and Privacy Policy
         </p>
       </div>

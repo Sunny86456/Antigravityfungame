@@ -56,18 +56,18 @@ export function Layout({ children }: LayoutProps) {
       {/* Footer - only on non-game routes */}
       {!isGameRoute && (
         <footer
-          className="border-t border-border bg-muted/30 py-4 sm:py-6"
+          className="border-t border-border/50 glass-surface-1 py-4 sm:py-6"
           style={{
             // Safe-area for bottom (home indicator on iPhone X+)
             paddingBottom: 'max(1rem, env(safe-area-inset-bottom, 0px))'
           }}
         >
-          <div className="container mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
+          <div className="container mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 text-xs sm:text-sm text-muted-strong">
             <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap justify-center">
-              <span className="text-muted-foreground">© {new Date().getFullYear()}</span>
+              <span className="text-muted-strong">© {new Date().getFullYear()}</span>
               <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary" />
               <span className="font-medium text-foreground">Sunny Shah</span>
-              <span className="text-muted-foreground hidden min-[400px]:inline">— All rights reserved.</span>
+              <span className="text-muted-strong hidden min-[400px]:inline">— All rights reserved.</span>
             </div>
             <div className="flex items-center gap-3 sm:gap-4">
               <a href="mailto:sunny93wo@gmail.com" className="flex items-center gap-1 hover:text-foreground transition-colors">

@@ -18,14 +18,14 @@ import { SAFE_CELLS, HOME_ENTRANCES } from '../engine/BoardConfig.js';
 
 // Visual Colors
 const COLORS = {
-    RED: '#f43f5e',     // Rose 500
-    GREEN: '#22c55e',   // Green 500
-    YELLOW: '#eab308',  // Yellow 500
-    BLUE: '#3b82f6',    // Blue 500
-    BOARD_BG: '#ffffff',
-    TRACK_BG: '#f8fafc', // Slate 50
-    BORDER: '#94a3b8',   // Slate 400
-    SAFE_STAR: '#64748b' // Slate 500
+    RED: '#f43f5e',
+    GREEN: '#10b981',
+    YELLOW: '#f59e0b',
+    BLUE: '#6366f1',
+    BOARD_BG: '#f8faff',
+    TRACK_BG: '#eef2ff',
+    BORDER: '#94a3d5',
+    SAFE_STAR: '#5b6fb8'
 };
 
 export class BoardRenderer {
