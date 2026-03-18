@@ -201,9 +201,9 @@ export function ChessBoard({
                     className="absolute inset-0 pointer-events-none"
                     style={{
                       background: lastMove?.to.row === rowIndex && lastMove?.to.col === colIndex
-                        ? 'rgba(var(--primary-rgb, 139, 92, 246), 0.4)'
-                        : 'rgba(var(--primary-rgb, 139, 92, 246), 0.25)',
-                      boxShadow: 'inset 0 0 0 3px rgba(var(--primary-rgb, 139, 92, 246), 0.5)',
+                        ? 'hsl(var(--primary) / 0.4)'
+                        : 'hsl(var(--primary) / 0.25)',
+                      boxShadow: 'inset 0 0 0 3px hsl(var(--primary) / 0.5)',
                       animation: 'lastMoveHighlight 2s ease-out forwards'
                     }}
                   />
